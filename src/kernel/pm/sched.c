@@ -31,6 +31,22 @@
  */
 PUBLIC void sched(struct process *proc)
 {
+	/*
+	* Increase list for
+	* CPU bound process
+	*/
+	if ((proc->state == PROC_RUNNING) && (proc->nice != 2*NZERO - 1))
+	{
+		proc->nice++;
+	}
+
+	/*
+	* Decrease list for
+	* I/O bound process
+	*/
+	else if ((proc->state != PROC_RUNNING) && (proc->nice != 0))
+		proc->nice--;
+
 	proc->state = PROC_READY;
 	proc->counter = 0;
 }
@@ -64,9 +80,6 @@ PUBLIC void resume(struct process *proc)
  */
 PUBLIC void yield(void)
 {
-	struct process *p;    /* Working process.     */
-	struct process *next; /* Next process to run. */
-
 	/* Re-schedule process for execution. */
 	if (curr_proc->state == PROC_RUNNING)
 		sched(curr_proc);
@@ -75,7 +88,7 @@ PUBLIC void yield(void)
 	last_proc = curr_proc;
 
 	/* Check alarm. */
-	for (p = FIRST_PROC; p <= LAST_PROC; p++)
+	for (struct process *p = FIRST_PROC; p <= LAST_PROC; p++)
 	{
 		/* Skip invalid processes. */
 		if (!IS_VALID(p))
@@ -86,9 +99,8 @@ PUBLIC void yield(void)
 			p->alarm = 0, sndsig(p, SIGALRM);
 	}
 
-	/* Choose a process to run next. */
-	next = IDLE;
-	for (p = FIRST_PROC; p <= LAST_PROC; p++)
+	struct process *next = IDLE; /* Next process to run. */
+	for (struct process *p = FIRST_PROC; p <= LAST_PROC; p++)
 	{
 		/* Skip non-ready process. */
 		if (p->state != PROC_READY)
@@ -96,25 +108,41 @@ PUBLIC void yield(void)
 		
 		/*
 		 * Process with higher
-		 * waiting time found.
+		 * priority found.
 		 */
-		if (p->counter > next->counter)
+		if (p->priority < next->priority)
+		{
+			next->counter++;			
+			next = p;
+		}
+
+		/*
+		* Process with higher
+		* nice in priority
+		*/
+		else if ((p->priority == next->priority) && (p->nice < next->nice))
 		{
 			next->counter++;
 			next = p;
 		}
-			
+		
 		/*
 		 * Increment waiting
 		 * time of process.
 		 */
 		else
 			p->counter++;
+
+		/* Make process grow old */
+		if ((p->counter >= 10) && (p->nice != 0))
+		{
+			p->nice--;
+			p->counter = 0;
+		}
 	}
-	
+
 	/* Switch to next process. */
-	next->priority = PRIO_USER;
 	next->state = PROC_RUNNING;
-	next->counter = PROC_QUANTUM;
+	next->counter = PROC_QUANTUM + next->nice;
 	switch_to(next);
 }
