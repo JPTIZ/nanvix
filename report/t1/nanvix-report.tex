@@ -1,0 +1,71 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[portuguese]{babel}
+
+\title{Trabalho I --- Sistemas Operacionais I}
+\author{João Gabriel Trombeta\\
+        João Paulo Taylor Ienczak Zanette\\
+        Marco Aurélio Ludwig Moraes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Resumo das alterações}
+
+\subsection{pm.h}
+
+De acordo com Tanenbaum, o \textit{quantum} ideal para implementação de filas
+múltiplas é de 20 e 50ns. Como foram utilizadas 40 filas (uma para cada valor
+de \texttt{nice}), o \textit{quantum} mínimo (definido por
+\texttt{PROC\_QUANTUM}) foi ajustado para 15 e o máximo para 54, para se manter
+próximo do intervalo proposto, conforme descrito no cálculo de tempo de uso de
+CPU em \texttt{yield(void)}.
+
+\subsection{pm.c}
+
+Foi alterado o \texttt{counter} para 0, sendo, além do \textit{quantum},
+responsável pelo envelhecimento do processo. Foi considerado então que quanto
+maior o \texttt{counter}, mais envelhecido é o processo.
+
+\subsection{sched.c}
+
+Cada valor de \texttt{nice} é tratado como uma fila. Seu uso é explicado nas
+funções \texttt{yield(void)} e \texttt{sched(struct process*}).
+
+\subsubsection{Função \texttt{yield(void)}}
+
+Percorre todos os processos para decidir qual será o próximo. Processos
+advindos de uma interrupção terão sempre maior prioridade (conforme definido em
+\texttt{pm.h}). Caso os processos comparados tenham a mesma prioridade, o
+processo com menor \texttt{nice} (ou seja, na fila de menor índice) é atribuído
+a \texttt{next} (variável que controla qual o próximo processo escolhido para
+ocupar a CPU).
+
+Todos os processos não escalonados são envelhecidos (\texttt{++counter}). Uma
+vez que o \texttt{counter} atinge o valor 10, se o processo não estiver na fila
+de menor índice, ele desce uma fila (aumentando sua prioridade) e seu contador
+é reiniciado. Quando escalonado, o valor de \texttt{counter} precisará
+representar o \textit{quantum} do processo, conforme o cálculo descrito
+em~\ref{quantum-calc}. Esse cálculo respeita o que foi dito anteriormente sobre
+o intervalo do \textit{quantum}, já que o menor índice de fila é 0 e há 40
+filas (mantendo o intervalo $[15 + 0, 15 + 39]$).
+
+\begin{equation}
+    counter \leftarrow Quantum_{\min} + QueueIndex\\
+    \label{quantum-calc}
+\end{equation}
+
+\subsubsection{Função \texttt{sched(struct process*)}}
+
+Supondo um processo que tenha vindo do estado \textit{running} (i.e.\ seu
+\textit{quantum} terminou), caso ele não esteja na fila de maior índice, ele
+sobe uma fila (diminuindo sua prioridade), caso contrário ele permanece na
+mesma fila.
+
+Por outro lado, supondo um processo que tenha vindo de um \textit{sleep} ou
+\textit{wait}, então sua prioridade é incrementada (descendo uma fila).
+
+\end{document}
