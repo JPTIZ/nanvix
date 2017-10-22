@@ -32,24 +32,24 @@
  */
 int main(int argc, char *const argv[])
 {
-	char pathname[PATH_MAX];
-	
-	((void)argc);
-	((void)argv);
-	
-	/* 
-	 * Get current working directory name. getcwd() will
-	 * do all the dirty job. It will contruct the current
-	 * working directory name from bottom to up, that is,
-	 * towards the root directory.
-	 */
-	if (getcwd(pathname, PATH_MAX) == NULL)
-	{
-		fprintf(stderr, "pwd: cannot getcwd\n");
-		return (EXIT_FAILURE);
-	}
-	
-	printf("%s\n", pathname);
-		
-	return (EXIT_SUCCESS);
+    char pathname[PATH_MAX];
+    
+    ((void)argc);
+    ((void)argv);
+    
+    /* 
+     * Get current working directory name. getcwd() will
+     * do all the dirty job. It will contruct the current
+     * working directory name from bottom to up, that is,
+     * towards the root directory.
+     */
+    if (getcwd(pathname, PATH_MAX) == NULL)
+    {
+        fprintf(stderr, "pwd: cannot getcwd\n");
+        return (EXIT_FAILURE);
+    }
+    
+    printf("%s\n", pathname);
+        
+    return (EXIT_SUCCESS);
 }

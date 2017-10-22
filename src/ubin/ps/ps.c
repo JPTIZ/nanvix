@@ -24,6 +24,6 @@
  */
 int main()
 {
-	ps();
-	return 0;
+    ps();
+    return 0;
 }

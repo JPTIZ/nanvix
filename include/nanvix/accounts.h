@@ -20,63 +20,63 @@
 #ifndef ACCOUNTS_H_
 #define ACCOUNTS_H_
 
-	#include <sys/types.h>
-	
-	/**
-	 * @brief Maximum length for a user name.
-	 */
-	#define USERNAME_MAX 20
-	
-	/**
-	 * @brief Maximum length for a password.
-	 */
-	#define PASSWORD_MAX 10
+    #include <sys/types.h>
+    
+    /**
+     * @brief Maximum length for a user name.
+     */
+    #define USERNAME_MAX 20
+    
+    /**
+     * @brief Maximum length for a password.
+     */
+    #define PASSWORD_MAX 10
 
-	/**
-	 * @brief User's account information.
-	 */
-	struct account
-	{
-		char name[USERNAME_MAX];     /**< User name.       */
-		char password[PASSWORD_MAX]; /**< User's password. */
-		uid_t uid;                   /**< User's ID.       */
-		gid_t gid;                   /**< User's group ID. */
-	};
-	
-	/**
-	 * @brief Encrypts a string.
-	 * 
-	 * @param str String to encode.
-	 * @param n   String length.
-	 * @param key Encrypting key.
-	 */
-	extern inline void account_encrypt(char *str, size_t n, int key)
-	{
-		for (size_t i = 0; i < n; i++)
-		{
-			if (str[i] == '\0')
-				return;
-			
-			str[i] += key;
-		}
-	}
-	
-	/**
-	 * @brief Decrypts a string.
-	 * 
-	 * @param str String to encode.
-	 * @param n   String length.
-	 * @param key Encrypting key.
-	 */
-	extern inline void account_decrypt(char *str, size_t n, int key)
-	{
-		for (size_t i = 0; i < n; i++)
-		{
-			if (str[i] == '\0')
-				return;
-			
-			str[i] -= key;
-		}
-	}
+    /**
+     * @brief User's account information.
+     */
+    struct account
+    {
+        char name[USERNAME_MAX];     /**< User name.       */
+        char password[PASSWORD_MAX]; /**< User's password. */
+        uid_t uid;                   /**< User's ID.       */
+        gid_t gid;                   /**< User's group ID. */
+    };
+    
+    /**
+     * @brief Encrypts a string.
+     * 
+     * @param str String to encode.
+     * @param n   String length.
+     * @param key Encrypting key.
+     */
+    extern inline void account_encrypt(char *str, size_t n, int key)
+    {
+        for (size_t i = 0; i < n; i++)
+        {
+            if (str[i] == '\0')
+                return;
+            
+            str[i] += key;
+        }
+    }
+    
+    /**
+     * @brief Decrypts a string.
+     * 
+     * @param str String to encode.
+     * @param n   String length.
+     * @param key Encrypting key.
+     */
+    extern inline void account_decrypt(char *str, size_t n, int key)
+    {
+        for (size_t i = 0; i < n; i++)
+        {
+            if (str[i] == '\0')
+                return;
+            
+            str[i] -= key;
+        }
+    }
 
 #endif /* ACCOUNTS_H_ */

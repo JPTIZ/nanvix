@@ -31,13 +31,13 @@
  */
 static void version(void)
 {
-	printf("sync (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("sync (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -45,13 +45,13 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: sync [options]\n\n");
-	printf("Brief: Flushes file system buffers.\n\n");
-	printf("Options:\n");
-	printf("  --help    Display this information and exit\n");
-	printf("  --version Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: sync [options]\n\n");
+    printf("Brief: Flushes file system buffers.\n\n");
+    printf("Options:\n");
+    printf("  --help    Display this information and exit\n");
+    printf("  --version Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -59,26 +59,26 @@ static void usage(void)
  */
 static void getargs(int argc, char *const argv[])
 {
-	int i;     /* Loop index.       */
-	char *arg; /* Current argument. */
-	
-	/* Read command line arguments. */
-	for (i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Parse command line argument. */
-		if (!strcmp(arg, "--help")) {
-			usage();
-		}
-		else if (!strcmp(arg, "--version")) {
-			version();
-		}
-		else {
-			fprintf(stderr, "sync: bad argument\n");
-			usage();
-		}
-	}
+    int i;     /* Loop index.       */
+    char *arg; /* Current argument. */
+    
+    /* Read command line arguments. */
+    for (i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Parse command line argument. */
+        if (!strcmp(arg, "--help")) {
+            usage();
+        }
+        else if (!strcmp(arg, "--version")) {
+            version();
+        }
+        else {
+            fprintf(stderr, "sync: bad argument\n");
+            usage();
+        }
+    }
 }
 
 /*
@@ -86,9 +86,9 @@ static void getargs(int argc, char *const argv[])
  */
 int main(int argc, char *const argv[])
 {
-	getargs(argc, argv);
-	
-	sync();
-	
-	return (EXIT_SUCCESS);
+    getargs(argc, argv);
+    
+    sync();
+    
+    return (EXIT_SUCCESS);
 }

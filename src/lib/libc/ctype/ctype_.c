@@ -12,8 +12,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -33,46 +33,46 @@
 
 
 #if defined(LIBC_SCCS) && !defined(lint)
-static char sccsid[] = "@(#)ctype_.c	5.6 (Berkeley) 6/1/90";
+static char sccsid[] = "@(#)ctype_.c    5.6 (Berkeley) 6/1/90";
 #endif /* LIBC_SCCS and not lint */
 
 #include <ctype.h>
 
 #define _CTYPE_DATA_0_127 \
-	_C,	_C,	_C,	_C,	_C,	_C,	_C,	_C, \
-	_C,	_C|_S, _C|_S, _C|_S,	_C|_S,	_C|_S,	_C,	_C, \
-	_C,	_C,	_C,	_C,	_C,	_C,	_C,	_C, \
-	_C,	_C,	_C,	_C,	_C,	_C,	_C,	_C, \
-	_S|_B,	_P,	_P,	_P,	_P,	_P,	_P,	_P, \
-	_P,	_P,	_P,	_P,	_P,	_P,	_P,	_P, \
-	_N,	_N,	_N,	_N,	_N,	_N,	_N,	_N, \
-	_N,	_N,	_P,	_P,	_P,	_P,	_P,	_P, \
-	_P,	_U|_X,	_U|_X,	_U|_X,	_U|_X,	_U|_X,	_U|_X,	_U, \
-	_U,	_U,	_U,	_U,	_U,	_U,	_U,	_U, \
-	_U,	_U,	_U,	_U,	_U,	_U,	_U,	_U, \
-	_U,	_U,	_U,	_P,	_P,	_P,	_P,	_P, \
-	_P,	_L|_X,	_L|_X,	_L|_X,	_L|_X,	_L|_X,	_L|_X,	_L, \
-	_L,	_L,	_L,	_L,	_L,	_L,	_L,	_L, \
-	_L,	_L,	_L,	_L,	_L,	_L,	_L,	_L, \
-	_L,	_L,	_L,	_P,	_P,	_P,	_P,	_C
+    _C,    _C,    _C,    _C,    _C,    _C,    _C,    _C, \
+    _C,    _C|_S, _C|_S, _C|_S,    _C|_S,    _C|_S,    _C,    _C, \
+    _C,    _C,    _C,    _C,    _C,    _C,    _C,    _C, \
+    _C,    _C,    _C,    _C,    _C,    _C,    _C,    _C, \
+    _S|_B,    _P,    _P,    _P,    _P,    _P,    _P,    _P, \
+    _P,    _P,    _P,    _P,    _P,    _P,    _P,    _P, \
+    _N,    _N,    _N,    _N,    _N,    _N,    _N,    _N, \
+    _N,    _N,    _P,    _P,    _P,    _P,    _P,    _P, \
+    _P,    _U|_X,    _U|_X,    _U|_X,    _U|_X,    _U|_X,    _U|_X,    _U, \
+    _U,    _U,    _U,    _U,    _U,    _U,    _U,    _U, \
+    _U,    _U,    _U,    _U,    _U,    _U,    _U,    _U, \
+    _U,    _U,    _U,    _P,    _P,    _P,    _P,    _P, \
+    _P,    _L|_X,    _L|_X,    _L|_X,    _L|_X,    _L|_X,    _L|_X,    _L, \
+    _L,    _L,    _L,    _L,    _L,    _L,    _L,    _L, \
+    _L,    _L,    _L,    _L,    _L,    _L,    _L,    _L, \
+    _L,    _L,    _L,    _P,    _P,    _P,    _P,    _C
 
 #define _CTYPE_DATA_128_255 \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0, \
-	0,	0,	0,	0,	0,	0,	0,	0
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0, \
+    0,    0,    0,    0,    0,    0,    0,    0
 
 #if (defined(__GNUC__) && !defined(__CHAR_UNSIGNED__) && !defined(COMPACT_CTYPE)) || defined (__CYGWIN__)
 #define ALLOW_NEGATIVE_CTYPE_INDEX
@@ -94,9 +94,9 @@ static char sccsid[] = "@(#)ctype_.c	5.6 (Berkeley) 6/1/90";
 static const
 #endif
 unsigned char _ctype_b[128 + 256] = {
-	_CTYPE_DATA_128_255,
-	_CTYPE_DATA_0_127,
-	_CTYPE_DATA_128_255
+    _CTYPE_DATA_128_255,
+    _CTYPE_DATA_0_127,
+    _CTYPE_DATA_128_255
 };
 
 #ifdef _NEED_OLD_CTYPE_PTR_DEFINITION
@@ -113,35 +113,35 @@ char *__ctype_ptr__ = (char *) _ctype_b + 127;
 
 #  ifdef __CYGWIN__
 #    ifdef __x86_64__
-__asm__ ("					\n\
-        .data					\n\
-	.globl  _ctype_				\n\
-	.set    _ctype_,_ctype_b+127		\n\
-	.text                                   \n\
+__asm__ ("                    \n\
+        .data                    \n\
+    .globl  _ctype_                \n\
+    .set    _ctype_,_ctype_b+127        \n\
+    .text                                   \n\
 ");
 #    else
-__asm__ ("					\n\
-        .data					\n\
-	.globl  __ctype_			\n\
-	.set    __ctype_,__ctype_b+127		\n\
-	.text                                   \n\
+__asm__ ("                    \n\
+        .data                    \n\
+    .globl  __ctype_            \n\
+    .set    __ctype_,__ctype_b+127        \n\
+    .text                                   \n\
 ");
 #    endif
 #  else /* !__CYGWIN__ */
 
 const unsigned char _ctype_[1 + 256] = {
-	0,
-	_CTYPE_DATA_0_127,
-	_CTYPE_DATA_128_255
+    0,
+    _CTYPE_DATA_0_127,
+    _CTYPE_DATA_128_255
 };
 #  endif /* !__CYGWIN__ */
 
-#else	/* !defined(ALLOW_NEGATIVE_CTYPE_INDEX) */
+#else    /* !defined(ALLOW_NEGATIVE_CTYPE_INDEX) */
 
 const unsigned char _ctype_[1 + 256] = {
-	0,
-	_CTYPE_DATA_0_127,
-	_CTYPE_DATA_128_255
+    0,
+    _CTYPE_DATA_0_127,
+    _CTYPE_DATA_128_255
 };
 
 #ifdef _NEED_OLD_CTYPE_PTR_DEFINITION
@@ -175,8 +175,8 @@ __set_ctype (const char *charset)
     case 'I':
       idx = __iso_8859_index (charset + 9);
       /* The ctype table has a leading ISO-8859-1 element so we have to add
-	 1 to the index returned by __iso_8859_index.  If __iso_8859_index
-	 returns < 0, it's ISO-8859-1. */
+     1 to the index returned by __iso_8859_index.  If __iso_8859_index
+     returns < 0, it's ISO-8859-1. */
       if (idx < 0)
         idx = 0;
       else

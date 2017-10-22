@@ -32,5 +32,5 @@
  */
 void _Exit(int status)
 {
-	_exit(status);
+    _exit(status);
 }

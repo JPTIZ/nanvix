@@ -33,21 +33,21 @@
  */
 clock_t times(struct tms *buffer)
 {
-	clock_t elapsed;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (elapsed)
-		: "0" (NR_times),
-		  "b" (buffer)
-	);
-	
-	/* Error. */
-	if (elapsed < 0)
-	{
-		errno = -elapsed;
-		return (-1);
-	}
-	
-	return (elapsed);
+    clock_t elapsed;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (elapsed)
+        : "0" (NR_times),
+          "b" (buffer)
+    );
+    
+    /* Error. */
+    if (elapsed < 0)
+    {
+        errno = -elapsed;
+        return (-1);
+    }
+    
+    return (elapsed);
 }

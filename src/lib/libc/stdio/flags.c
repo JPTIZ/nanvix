@@ -32,41 +32,41 @@
  */
 int _sflags(const char *mode, int *oflags)
 {
-	int flags;
-	
-	/* Get open mode. */
-	switch (*mode++)
-	{
-		/* Opend file for reading. */
-		case 'r':
-			flags = _IOREAD;
-			*oflags = O_RDONLY;
-			break;
-		
-		/* Open file for writing. */
-		case 'w':
-			flags = _IOWRITE;
-			*oflags = O_CREAT | O_TRUNC | O_WRONLY;
-			break;
-			
-		/* Open file for appending. */
-		case 'a':
-			flags = _IOWRITE | _IOAPPEND | _IOSYNC;
-			*oflags = O_CREAT | O_WRONLY;
-			break;
-		
-		/* Illegal mode. */
-		default:
-			errno = EINVAL;
-			return (0);
-	}
-	
-	/* Read/write. */
-	if ((*mode == '+') || ((*mode == 'b') && mode[1] == '+'))
-	{
-		flags = (flags & ~(_IOREAD |_IOWRITE)) | _IORW;
-		*oflags = O_RDWR;
-	}
-	
-	return (flags | _IOFBF);
+    int flags;
+    
+    /* Get open mode. */
+    switch (*mode++)
+    {
+        /* Opend file for reading. */
+        case 'r':
+            flags = _IOREAD;
+            *oflags = O_RDONLY;
+            break;
+        
+        /* Open file for writing. */
+        case 'w':
+            flags = _IOWRITE;
+            *oflags = O_CREAT | O_TRUNC | O_WRONLY;
+            break;
+            
+        /* Open file for appending. */
+        case 'a':
+            flags = _IOWRITE | _IOAPPEND | _IOSYNC;
+            *oflags = O_CREAT | O_WRONLY;
+            break;
+        
+        /* Illegal mode. */
+        default:
+            errno = EINVAL;
+            return (0);
+    }
+    
+    /* Read/write. */
+    if ((*mode == '+') || ((*mode == 'b') && mode[1] == '+'))
+    {
+        flags = (flags & ~(_IOREAD |_IOWRITE)) | _IORW;
+        *oflags = O_RDWR;
+    }
+    
+    return (flags | _IOFBF);
 }

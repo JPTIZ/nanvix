@@ -25,10 +25,10 @@
  */
 int main(int argc, char **argv)
 {
-	((void)argc);
-	((void)argv);
-	
-	shutdown();
-	
-	return (EXIT_SUCCESS);
+    ((void)argc);
+    ((void)argv);
+    
+    shutdown();
+    
+    return (EXIT_SUCCESS);
 }

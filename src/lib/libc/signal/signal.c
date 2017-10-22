@@ -30,23 +30,23 @@ extern void restorer(void);
  */
 sighandler_t signal(int sig, sighandler_t func)
 {
-	sighandler_t ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_signal),
-		  "b" (sig),
-		  "c" (func),
-		  "d" (restorer)
-	);
-	
-	/* Error. */
-	if (ret == SIG_ERR)
-	{
-		errno = EINVAL;
-		return (SIG_ERR);
-	}
-	
-	return (ret);
+    sighandler_t ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_signal),
+          "b" (sig),
+          "c" (func),
+          "d" (restorer)
+    );
+    
+    /* Error. */
+    if (ret == SIG_ERR)
+    {
+        errno = EINVAL;
+        return (SIG_ERR);
+    }
+    
+    return (ret);
 }

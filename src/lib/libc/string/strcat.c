@@ -37,15 +37,15 @@
  */
 char *strcat(char *restrict s1, const char *restrict s2)
 {
-	char *save = s1;
+    char *save = s1;
 
-	/* Eat target string. */
-	for (; *s1; s1++)
-		/* noop*/ ;
-	
-	/* Concatenate strings. */
-	while ((*s1++ = *s2++) != '\0')
-		/* noop */;
-		
-	return(save);
+    /* Eat target string. */
+    for (; *s1; s1++)
+        /* noop*/ ;
+    
+    /* Concatenate strings. */
+    while ((*s1++ = *s2++) != '\0')
+        /* noop */;
+        
+    return(save);
 }

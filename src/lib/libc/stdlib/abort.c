@@ -31,5 +31,5 @@
  */
 void abort(void)
 {
-	kill(getpid(), SIGABRT);
+    kill(getpid(), SIGABRT);
 }

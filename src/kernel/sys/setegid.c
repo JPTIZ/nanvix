@@ -27,19 +27,19 @@
  */
 PUBLIC int sys_setegid(gid_t gid)
 {
-	/* Superuser authentication. */
-	if (IS_SUPERUSER(curr_proc))
-		curr_proc->egid = gid;
-		
-	else
-	{
-		/* No user authentication. */
-		if ((gid != curr_proc->gid) && (gid != curr_proc->sgid))
-			return (-EPERM);
-		
-		curr_proc->egid = gid;
-	}
-	
-	return (0);
+    /* Superuser authentication. */
+    if (IS_SUPERUSER(curr_proc))
+        curr_proc->egid = gid;
+        
+    else
+    {
+        /* No user authentication. */
+        if ((gid != curr_proc->gid) && (gid != curr_proc->sgid))
+            return (-EPERM);
+        
+        curr_proc->egid = gid;
+    }
+    
+    return (0);
 }
 

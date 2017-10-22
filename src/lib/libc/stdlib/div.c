@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -70,26 +70,26 @@
  */
 div_t div(int numer, int denom)
 {
-	div_t res;
+    div_t res;
 
-	if (denom != 0)
-	{
-		res.quot = abs (numer) / abs(denom);
-		res.rem = abs (numer) % abs(denom);
+    if (denom != 0)
+    {
+        res.quot = abs (numer) / abs(denom);
+        res.rem = abs (numer) % abs(denom);
 
-		if ((numer < 0 && denom > 0) || (numer >= 0 && denom < 0))
-			res.quot = -res.quot;
-		if (numer < 0)
-			res.rem = -res.rem;
-	}
-	else
-	{
-		if (numer < 0)
-			res.quot = INT_MIN;
-		else
-			res.quot = INT_MAX;
-		res.rem = 0;
+        if ((numer < 0 && denom > 0) || (numer >= 0 && denom < 0))
+            res.quot = -res.quot;
+        if (numer < 0)
+            res.rem = -res.rem;
+    }
+    else
+    {
+        if (numer < 0)
+            res.quot = INT_MIN;
+        else
+            res.quot = INT_MAX;
+        res.rem = 0;
     }
 
-	return (res);
+    return (res);
 }

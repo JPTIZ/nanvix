@@ -21,21 +21,21 @@
 #define UTIME_H_
 #ifndef _ASM_FILE_
 
-	#include <sys/types.h>
+    #include <sys/types.h>
 
-	/*
-	 * Times buffer.
-	 */
-	struct utimbuf
-	{
-		time_t actime;  /* Access time.       */
-		time_t modtime; /* Modification time. */
-	};
-	
-	/*
-	 * Set file access and modification times
-	 */
-	extern int utime(const char *path, struct utimbuf *times);
+    /*
+     * Times buffer.
+     */
+    struct utimbuf
+    {
+        time_t actime;  /* Access time.       */
+        time_t modtime; /* Modification time. */
+    };
+    
+    /*
+     * Set file access and modification times
+     */
+    extern int utime(const char *path, struct utimbuf *times);
 
 #endif /* _ASM_FILE_ */
 #endif /* UTIME_H_ */

@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -65,6 +65,6 @@
  */
 int rand(void)
 {
-	_next = (_next * 1103515245) + 12345;
-	return ((_next >> 16) & 0x7fff);
+    _next = (_next * 1103515245) + 12345;
+    return ((_next >> 16) & 0x7fff);
 }

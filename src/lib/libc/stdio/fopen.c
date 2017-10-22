@@ -34,8 +34,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -72,31 +72,31 @@
  */
 FILE *fopen(const char *filename, const char *mode)
 {
-	FILE *stream; /* File stream.      */
-	int fd;       /* File descriptor.  */
-	int flags;    /* Stream flags.     */
-	int oflags;   /* Flags for open(). */
-	
-	/* File permissions. */
-	#define MAY_READ (S_IRUSR | S_IRGRP | S_IROTH)
-	#define MAY_WRITE (S_IWUSR | S_IWGRP | S_IWOTH)
-	
-	/* No file stream left. */
-	if ((stream = _getstream()) == NULL)
-		return (NULL);
+    FILE *stream; /* File stream.      */
+    int fd;       /* File descriptor.  */
+    int flags;    /* Stream flags.     */
+    int oflags;   /* Flags for open(). */
+    
+    /* File permissions. */
+    #define MAY_READ (S_IRUSR | S_IRGRP | S_IROTH)
+    #define MAY_WRITE (S_IWUSR | S_IWGRP | S_IWOTH)
+    
+    /* No file stream left. */
+    if ((stream = _getstream()) == NULL)
+        return (NULL);
 
-	/* Bad opening mode. */
-	if ((flags = _sflags(mode, &oflags)) == 0)
-		return (NULL);
-	
-	/* Failed to open file. */
-	if ((fd = open(filename, oflags, MAY_READ | MAY_WRITE)) == -1)
-		return (NULL);
-	
-	stream->fd = fd;
-	stream->flags = flags;
-	stream->buf = NULL;
-	stream->count = 0;
-	
-	return (stream);
+    /* Bad opening mode. */
+    if ((flags = _sflags(mode, &oflags)) == 0)
+        return (NULL);
+    
+    /* Failed to open file. */
+    if ((fd = open(filename, oflags, MAY_READ | MAY_WRITE)) == -1)
+        return (NULL);
+    
+    stream->fd = fd;
+    stream->flags = flags;
+    stream->buf = NULL;
+    stream->count = 0;
+    
+    return (stream);
 }

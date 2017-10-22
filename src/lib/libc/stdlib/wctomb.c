@@ -61,11 +61,11 @@
  */
 int wctomb(char *s, wchar_t wchar)
 {
-	if (s != NULL)
+    if (s != NULL)
     {
-		*s = wchar;
-		return (1);
+        *s = wchar;
+        return (1);
     }
     
-	return (0);
+    return (0);
 }

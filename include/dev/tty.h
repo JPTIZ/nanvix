@@ -22,16 +22,16 @@
 #ifndef TTY_H_
 #define TTY_H_
 
-	/**
-	 * @brief tty_ioctl() commands.
-	 */
-	/**@{*/
-	#define TTY_CLEAR 0x54100000 /**< Clear console.    */
-	#define TTY_GETS  0x54210000 /**< Get tty settings. */
- 	#define TTY_SETS  0x54310000 /**< Set tty settings. */
-	/**@}*/
+    /**
+     * @brief tty_ioctl() commands.
+     */
+    /**@{*/
+    #define TTY_CLEAR 0x54100000 /**< Clear console.    */
+    #define TTY_GETS  0x54210000 /**< Get tty settings. */
+     #define TTY_SETS  0x54310000 /**< Set tty settings. */
+    /**@}*/
 
-	/* Forward definitions. */
-	extern void tty_init(void);
+    /* Forward definitions. */
+    extern void tty_init(void);
 
 #endif /* TTY_H_ */

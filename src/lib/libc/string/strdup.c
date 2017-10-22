@@ -41,12 +41,12 @@
  */
 char *strdup(const char *s1)
 {
-	int len;
-	char *copy;
+    int len;
+    char *copy;
 
-	len = strlen(s1) + 1;
-	if (!(copy = malloc(len)))
-		return((char *)NULL);
-	strcpy(copy, s1);	
-	return(copy);
+    len = strlen(s1) + 1;
+    if (!(copy = malloc(len)))
+        return((char *)NULL);
+    strcpy(copy, s1);    
+    return(copy);
 }

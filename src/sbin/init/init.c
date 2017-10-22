@@ -46,12 +46,12 @@
  */
 struct
 {
-	int used;                   /**< Slot in use? */
-	int respaw;                 /**< Re-spawn?    */
-	pid_t pid;                  /**< Process ID.  */
-	char line[LINE_SIZE];       /**< Raw line.    */                 
-	const char *cmd[NARGS + 1]; /**< Command.     */
-	
+    int used;                   /**< Slot in use? */
+    int respaw;                 /**< Re-spawn?    */
+    pid_t pid;                  /**< Process ID.  */
+    char line[LINE_SIZE];       /**< Raw line.    */                 
+    const char *cmd[NARGS + 1]; /**< Command.     */
+    
 } inittab[INITTAB_SIZE];
 
 /**
@@ -65,24 +65,24 @@ struct
  */
 static int readline(int fd, char *buf, size_t length)
 {
-	/* Read line. */
-	for (size_t i = 0; i < (length - 1); i++)
-	{
-		char ch;
-		
-		if (read(fd, &ch, 1) < 1)
-			return (0);
-		
-		if (ch == '\n')
-		{
-			buf[i] = '\0';
-			break;
-		}
-		
-		buf[i] = ch;
-	}
-	
-	return (1);
+    /* Read line. */
+    for (size_t i = 0; i < (length - 1); i++)
+    {
+        char ch;
+        
+        if (read(fd, &ch, 1) < 1)
+            return (0);
+        
+        if (ch == '\n')
+        {
+            buf[i] = '\0';
+            break;
+        }
+        
+        buf[i] = ch;
+    }
+    
+    return (1);
 }
 
 /**
@@ -91,41 +91,41 @@ static int readline(int fd, char *buf, size_t length)
  * @returns Zero on successful completion and non-zero otherwise.
  */
 static int inittab_read(void)
-{	
-	int fd;
-	
-	/* Failed to open inittab. */
-	if ((fd = open("/etc/inittab", O_RDONLY)) < 0)
-		return (-1);
-	
-	/* Initialize init table. */
-	for (int i = 0; i < INITTAB_SIZE; i++)
-		inittab[i].used = 0;
-	
-	/* Read init table. */
-	for (int i = 0; i < INITTAB_SIZE; i++)
-	{
-		/* Read line. */
-		if (!readline(fd, inittab[i].line, LINE_SIZE))
-			break;
-		
-		inittab[i].used = 1;
-		inittab[i].respaw = (inittab[i].line[0] == 'y') ? 1 : 0;
-		
-		/* Parse command. */
-		inittab[i].cmd[0] = strtok(&inittab[i].line[2], " ");
-		for (int j = 1; j < NARGS; j++)
-		{
-			if ((inittab[i].cmd[j] = strtok(NULL, " ")) == NULL)
-				break;
-		}
-		inittab[i].cmd[NARGS] = NULL;
-	}
-	
-	/* House keeping. */
-	close(fd);
-	
-	return (0);
+{    
+    int fd;
+    
+    /* Failed to open inittab. */
+    if ((fd = open("/etc/inittab", O_RDONLY)) < 0)
+        return (-1);
+    
+    /* Initialize init table. */
+    for (int i = 0; i < INITTAB_SIZE; i++)
+        inittab[i].used = 0;
+    
+    /* Read init table. */
+    for (int i = 0; i < INITTAB_SIZE; i++)
+    {
+        /* Read line. */
+        if (!readline(fd, inittab[i].line, LINE_SIZE))
+            break;
+        
+        inittab[i].used = 1;
+        inittab[i].respaw = (inittab[i].line[0] == 'y') ? 1 : 0;
+        
+        /* Parse command. */
+        inittab[i].cmd[0] = strtok(&inittab[i].line[2], " ");
+        for (int j = 1; j < NARGS; j++)
+        {
+            if ((inittab[i].cmd[j] = strtok(NULL, " ")) == NULL)
+                break;
+        }
+        inittab[i].cmd[NARGS] = NULL;
+    }
+    
+    /* House keeping. */
+    close(fd);
+    
+    return (0);
 }
 
 /**
@@ -133,30 +133,30 @@ static int inittab_read(void)
  */
 static void spawn(int i)
 {
-	inittab[i].pid = fork();
-			
-	/* Failed to fork. */
-	if (inittab[i].pid < 0)
-		return;
-			
-	/* Child process. */
-	if (inittab[i].pid == 0)
-	{
-		const char *cmd;   /* Command.   */
-		const char **args; /* Arguments. */
-		
-		setpgrp();
-		
-		/* Open standard output streams. */
-		open("/dev/tty", O_RDONLY);
-		open("/dev/tty", O_WRONLY);
-		open("/dev/tty", O_WRONLY);
-		
-		/* Execute! */
-		cmd = inittab[i].cmd[0];
-		args = &inittab[i].cmd[1];
-		_exit(execve(cmd, (char *const*)args, (char *const*)environ));
-	}
+    inittab[i].pid = fork();
+            
+    /* Failed to fork. */
+    if (inittab[i].pid < 0)
+        return;
+            
+    /* Child process. */
+    if (inittab[i].pid == 0)
+    {
+        const char *cmd;   /* Command.   */
+        const char **args; /* Arguments. */
+        
+        setpgrp();
+        
+        /* Open standard output streams. */
+        open("/dev/tty", O_RDONLY);
+        open("/dev/tty", O_WRONLY);
+        open("/dev/tty", O_WRONLY);
+        
+        /* Execute! */
+        cmd = inittab[i].cmd[0];
+        args = &inittab[i].cmd[1];
+        _exit(execve(cmd, (char *const*)args, (char *const*)environ));
+    }
 }
 
 /*
@@ -164,41 +164,41 @@ static void spawn(int i)
  */
 int main(int argc, char **argv)
 {
-	((void)argc);
-	((void)argv);
-	
-	/* Read init table. */
-	if (inittab_read())
-		goto out;
-	
-	/* Spawn processes in the inittab. */
-	for (int i = 0; inittab[i].used; i++)
-		spawn(i);
-	
-	/* Wait child processes. */
-	while (1)
-	{
-		pid_t pid;
-		
-		sync();
-		pid = wait(NULL);
-			
-		/* Re-spawn process? */
-		for (int i = 0; inittab[i].used; i++)
-		{
-			/* Not this process. */
-			if (inittab[i].pid != pid)
-				continue;
-			
-			/* Do not respawn. */
-			if (!inittab[i].respaw)
-				continue;
-				
-			spawn(i);
-		}
-	}
+    ((void)argc);
+    ((void)argv);
+    
+    /* Read init table. */
+    if (inittab_read())
+        goto out;
+    
+    /* Spawn processes in the inittab. */
+    for (int i = 0; inittab[i].used; i++)
+        spawn(i);
+    
+    /* Wait child processes. */
+    while (1)
+    {
+        pid_t pid;
+        
+        sync();
+        pid = wait(NULL);
+            
+        /* Re-spawn process? */
+        for (int i = 0; inittab[i].used; i++)
+        {
+            /* Not this process. */
+            if (inittab[i].pid != pid)
+                continue;
+            
+            /* Do not respawn. */
+            if (!inittab[i].respaw)
+                continue;
+                
+            spawn(i);
+        }
+    }
 
 out:
-	shutdown();
-	return (0);
+    shutdown();
+    return (0);
 }

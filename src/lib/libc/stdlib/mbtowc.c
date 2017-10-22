@@ -53,107 +53,107 @@
  */
 static int count = 0;
 static wint_t value = 0;
-	
+    
 /**
  * @brief Internal mbtowc().
  */
 static size_t _mbtowc(wchar_t *pwc, const char *s, size_t n)
 {
-	size_t used = 0;
+    size_t used = 0;
 
-	if (s == NULL)
+    if (s == NULL)
     {
-		pwc = NULL;
-		s = "";
-		n = 1;
-	}
+        pwc = NULL;
+        s = "";
+        n = 1;
+    }
 
-	if (n > 0)
-	{
-		if (count == 0)
-		{
-			unsigned char byte = (unsigned char) *s++;
-			++used;
+    if (n > 0)
+    {
+        if (count == 0)
+        {
+            unsigned char byte = (unsigned char) *s++;
+            ++used;
 
-			/* We must look for a possible first byte of a UTF8 sequence.  */
-			if (byte < 0x80)
-			{
-				/* One byte sequence.  */
-				if (pwc != NULL)
-					*pwc = (wchar_t) byte;
-				return byte ? used : 0;
-			}
+            /* We must look for a possible first byte of a UTF8 sequence.  */
+            if (byte < 0x80)
+            {
+                /* One byte sequence.  */
+                if (pwc != NULL)
+                    *pwc = (wchar_t) byte;
+                return byte ? used : 0;
+            }
 
-			if ((byte & 0xc0) == 0x80 || (byte & 0xfe) == 0xfe)
-			{
-				/* Oh, oh.  An encoding error.  */
-				errno = EILSEQ;
-				return (size_t) -1;
-			}
+            if ((byte & 0xc0) == 0x80 || (byte & 0xfe) == 0xfe)
+            {
+                /* Oh, oh.  An encoding error.  */
+                errno = EILSEQ;
+                return (size_t) -1;
+            }
 
-			if ((byte & 0xe0) == 0xc0)
-			{
-				/* We expect two bytes.  */
-				count = 1;
-				value = byte & 0x1f;
-			}
-			else if ((byte & 0xf0) == 0xe0)
-			{
-				/* We expect three bytes.  */
-				count = 2;
-				value = byte & 0x0f;
-			}
-			else if ((byte & 0xf8) == 0xf0)
-			{
-				/* We expect four bytes.  */
-				count = 3;
-				value = byte & 0x07;
-			}
-			else if ((byte & 0xfc) == 0xf8)
-			{
-				/* We expect five bytes.  */
-				count = 4;
-				value = byte & 0x03;
-			}
-			else
-			{
-				/* We expect six bytes.  */
-				count = 5;
-				value = byte & 0x01;
-			}
-		}
+            if ((byte & 0xe0) == 0xc0)
+            {
+                /* We expect two bytes.  */
+                count = 1;
+                value = byte & 0x1f;
+            }
+            else if ((byte & 0xf0) == 0xe0)
+            {
+                /* We expect three bytes.  */
+                count = 2;
+                value = byte & 0x0f;
+            }
+            else if ((byte & 0xf8) == 0xf0)
+            {
+                /* We expect four bytes.  */
+                count = 3;
+                value = byte & 0x07;
+            }
+            else if ((byte & 0xfc) == 0xf8)
+            {
+                /* We expect five bytes.  */
+                count = 4;
+                value = byte & 0x03;
+            }
+            else
+            {
+                /* We expect six bytes.  */
+                count = 5;
+                value = byte & 0x01;
+            }
+        }
 
-		/*
-		 * We know we have to handle a multibyte character and there
-		 * are some more bytes to read.
-		 */
-		while (used < n)
-		{
-			/* The second to sixths byte must be of the form 10xxxxxx.  */
-			unsigned char byte = (unsigned char) *s++;
-			++used;
+        /*
+         * We know we have to handle a multibyte character and there
+         * are some more bytes to read.
+         */
+        while (used < n)
+        {
+            /* The second to sixths byte must be of the form 10xxxxxx.  */
+            unsigned char byte = (unsigned char) *s++;
+            ++used;
 
-			if ((byte & 0xc0) != 0x80)
-			{
-				/* Oh, oh.  An encoding error.  */
-				errno = EILSEQ;
-				return (size_t) -1;
-			}
+            if ((byte & 0xc0) != 0x80)
+            {
+                /* Oh, oh.  An encoding error.  */
+                errno = EILSEQ;
+                return (size_t) -1;
+            }
 
-			value <<= 6;
-			value |= byte & 0x3f;
+            value <<= 6;
+            value |= byte & 0x3f;
 
-			if (--count == 0)
-			{
-				/* The character is finished.  */
-				if (pwc != NULL)
-					*pwc = (wchar_t) value;
-				return value ? used : 0;
-			}
-		}
-	}
+            if (--count == 0)
+            {
+                /* The character is finished.  */
+                if (pwc != NULL)
+                    *pwc = (wchar_t) value;
+                return value ? used : 0;
+            }
+        }
+    }
 
-	return ((size_t) -2);
+    return ((size_t) -2);
 }
 
 /**
@@ -178,27 +178,27 @@ static size_t _mbtowc(wchar_t *pwc, const char *s, size_t n)
  */
 int mbtowc(wchar_t *pwc, const char *s, size_t n)
 {
-	int result;
+    int result;
 
-	/* 
-	 * If S is NULL the function has to return null or not null
-	 * depending on the encoding having a state depending encoding or
-	 * not.  This is nonsense because any multibyte encoding has a
-	 * state.  The ISO C amendment 1 corrects this while introducing the
-	 * restartable functions. We simply say here all encodings have a
-	 * state.
-	 */
-	if (s == NULL)
-		return (1);
+    /* 
+     * If S is NULL the function has to return null or not null
+     * depending on the encoding having a state depending encoding or
+     * not.  This is nonsense because any multibyte encoding has a
+     * state.  The ISO C amendment 1 corrects this while introducing the
+     * restartable functions. We simply say here all encodings have a
+     * state.
+     */
+    if (s == NULL)
+        return (1);
 
-	result = _mbtowc(pwc, s, n);
+    result = _mbtowc(pwc, s, n);
 
-	/*
-	 * The `mbrtowc' functions tell us more than we need.
-	 * Fold the -1 and -2 result into -1.
-	 */
-	if (result < 0)
-	result = -1;
+    /*
+     * The `mbrtowc' functions tell us more than we need.
+     * Fold the -1 and -2 result into -1.
+     */
+    if (result < 0)
+    result = -1;
 
-	return (result);
+    return (result);
 }

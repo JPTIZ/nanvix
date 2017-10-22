@@ -38,19 +38,19 @@
  */
 pid_t fork(void)
 {
-	pid_t pid;
+    pid_t pid;
 
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (pid)
-		: "0" (NR_fork)
-	);
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (pid)
+        : "0" (NR_fork)
+    );
 
-	/* Error. */
-	if (pid < 0)
-		return (-1);
+    /* Error. */
+    if (pid < 0)
+        return (-1);
 
-	return (pid);
+    return (pid);
 }
 
 /**
@@ -65,22 +65,22 @@ pid_t fork(void)
  */
 int execve(const char *filename, const char **argv, const char **envp)
 {
-	int ret;
+    int ret;
 
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_execve),
-		  "b" (filename),
-		  "c" (argv),
-		  "d" (envp)
-	);
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_execve),
+          "b" (filename),
+          "c" (argv),
+          "d" (envp)
+    );
 
-	/* Error. */
-	if (ret)
-		return (-1);
+    /* Error. */
+    if (ret)
+        return (-1);
 
-	return (ret);
+    return (ret);
 }
 
 /**
@@ -90,12 +90,12 @@ int execve(const char *filename, const char **argv, const char **envp)
  */
 void _exit(int status)
 {
-	__asm__ volatile(
-		"int $0x80"
-		: /* empty. */
-		: "a" (NR__exit),
-		"b" (status)
-	);
+    __asm__ volatile(
+        "int $0x80"
+        : /* empty. */
+        : "a" (NR__exit),
+        "b" (status)
+    );
 }
 
 /**
@@ -103,10 +103,10 @@ void _exit(int status)
  */
 PRIVATE void init(void)
 {
-	const char *argv[] = { "init", "/etc/inittab", NULL };
-	const char *envp[] = { "PATH=/bin:/sbin", "HOME=/", NULL };
+    const char *argv[] = { "init", "/etc/inittab", NULL };
+    const char *envp[] = { "PATH=/bin:/sbin", "HOME=/", NULL };
 
-	execve("/sbin/init", argv, envp);
+    execve("/sbin/init", argv, envp);
 }
 
 /**
@@ -114,52 +114,52 @@ PRIVATE void init(void)
  */
 PUBLIC void kmain(void)
 {
-	pid_t pid;         /* Child process ID. */
-	struct process *p; /* Working process.  */
+    pid_t pid;         /* Child process ID. */
+    struct process *p; /* Working process.  */
 
-	/* Initialize system modules. */
-	dev_init();
-	mm_init();
-	pm_init();
-	fs_init();
+    /* Initialize system modules. */
+    dev_init();
+    mm_init();
+    pm_init();
+    fs_init();
 
-	chkout(DEVID(TTY_MAJOR, 0, CHRDEV));
-	kprintf(KERN_INFO "kout is now initialized");
+    chkout(DEVID(TTY_MAJOR, 0, CHRDEV));
+    kprintf(KERN_INFO "kout is now initialized");
 
-	/* Spawn init process. */
-	if ((pid = fork()) < 0)
-		kpanic("failed to fork idle process");
-	else if (pid == 0)
-	{
-		init();
-		kprintf(KERN_EMERG "failed to execute init");
-		_exit(-1);
-	}
+    /* Spawn init process. */
+    if ((pid = fork()) < 0)
+        kpanic("failed to fork idle process");
+    else if (pid == 0)
+    {
+        init();
+        kprintf(KERN_EMERG "failed to execute init");
+        _exit(-1);
+    }
 
-	/* idle process. */
-	while (1)
-	{
-		/* Shutting down.*/
-		if (shutting_down)
-		{
-			/* Bury zombie processes. */
-			for (p = FIRST_PROC; p <= LAST_PROC; p++)
-			{
-				if ((p->state == PROC_ZOMBIE) && (p->father == curr_proc))
-					bury(p);
-			}
+    /* idle process. */
+    while (1)
+    {
+        /* Shutting down.*/
+        if (shutting_down)
+        {
+            /* Bury zombie processes. */
+            for (p = FIRST_PROC; p <= LAST_PROC; p++)
+            {
+                if ((p->state == PROC_ZOMBIE) && (p->father == curr_proc))
+                    bury(p);
+            }
 
-			/* Halt system. */
-			if (nprocs == 1)
-			{
-				kprintf("you may now turn off your computer");
-				disable_interrupts();
-				while (1)
-					halt();
-			}
-		}
+            /* Halt system. */
+            if (nprocs == 1)
+            {
+                kprintf("you may now turn off your computer");
+                disable_interrupts();
+                while (1)
+                    halt();
+            }
+        }
 
-		halt();
-		yield();
-	}
+        halt();
+        yield();
+    }
 }

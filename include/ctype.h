@@ -71,39 +71,39 @@
 #define CTYPE_H_
 
 
-	#define _U  01
-	#define _L  02
-	#define _N  04
-	#define _S  010
-	#define _P  020
-	#define _C  040
-	#define _X  0100
-	#define _B  0200
+    #define _U  01
+    #define _L  02
+    #define _N  04
+    #define _S  010
+    #define _P  020
+    #define _C  040
+    #define _X  0100
+    #define _B  0200
 
-	/* Forward definitions. */
-	extern int isalnum(int);
-	extern int isalpha(int);
-	extern int isascii(int);
-	extern int isblank(int);
-	extern int iscntrl(int);
-	extern int isdigit(int);
-	extern int isgraph(int);
-	extern int islower(int);
-	extern int isprint(int);
-	extern int ispunct(int);
-	extern int isspace(int);
-	extern int isupper(int);
-	extern int isxdigit(int);
-	extern int tolower(int);
-	extern int toupper(int);
+    /* Forward definitions. */
+    extern int isalnum(int);
+    extern int isalpha(int);
+    extern int isascii(int);
+    extern int isblank(int);
+    extern int iscntrl(int);
+    extern int isdigit(int);
+    extern int isgraph(int);
+    extern int islower(int);
+    extern int isprint(int);
+    extern int ispunct(int);
+    extern int isspace(int);
+    extern int isupper(int);
+    extern int isxdigit(int);
+    extern int tolower(int);
+    extern int toupper(int);
 
-	/* Forward Definitions. */
-	const char *__ctype_ptr__;
+    /* Forward Definitions. */
+    const char *__ctype_ptr__;
 
 #ifndef _XOPEN_SOURCE
 
-	/* Forward definitions. */
-	extern int toascii(int);
+    /* Forward definitions. */
+    extern int toascii(int);
 
 #endif
 

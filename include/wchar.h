@@ -26,15 +26,15 @@
 #ifndef _WCHAR_H_
 #define _WCHAR_H_
 
-	#define _NEED_WCHAR_T
-	#include <decl.h>
+    #define _NEED_WCHAR_T
+    #include <decl.h>
 
-	 /**
-	  * @brief Stores any valid value of wchar_t or WEOF.
-	  */
-	 #ifndef _WIN_T
-	 #define _WIN_T
-		typedef unsigned wint_t;
-	 #endif
+     /**
+      * @brief Stores any valid value of wchar_t or WEOF.
+      */
+     #ifndef _WIN_T
+     #define _WIN_T
+        typedef unsigned wint_t;
+     #endif
 
 #endif /* _WCHAR_H_ */

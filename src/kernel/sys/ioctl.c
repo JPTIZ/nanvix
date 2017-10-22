@@ -30,19 +30,19 @@
  */
 PUBLIC int sys_ioctl(unsigned fd, unsigned cmd, unsigned arg)
 {
-	dev_t dev;        /* Underlying device. */
-	struct file *fp;  /* Underlying file.   */
-	struct inode *ip; /* Underlying inode.  */
-	
-	/* Invalid file. */
-	if ((fd >= OPEN_MAX) || ((fp = curr_proc->ofiles[fd]) == NULL))
-		return (-EBADF);
-	
-	/* Not a character device. */
-	if (!S_ISCHR((ip = fp->inode)->mode))
-		return (-EINVAL);
-	
-	dev = ip->blocks[0];
-	
-	return (cdev_ioctl(dev, cmd, arg));
+    dev_t dev;        /* Underlying device. */
+    struct file *fp;  /* Underlying file.   */
+    struct inode *ip; /* Underlying inode.  */
+    
+    /* Invalid file. */
+    if ((fd >= OPEN_MAX) || ((fp = curr_proc->ofiles[fd]) == NULL))
+        return (-EBADF);
+    
+    /* Not a character device. */
+    if (!S_ISCHR((ip = fp->inode)->mode))
+        return (-EINVAL);
+    
+    dev = ip->blocks[0];
+    
+    return (cdev_ioctl(dev, cmd, arg));
 }

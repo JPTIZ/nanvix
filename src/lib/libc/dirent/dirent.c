@@ -28,13 +28,13 @@ DIR dirs[OPEN_MAX];
  */
 void dirent_cleanup(void)
 {
-	DIR *dirp;
-	
-	/* Closes all directory streams. */
-	for (dirp = &dirs[0]; dirp < &dirs[OPEN_MAX]; dirp++)
-	{
-		/* Found. */
-		if (dirp->flags & _DIR_VALID)
-			closedir(dirp);
-	}
+    DIR *dirp;
+    
+    /* Closes all directory streams. */
+    for (dirp = &dirs[0]; dirp < &dirs[OPEN_MAX]; dirp++)
+    {
+        /* Found. */
+        if (dirp->flags & _DIR_VALID)
+            closedir(dirp);
+    }
 }

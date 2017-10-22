@@ -26,5 +26,5 @@
  */
 PUBLIC gid_t sys_getegid(void)
 {
-	return (curr_proc->egid);
+    return (curr_proc->egid);
 }

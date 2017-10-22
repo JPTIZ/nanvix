@@ -24,16 +24,16 @@
  */
 char *gets(char *str)
 {
-	int c;   /* Working character. */
-	char *p; /* Write pointer.     */
-	
-	p = str;
-	
-	/* Read string. */
-	while ((c = getchar()) != '\n')
-		*p++ = c;
-	
-	*p = '\0';
-	
-	return (str);
+    int c;   /* Working character. */
+    char *p; /* Write pointer.     */
+    
+    p = str;
+    
+    /* Read string. */
+    while ((c = getchar()) != '\n')
+        *p++ = c;
+    
+    *p = '\0';
+    
+    return (str);
 }

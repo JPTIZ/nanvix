@@ -38,15 +38,15 @@
  */
 char *strchr(const char *s, int c)
 {
-	/* Scan string. */
-	while (*s != '\0')
-	{
-		/* Found. */
-		if (*s == c)
-			return ((char *) s);
-		
-		s++;
-	}
-	
-	return ((c == '\0') ? (char *) s : NULL);
+    /* Scan string. */
+    while (*s != '\0')
+    {
+        /* Found. */
+        if (*s == c)
+            return ((char *) s);
+        
+        s++;
+    }
+    
+    return ((c == '\0') ? (char *) s : NULL);
 }

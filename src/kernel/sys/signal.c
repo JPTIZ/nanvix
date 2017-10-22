@@ -28,20 +28,20 @@
 PUBLIC sighandler_t sys_signal
 (int sig, sighandler_t func, void (*restorer)(void))
 {
-	sighandler_t old_func;
-	
-	/* Invalid signal. */
-	if ((sig < 0) || (sig >= NR_SIGNALS))
-		return (SIG_ERR);
-	
-	/* Cannot be caught or ignored. */
-	if ((sig == SIGKILL) || (sig == SIGSTOP))
-		return (SIG_ERR);
-	
-	/* Set signal handler. */
-	old_func = curr_proc->handlers[sig];
-	curr_proc->restorer = restorer;
-	curr_proc->handlers[sig] = func;
-	
-	return (old_func);
+    sighandler_t old_func;
+    
+    /* Invalid signal. */
+    if ((sig < 0) || (sig >= NR_SIGNALS))
+        return (SIG_ERR);
+    
+    /* Cannot be caught or ignored. */
+    if ((sig == SIGKILL) || (sig == SIGSTOP))
+        return (SIG_ERR);
+    
+    /* Set signal handler. */
+    old_func = curr_proc->handlers[sig];
+    curr_proc->restorer = restorer;
+    curr_proc->handlers[sig] = func;
+    
+    return (old_func);
 }

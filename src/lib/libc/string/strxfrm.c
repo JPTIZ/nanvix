@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -73,20 +73,20 @@
  */
 size_t strxfrm(char *s1, const char *s2, size_t n)
 {
-	size_t res;
-	res = 0;
-	
-	while ((n-- > 0) && (*s2 != '\0'))
-	{
-		*s1++ = *s2++;
-		res++;
-	}
-	
-	while (*s2)
-	{
-		s2++;
-		res++;
-	}
+    size_t res;
+    res = 0;
+    
+    while ((n-- > 0) && (*s2 != '\0'))
+    {
+        *s1++ = *s2++;
+        res++;
+    }
+    
+    while (*s2)
+    {
+        s2++;
+        res++;
+    }
 
-	return (res);
+    return (res);
 }

@@ -38,28 +38,28 @@
  */
 char *strncpy(char *restrict s1, const char *restrict s2, size_t n)
 {
-	char *p1;       /* Indexes s1. */
-	const char *p2; /* Indexes s2.  */
-	
-	p1 = s1;
-	p2 = s2;
-	
-	/* Copy string. */
-	while (n > 0)
-	{
-		if (*p2 == '\0')
-			break;
-			
-		*p1++ = *p2++;
-		n--;
-	}
-	
-	/* Fill with null bytes. */
-	while (n > 0)
-	{
-		 *p1++ = '\0';
-		 n--;
-	}
-	
-	return (s1);
+    char *p1;       /* Indexes s1. */
+    const char *p2; /* Indexes s2.  */
+    
+    p1 = s1;
+    p2 = s2;
+    
+    /* Copy string. */
+    while (n > 0)
+    {
+        if (*p2 == '\0')
+            break;
+            
+        *p1++ = *p2++;
+        n--;
+    }
+    
+    /* Fill with null bytes. */
+    while (n > 0)
+    {
+         *p1++ = '\0';
+         n--;
+    }
+    
+    return (s1);
 }

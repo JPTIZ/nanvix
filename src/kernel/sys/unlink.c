@@ -28,34 +28,34 @@
  */
 PUBLIC int sys_unlink(const char *path)
 {
-	int ret;              /* Return value.      */
-	struct inode *dir;    /* Working directory. */
-	const char *filename; /* Working file name. */
-	char *pathname;       /* Path name.         */
-	
-	pathname = getname(path);
-	
-	dir = inode_dname(pathname, &filename);
-	
-	/* Failed to get directory. */
-	if (dir == NULL)
-	{
-		putname(pathname);
-		return (-ENOENT);
-	}
+    int ret;              /* Return value.      */
+    struct inode *dir;    /* Working directory. */
+    const char *filename; /* Working file name. */
+    char *pathname;       /* Path name.         */
+    
+    pathname = getname(path);
+    
+    dir = inode_dname(pathname, &filename);
+    
+    /* Failed to get directory. */
+    if (dir == NULL)
+    {
+        putname(pathname);
+        return (-ENOENT);
+    }
 
-	/* No write permissions on directory. */
-	if (!permission(dir->mode, dir->uid, dir->gid, curr_proc, MAY_WRITE, 0))
-	{
-		inode_put(dir);
-		putname(pathname);
-		return (-EPERM);
-	}
+    /* No write permissions on directory. */
+    if (!permission(dir->mode, dir->uid, dir->gid, curr_proc, MAY_WRITE, 0))
+    {
+        inode_put(dir);
+        putname(pathname);
+        return (-EPERM);
+    }
 
-	ret = dir_remove(dir, filename);
-	
-	inode_put(dir);
-	putname(pathname);
-	
-	return (ret);
+    ret = dir_remove(dir, filename);
+    
+    inode_put(dir);
+    putname(pathname);
+    
+    return (ret);
 }

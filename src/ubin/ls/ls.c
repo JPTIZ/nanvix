@@ -41,45 +41,45 @@ static char *dirname = NULL;
  */
 int ls(const char *pathname)
 {
-	DIR *dirp;                   /* Directory.               */
-	struct dirent *dp;           /* Working directory entry. */
-	char filename[NAME_MAX + 1]; /* Working file name.       */
-	
-	/* Open directory. */
-	if ((dirp = opendir(pathname)) == NULL)
-	{
-		fprintf(stderr, "ls: cannot open %s\n", pathname);
-		return (errno);
-	}
-	
-	errno = 0;
-	
-	/* Read directory entries. */
-	filename[NAME_MAX] = '\0';
-	while ((dp = readdir(dirp)) != NULL)
-	{
-		strncpy(filename, dp->d_name, NAME_MAX);
-		
-		/* Suppress entries starting with dot. */
-		if ((filename[0] == '.') && !(ls_flags & LS_ALL))
-			continue;
-		
-		/* Print inode number. */
-		if (ls_flags & LS_INODE)
-			printf("%d ", (int)dp->d_ino);
-		
-		printf("%s\n", filename);
-	}
-	closedir(dirp);
-	
-	/* Error while reading. */
-	if (errno != 0)
-	{
-		fprintf(stderr, "ls: cannot read %s\n", pathname);
-		return (errno);
-	}
-	
-	return (EXIT_SUCCESS);
+    DIR *dirp;                   /* Directory.               */
+    struct dirent *dp;           /* Working directory entry. */
+    char filename[NAME_MAX + 1]; /* Working file name.       */
+    
+    /* Open directory. */
+    if ((dirp = opendir(pathname)) == NULL)
+    {
+        fprintf(stderr, "ls: cannot open %s\n", pathname);
+        return (errno);
+    }
+    
+    errno = 0;
+    
+    /* Read directory entries. */
+    filename[NAME_MAX] = '\0';
+    while ((dp = readdir(dirp)) != NULL)
+    {
+        strncpy(filename, dp->d_name, NAME_MAX);
+        
+        /* Suppress entries starting with dot. */
+        if ((filename[0] == '.') && !(ls_flags & LS_ALL))
+            continue;
+        
+        /* Print inode number. */
+        if (ls_flags & LS_INODE)
+            printf("%d ", (int)dp->d_ino);
+        
+        printf("%s\n", filename);
+    }
+    closedir(dirp);
+    
+    /* Error while reading. */
+    if (errno != 0)
+    {
+        fprintf(stderr, "ls: cannot read %s\n", pathname);
+        return (errno);
+    }
+    
+    return (EXIT_SUCCESS);
 }
 
 /*
@@ -87,13 +87,13 @@ int ls(const char *pathname)
  */
 static void version(void)
 {
-	printf("ls (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("ls (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -101,15 +101,15 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: ls [options] [directory]\n\n");
-	printf("Brief: Lists contents of a directory.\n\n");
-	printf("Options:\n");
-	printf("  -a, --all     List all entries\n");
-	printf("  -i, --inode   Print the inode number of each file\n");
-	printf("      --help    Display this information and exit\n");
-	printf("      --version Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: ls [options] [directory]\n\n");
+    printf("Brief: Lists contents of a directory.\n\n");
+    printf("Options:\n");
+    printf("  -a, --all     List all entries\n");
+    printf("  -i, --inode   Print the inode number of each file\n");
+    printf("      --help    Display this information and exit\n");
+    printf("      --version Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -117,51 +117,51 @@ static void usage(void)
  */
 static void getargs(int argc, char *const argv[])
 {
-	int i;     /* Loop index.       */
-	char *arg; /* Working argument. */
-	
-	/* Get program arguments. */
-	for (i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Print entries starting with dot. */
-		if ((!strcmp(arg, "-a")) || (!strcmp(arg, "--all")))
-			ls_flags |= LS_ALL;
-		
-		/* Print inode numbers. */
-		else if ((!strcmp(arg, "-i")) || (!strcmp(arg, "--inode")))
-			ls_flags |= LS_INODE;
-		
-		/* Display help information. */
-		else if (!strcmp(arg, "--help"))
-			usage();
-		
-		/* Display program version. */
-		else if (!strcmp(arg, "--version"))
-			version();
-		
-		/* Get directory name. */
-		else
-			dirname = arg;
-	}
-	
-	/* 
-	 * Empty directory name, so use
-	 * the current directory.
-	 */
-	if (dirname == NULL)
-		dirname = ".";
+    int i;     /* Loop index.       */
+    char *arg; /* Working argument. */
+    
+    /* Get program arguments. */
+    for (i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Print entries starting with dot. */
+        if ((!strcmp(arg, "-a")) || (!strcmp(arg, "--all")))
+            ls_flags |= LS_ALL;
+        
+        /* Print inode numbers. */
+        else if ((!strcmp(arg, "-i")) || (!strcmp(arg, "--inode")))
+            ls_flags |= LS_INODE;
+        
+        /* Display help information. */
+        else if (!strcmp(arg, "--help"))
+            usage();
+        
+        /* Display program version. */
+        else if (!strcmp(arg, "--version"))
+            version();
+        
+        /* Get directory name. */
+        else
+            dirname = arg;
+    }
+    
+    /* 
+     * Empty directory name, so use
+     * the current directory.
+     */
+    if (dirname == NULL)
+        dirname = ".";
 }
 
 /*
  * Lists contents of a directory
  */
 int main(int argc, char *const argv[])
-{	
-	getargs(argc, argv);
-	
-	ls(dirname);
-	
-	return (EXIT_SUCCESS);
+{    
+    getargs(argc, argv);
+    
+    ls(dirname);
+    
+    return (EXIT_SUCCESS);
 }

@@ -29,11 +29,11 @@
  */
 int main(int argc, char *const argv[])
 {
-	int i;
-	
-	/* Print arguments. */
-	for (i = 1; i < argc; i++)
-		printf("%s%s", argv[i], (i + 1 < argc) ? " " : "\n");
-	
-	return (EXIT_SUCCESS);
+    int i;
+    
+    /* Print arguments. */
+    for (i = 1; i < argc; i++)
+        printf("%s%s", argv[i], (i + 1 < argc) ? " " : "\n");
+    
+    return (EXIT_SUCCESS);
 }

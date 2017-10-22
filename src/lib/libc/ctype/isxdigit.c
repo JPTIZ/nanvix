@@ -78,6 +78,6 @@
  */
 int isxdigit(int c)
 {
-	return(__ctype_ptr__[c+1] & ((_X)|(_N)));
+    return(__ctype_ptr__[c+1] & ((_X)|(_N)));
 }
 

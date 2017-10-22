@@ -26,20 +26,20 @@
  */
 int ps()
 {
-	ssize_t ret;
+    ssize_t ret;
 
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_ps)
-	);
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_ps)
+    );
 
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
 
-	return ((ssize_t)ret);
+    return ((ssize_t)ret);
 }

@@ -25,5 +25,5 @@
 
 PUBLIC int sys_gticks()
 {
-	return ticks;
+    return ticks;
 }

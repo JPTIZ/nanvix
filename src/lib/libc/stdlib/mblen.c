@@ -65,5 +65,5 @@
  */
 int mblen(const char *s, size_t n)
 {
-	return(mbtowc((wchar_t *) NULL, s, n));
+    return(mbtowc((wchar_t *) NULL, s, n));
 }

@@ -22,9 +22,9 @@
 
 /* File streams table. */
 FILE streams[FOPEN_MAX] = {
-	{ 0, _IOREAD  | _IOLBF, NULL, NULL, 0, 0 },
-	{ 1, _IOWRITE | _IOFBF, NULL, NULL, 0, 0 },
-	{ 2, _IOWRITE | _IONBF, NULL, NULL, 0, 0 },
+    { 0, _IOREAD  | _IOLBF, NULL, NULL, 0, 0 },
+    { 1, _IOWRITE | _IOFBF, NULL, NULL, 0, 0 },
+    { 2, _IOWRITE | _IONBF, NULL, NULL, 0, 0 },
 };
 
 /* Standard file streams. */
@@ -37,15 +37,15 @@ FILE *stderr = &streams[2]; /* Standard error.  */
  */
 void stdio_cleanup(void)
 {
-	FILE *stream;
-	
-	/* Close all streams. */
-	for (stream = &streams[0]; stream < &streams[FOPEN_MAX]; stream++)
-	{
-		/* Valid stream. */
-		if (stream->flags & (_IORW | _IOREAD | _IOWRITE))
-			fclose(stream);
-	}
+    FILE *stream;
+    
+    /* Close all streams. */
+    for (stream = &streams[0]; stream < &streams[FOPEN_MAX]; stream++)
+    {
+        /* Valid stream. */
+        if (stream->flags & (_IORW | _IOREAD | _IOWRITE))
+            fclose(stream);
+    }
 }
 
 /**
@@ -56,14 +56,14 @@ void stdio_cleanup(void)
  */
 FILE *_getstream(void)
 {
-	for (FILE *stream = &streams[0]; stream < &streams[FOPEN_MAX]; stream++)
-	{
-		/* Valid stream. */
-		if (!(stream->flags & (_IORW | _IOREAD | _IOWRITE)))
-			return (stream);
-	}
-	
-	return (NULL);
+    for (FILE *stream = &streams[0]; stream < &streams[FOPEN_MAX]; stream++)
+    {
+        /* Valid stream. */
+        if (!(stream->flags & (_IORW | _IOREAD | _IOWRITE)))
+            return (stream);
+    }
+    
+    return (NULL);
 }
 
 

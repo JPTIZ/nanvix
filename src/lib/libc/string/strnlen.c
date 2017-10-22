@@ -37,11 +37,11 @@
  */
 size_t strnlen(const char *str, size_t maxlen)
 {
-	const char *p;
-	
-	/* Count the number of characters. */
-	for (p = str; *p != '\0' && maxlen > 0; p++, maxlen--)
-		/* No operation.*/;
-	
-	return (p - str);
+    const char *p;
+    
+    /* Count the number of characters. */
+    for (p = str; *p != '\0' && maxlen > 0; p++, maxlen--)
+        /* No operation.*/;
+    
+    return (p - str);
 }

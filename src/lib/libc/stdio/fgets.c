@@ -26,21 +26,21 @@
  */
 char *fgets(char *str, int n, FILE *stream)
 {
-	int c = EOF;   /* Working character. */
-	char *p = str; /* Write pointer.     */
-	
-	/* Read string. */
-	while ((--n > 0) && ((c = getc(stream)) != EOF))
-	{
-		if (c == '\n')
-			break;
-		*p++ = c;
-	}
-	
-	if ((c == EOF) && (p == str))
-		return (NULL);
-	
-	*p = '\0';
-	
-	return (str);
+    int c = EOF;   /* Working character. */
+    char *p = str; /* Write pointer.     */
+    
+    /* Read string. */
+    while ((--n > 0) && ((c = getc(stream)) != EOF))
+    {
+        if (c == '\n')
+            break;
+        *p++ = c;
+    }
+    
+    if ((c == EOF) && (p == str))
+        return (NULL);
+    
+    *p = '\0';
+    
+    return (str);
 }

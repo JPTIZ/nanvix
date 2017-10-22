@@ -36,6 +36,6 @@
  */
 void _assertfail(const char *msg, const char *cond, const char *file, int line)
 {
-	fprintf(stderr, msg, cond, file, line);
-	abort();
+    fprintf(stderr, msg, cond, file, line);
+    abort();
 }

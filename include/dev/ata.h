@@ -20,15 +20,15 @@
 #ifndef ATA_H_
 #define ATA_H_
 
-	/**
-	 * @brief Initializes the generic ATA device driver
-	 * 
-	 * @details Initializes the generic ATA device driver by first probing the
-	 *          devices that are connected to the primary and secondary ATA
-	 *          buses, and then registering the ATA interrupt handlers.
-	 * 
-	 * @author Pedro H. Penna
-	 */
-	extern void ata_init(void);
+    /**
+     * @brief Initializes the generic ATA device driver
+     * 
+     * @details Initializes the generic ATA device driver by first probing the
+     *          devices that are connected to the primary and secondary ATA
+     *          buses, and then registering the ATA interrupt handlers.
+     * 
+     * @author Pedro H. Penna
+     */
+    extern void ata_init(void);
 
 #endif /* ATA_H_ */

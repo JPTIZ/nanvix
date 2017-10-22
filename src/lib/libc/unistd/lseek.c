@@ -26,22 +26,22 @@
  */
 off_t lseek(int fd, off_t offset, int whence)
 {
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (offset)
-		: "0" (NR_lseek),
-		  "b" (fd),
-		  "c" (offset),
-		  "d" (whence)
-	);
-	
-	/* Error. */
-	if (offset < 0)
-	{
-		errno = -offset;
-		return (-1);
-	}
-	
-	return (offset);
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (offset)
+        : "0" (NR_lseek),
+          "b" (fd),
+          "c" (offset),
+          "d" (whence)
+    );
+    
+    /* Error. */
+    if (offset < 0)
+    {
+        errno = -offset;
+        return (-1);
+    }
+    
+    return (offset);
 }
 

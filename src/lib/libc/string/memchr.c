@@ -39,18 +39,18 @@
  * @version IEEE Std 1003.1, 2013 Edition
  */
 void *memchr(const void *s, int c, size_t n)
-{	
-	const unsigned char *p;
-			
-	p = s;
-	
-	/* Search byte. */
-	while (n-- > 0)
-	{
-		if (*p++ == c)
-			return ((void *)(p - 1));
-	}
-	
-	return (NULL);
+{    
+    const unsigned char *p;
+            
+    p = s;
+    
+    /* Search byte. */
+    while (n-- > 0)
+    {
+        if (*p++ == c)
+            return ((void *)(p - 1));
+    }
+    
+    return (NULL);
 }
 

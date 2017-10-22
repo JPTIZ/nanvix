@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -71,19 +71,19 @@
  */
 char *strncat(char *restrict s1, const char *restrict s2, size_t n)
 {
-	char *s = s1;
+    char *s = s1;
 
-	/* Eat target string. */
-	while (*s1 != '\0')
-		s1++;
-		
-	/* Concatenate strings. */
-	while ((n-- != 0) && ((*s1++ = *s2++) != '\0'))
-	{
-		/* Terminating null character. */
-		if (n == 0)
-			*s1 = '\0';
-	}
+    /* Eat target string. */
+    while (*s1 != '\0')
+        s1++;
+        
+    /* Concatenate strings. */
+    while ((n-- != 0) && ((*s1++ = *s2++) != '\0'))
+    {
+        /* Terminating null character. */
+        if (n == 0)
+            *s1 = '\0';
+    }
 
-	return (s);
+    return (s);
 }

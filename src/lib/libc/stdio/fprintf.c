@@ -25,12 +25,12 @@
  */
 int fprintf(FILE *stream, const char *format, ...)
 {
-	int n;        /* Characters written. */
-	va_list args; /* Arguments.          */
-	
-	va_start(args, format);
-	n = vfprintf(stream, format, args);
-	va_end(args);
-	
-	return (n);
+    int n;        /* Characters written. */
+    va_list args; /* Arguments.          */
+    
+    va_start(args, format);
+    n = vfprintf(stream, format, args);
+    va_end(args);
+    
+    return (n);
 }

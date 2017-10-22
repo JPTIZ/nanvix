@@ -26,5 +26,5 @@
  */
 PUBLIC gid_t sys_getgid(void)
 {
-	return (curr_proc->gid);
+    return (curr_proc->gid);
 }

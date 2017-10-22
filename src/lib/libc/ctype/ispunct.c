@@ -78,6 +78,6 @@
  */
 int ispunct(int c)
 {
-	return(__ctype_ptr__[c+1] & _P);
+    return(__ctype_ptr__[c+1] & _P);
 }
 

@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -75,11 +75,11 @@ struct _atexit _atexit = { 0, };
  */
 int atexit(void (*func)(void))
 {
-	/* Too many functions registered. */
-	if (_atexit._ind >= ATEXIT_MAX)
-		return (-1);
+    /* Too many functions registered. */
+    if (_atexit._ind >= ATEXIT_MAX)
+        return (-1);
 
-	_atexit._fns[_atexit._ind++] = func;
-	
-	return (0);
+    _atexit._fns[_atexit._ind++] = func;
+    
+    return (0);
 }

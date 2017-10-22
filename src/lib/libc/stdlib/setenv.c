@@ -73,79 +73,79 @@
  */
 int setenv(const char *envname, const char *envval, int overwrite)
 {
-	static int alloced;		/* If allocated space before. */
-	register char *C;
-	size_t l_envval;
-	int offset;
-	
-	/* No '=' in envval. */
-	if (*envval == '=')
-		++envval;
-	
-	/* Find if already exists. */
-	l_envval = strlen(envval);
-	if ((C = findenv(envname, &offset)))
-	{
-		if (!overwrite)
-			return (0);
-		
-		if (strlen(C) >= l_envval)
-		{
-			/* old larger; copy over */
-			while ((*C++ = *envval++))
-				/* noop */ ;
-			
-			return (0);
-		}
-	}
-	
-	/* Create new slot. */
-	else
-	{				
-		register int cnt;
-		register char **P;
+    static int alloced;        /* If allocated space before. */
+    register char *C;
+    size_t l_envval;
+    int offset;
+    
+    /* No '=' in envval. */
+    if (*envval == '=')
+        ++envval;
+    
+    /* Find if already exists. */
+    l_envval = strlen(envval);
+    if ((C = findenv(envname, &offset)))
+    {
+        if (!overwrite)
+            return (0);
+        
+        if (strlen(C) >= l_envval)
+        {
+            /* old larger; copy over */
+            while ((*C++ = *envval++))
+                /* noop */ ;
+            
+            return (0);
+        }
+    }
+    
+    /* Create new slot. */
+    else
+    {                
+        register int cnt;
+        register char **P;
 
-			for (P = environ, cnt = 0; *P; ++P, ++cnt)
-				/* noop */;
-		
-		/* Just increase size. */
-		if (alloced)
-		{
-			environ = 
-				realloc((char *) environ, (size_t) (sizeof(char *)*(cnt + 2)));
-			
-			if (environ == NULL)
-				return (-1);
-		}
-		
-		/* Get new space. */
-		else
-		{
-			alloced = 1;
-			P = (char **) malloc ((size_t) (sizeof (char *) * (cnt + 2)));
-			if (P == NULL)
-				return (-1);
-			
-			/* copy old entries into it */	
-			memmove((char *) P, (char *) environ, cnt * sizeof (char *));
-			environ = P;
-		}
-				environ[cnt + 1] = NULL;
-				offset = cnt;
-	}
-	
-	/* No '=' in envname. */
-	for (C = (char *) envname; (*C != '\0') && (*C != '='); C++)
-		/* noop */ ;
-	
-	/* envname + '=' + envval */
-	environ[offset] = malloc ((size_t)((int) (C - envname) + l_envval + 2));
-	if (environ[offset] == NULL)
-		return (-1);
-	for (C = environ[offset]; (*C = *envname++) && *C != '='; ++C)
-		/* noop */ ;
-	for (*C++ = '='; (*C++ = *envval++); /* noop */)
-		/* noop */ ;
-		
-	return (0);
+            for (P = environ, cnt = 0; *P; ++P, ++cnt)
+                /* noop */;
+        
+        /* Just increase size. */
+        if (alloced)
+        {
+            environ = 
+                realloc((char *) environ, (size_t) (sizeof(char *)*(cnt + 2)));
+            
+            if (environ == NULL)
+                return (-1);
+        }
+        
+        /* Get new space. */
+        else
+        {
+            alloced = 1;
+            P = (char **) malloc ((size_t) (sizeof (char *) * (cnt + 2)));
+            if (P == NULL)
+                return (-1);
+            
+            /* copy old entries into it */    
+            memmove((char *) P, (char *) environ, cnt * sizeof (char *));
+            environ = P;
+        }
+                environ[cnt + 1] = NULL;
+                offset = cnt;
+    }
+    
+    /* No '=' in envname. */
+    for (C = (char *) envname; (*C != '\0') && (*C != '='); C++)
+        /* noop */ ;
+    
+    /* envname + '=' + envval */
+    environ[offset] = malloc ((size_t)((int) (C - envname) + l_envval + 2));
+    if (environ[offset] == NULL)
+        return (-1);
+    for (C = environ[offset]; (*C = *envname++) && *C != '='; ++C)
+        /* noop */ ;
+    for (*C++ = '='; (*C++ = *envval++); /* noop */)
+        /* noop */ ;
+        
+    return (0);
 }

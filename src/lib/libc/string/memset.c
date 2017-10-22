@@ -38,12 +38,12 @@
  */
 void *memset(void *s, int c, size_t n)
 {
-	unsigned char *p;
-	
-	p = s;
-	
-	while (n-- > 0)
-		*p++ = c;
-	
-	return (s);
+    unsigned char *p;
+    
+    p = s;
+    
+    while (n-- > 0)
+        *p++ = c;
+    
+    return (s);
 }

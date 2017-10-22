@@ -25,11 +25,11 @@
  */
 int puts(const char *str)
 {
-	int c;
-	
-	/* Write string. */
-	while ((c = *str++) != '\0')
-		putchar(c);
-		
-	return (putchar('\n'));
+    int c;
+    
+    /* Write string. */
+    while ((c = *str++) != '\0')
+        putchar(c);
+        
+    return (putchar('\n'));
 }

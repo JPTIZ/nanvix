@@ -26,5 +26,5 @@
  */
 PUBLIC pid_t sys_getpid(void)
 {
-	return (curr_proc->pid);
+    return (curr_proc->pid);
 }

@@ -20,12 +20,12 @@
 #ifndef KLOG_H_
 #define KLOG_H_
 
-	/**
-	 * @brief Initializes the kernel log driver.
-	 * 
-	 * @author Pedro H. Penna
-	 */
-	extern void klog_init(void);
+    /**
+     * @brief Initializes the kernel log driver.
+     * 
+     * @author Pedro H. Penna
+     */
+    extern void klog_init(void);
 
 #endif /* KLOG_H_ */
 

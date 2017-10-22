@@ -30,29 +30,29 @@
  */
 struct history *history_init(int size)
 {
-	struct history *hist;
-	
-	hist = malloc(sizeof(struct history));
-	if (hist == NULL)
-	{
-		fprintf(stderr, "%s: failed to allocate history buffer\n", TSH_NAME);
-		exit(EXIT_FAILURE);
-	}
+    struct history *hist;
+    
+    hist = malloc(sizeof(struct history));
+    if (hist == NULL)
+    {
+        fprintf(stderr, "%s: failed to allocate history buffer\n", TSH_NAME);
+        exit(EXIT_FAILURE);
+    }
 
-	hist->top = 0;
-	hist->size = size;
-	hist->p = -1;
-	for (int i = 0; i < hist->size; i++)
-	{
-		hist->log[i] = calloc(LINELEN, sizeof(char));
-		if (hist->log[i] == NULL)
-		{
-			fprintf(stderr, "%s: failed to allocate history buffer\n", TSH_NAME);
-			exit(EXIT_FAILURE);
-		}
-	}
+    hist->top = 0;
+    hist->size = size;
+    hist->p = -1;
+    for (int i = 0; i < hist->size; i++)
+    {
+        hist->log[i] = calloc(LINELEN, sizeof(char));
+        if (hist->log[i] == NULL)
+        {
+            fprintf(stderr, "%s: failed to allocate history buffer\n", TSH_NAME);
+            exit(EXIT_FAILURE);
+        }
+    }
 
-	return (hist);
+    return (hist);
 }
 
 /**
@@ -61,11 +61,11 @@ struct history *history_init(int size)
  * @brief hist Target command history.
  */
 void history_destroy(struct history *hist)
-{	
-	for (int i = 0; i < hist->size; i++)
-		free(hist->log[i]);
-		
-	free(hist);
+{    
+    for (int i = 0; i < hist->size; i++)
+        free(hist->log[i]);
+        
+    free(hist);
 }
 
 /**
@@ -75,7 +75,7 @@ void history_destroy(struct history *hist)
  */
 static inline int history_full(struct history *hist)
 {
-	return (hist->top == hist->size);
+    return (hist->top == hist->size);
 }
 
 /**
@@ -83,22 +83,22 @@ static inline int history_full(struct history *hist)
  */
 char *history_next(struct history *hist)
 {
-	/* History is empty. */
-	if (hist->top == 0)
-		return ("");
-	
-	/*
-	 * We've printed command at
-	 * index 0 before.
-	 */
-	if (hist->p < 0)
-		hist->p = 0;
-	
-	/* End of the history. */
-	if (hist->p == (hist->top - 1))
-		return ("");
-	
-	return (hist->log[++hist->p]);
+    /* History is empty. */
+    if (hist->top == 0)
+        return ("");
+    
+    /*
+     * We've printed command at
+     * index 0 before.
+     */
+    if (hist->p < 0)
+        hist->p = 0;
+    
+    /* End of the history. */
+    if (hist->p == (hist->top - 1))
+        return ("");
+    
+    return (hist->log[++hist->p]);
 }
 
 /**
@@ -106,15 +106,15 @@ char *history_next(struct history *hist)
  */
 char *history_previous(struct history *hist)
 {
-	/* History is empty. */
-	if (hist->top == 0)
-		return ("");
-	
-	/* Start of the history. */	
-	if (hist->p < 0)
-		return (hist->log[0]);
+    /* History is empty. */
+    if (hist->top == 0)
+        return ("");
+    
+    /* Start of the history. */    
+    if (hist->p < 0)
+        return (hist->log[0]);
 
-	return (hist->log[hist->p--]);
+    return (hist->log[hist->p--]);
 }
 
 /**
@@ -122,17 +122,17 @@ char *history_previous(struct history *hist)
  */
 void history_push(struct history *hist, char *s)
 {
-	/* Dont do that. */
-	if (*s == '\0')
-		return;
+    /* Dont do that. */
+    if (*s == '\0')
+        return;
 
-	/* Shift elements. */
-	if (history_full(hist))
-	{
-		for (int i = 0; i < hist->top; i++)
-			strncpy(hist->log[i], hist->log[i + 1], LINELEN);
-		hist->top--;
-	}
-	
-	strncpy(hist->log[hist->p = hist->top++], s, LINELEN);
+    /* Shift elements. */
+    if (history_full(hist))
+    {
+        for (int i = 0; i < hist->top; i++)
+            strncpy(hist->log[i], hist->log[i + 1], LINELEN);
+        hist->top--;
+    }
+    
+    strncpy(hist->log[hist->p = hist->top++], s, LINELEN);
 }

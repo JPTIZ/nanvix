@@ -25,13 +25,13 @@
  */
 pid_t getpid(void)
 {
-	pid_t pid;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (pid)
-		: "0" (NR_getpid)
-	);
-	
-	return (pid);
+    pid_t pid;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (pid)
+        : "0" (NR_getpid)
+    );
+    
+    return (pid);
 }

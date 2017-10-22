@@ -30,17 +30,17 @@ static void *current_brk = (void *)UHEAP_ADDR;
  */
 void *sbrk(size_t size)
 {
-	void *old_brk;
-	
-	size = (((size) + (PAGE_SIZE - 1)) & ~(PAGE_SIZE - 1));
-	
-	old_brk = current_brk;
-	current_brk = (void *)((unsigned)old_brk + size);
-	if (brk(current_brk))
-	{
-		current_brk = old_brk;
-		return ((void *) -1);
-	}
-	
-	return (old_brk);
+    void *old_brk;
+    
+    size = (((size) + (PAGE_SIZE - 1)) & ~(PAGE_SIZE - 1));
+    
+    old_brk = current_brk;
+    current_brk = (void *)((unsigned)old_brk + size);
+    if (brk(current_brk))
+    {
+        current_brk = old_brk;
+        return ((void *) -1);
+    }
+    
+    return (old_brk);
 }

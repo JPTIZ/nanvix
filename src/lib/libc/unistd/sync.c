@@ -25,10 +25,10 @@
  */
 void sync(void)
 {
-	__asm__ volatile(
-		"int $0x80"
-		: /* empty. */
-		: "a" (NR_sync)
-	);
+    __asm__ volatile(
+        "int $0x80"
+        : /* empty. */
+        : "a" (NR_sync)
+    );
 }
 

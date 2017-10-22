@@ -69,33 +69,33 @@
  */
 char *findenv(const char *name, int *offset)
 {
-	register int length; /* Variable name length.         */
-	const char *c;       /* Environment variable name.    */
-	register char **p;   /* Working environment variable. */
+    register int length; /* Variable name length.         */
+    const char *c;       /* Environment variable name.    */
+    register char **p;   /* Working environment variable. */
 
-	c = name;
-	length = 0;
-	while ((*c != '\0') && (*c != '='))
-	{
-		c++;
-		length++;
-	}
+    c = name;
+    length = 0;
+    while ((*c != '\0') && (*c != '='))
+    {
+        c++;
+        length++;
+    }
 
-	/* Search for environment variable. */
-	for (p = environ; *p != NULL; p++)
-	{
-		/* Found. */
-		if (!strncmp(name, *p, length))
-		{
-			if (*(c = *p + length) == '=')
-			{
-				*offset = p - environ;
-				return ((char *) (++c));
-			}
-		}
-	}
-	
-	return (NULL);
+    /* Search for environment variable. */
+    for (p = environ; *p != NULL; p++)
+    {
+        /* Found. */
+        if (!strncmp(name, *p, length))
+        {
+            if (*(c = *p + length) == '=')
+            {
+                *offset = p - environ;
+                return ((char *) (++c));
+            }
+        }
+    }
+    
+    return (NULL);
 }
 
 /**
@@ -110,7 +110,7 @@ char *findenv(const char *name, int *offset)
  */
 char *getenv(const char *name)
 {
-	int offset;
+    int offset;
  
-	return (findenv(name, &offset));
+    return (findenv(name, &offset));
 }

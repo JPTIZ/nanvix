@@ -41,48 +41,48 @@
  */
 static int authenticate(const char *name, const char *password)
 {
-	int ret;          /* Return value.    */
-	int file;         /* Passwords file.  */
-	struct account a; /* Working account. */
-	
-	ret = 1;
-	
-	/* Open passwords file. */
-	if ((file = open("/etc/passwords", O_RDONLY)) == -1)
-	{
-		fprintf(stderr, "cannot open password file\n");
-		return (0);
-	}
-	
-	/* Search in the  passwords file. */
-	while (read(file, &a, sizeof(struct account)))
-	{
-		account_decrypt(a.name, USERNAME_MAX, KERNEL_HASH);
-	
-		/* No this user. */
-		if (strcmp(name, a.name))
-			continue;
-			
-		account_decrypt(a.password, PASSWORD_MAX, KERNEL_HASH);
-		
-		/* Found. */
-		if (!strcmp(password, a.password))
-		{
-			setgid(a.gid);
-			setuid(a.uid);
-			goto found;
-		}
-	}
+    int ret;          /* Return value.    */
+    int file;         /* Passwords file.  */
+    struct account a; /* Working account. */
+    
+    ret = 1;
+    
+    /* Open passwords file. */
+    if ((file = open("/etc/passwords", O_RDONLY)) == -1)
+    {
+        fprintf(stderr, "cannot open password file\n");
+        return (0);
+    }
+    
+    /* Search in the  passwords file. */
+    while (read(file, &a, sizeof(struct account)))
+    {
+        account_decrypt(a.name, USERNAME_MAX, KERNEL_HASH);
+    
+        /* No this user. */
+        if (strcmp(name, a.name))
+            continue;
+            
+        account_decrypt(a.password, PASSWORD_MAX, KERNEL_HASH);
+        
+        /* Found. */
+        if (!strcmp(password, a.password))
+        {
+            setgid(a.gid);
+            setuid(a.uid);
+            goto found;
+        }
+    }
 
-	ret = 0;
-	fprintf(stderr, "\nwrong login or password\n\n");
+    ret = 0;
+    fprintf(stderr, "\nwrong login or password\n\n");
 
 found:
 
-	/* House keeping. */
-	close(file);
+    /* House keeping. */
+    close(file);
 
-	return (ret);
+    return (ret);
 }
 
 /**
@@ -92,15 +92,15 @@ found:
  */
 static int login(void)
 {
-	char name[USERNAME_MAX];
-	char password[PASSWORD_MAX];
-	
-	printf("login: ");
-	fgets(name, USERNAME_MAX, stdin);
-	printf("password: ");
-	fgets(password, PASSWORD_MAX, stdin);
-	
-	return (authenticate(name, password));
+    char name[USERNAME_MAX];
+    char password[PASSWORD_MAX];
+    
+    printf("login: ");
+    fgets(name, USERNAME_MAX, stdin);
+    printf("password: ");
+    fgets(password, PASSWORD_MAX, stdin);
+    
+    return (authenticate(name, password));
 }
 
 #endif
@@ -110,45 +110,45 @@ static int login(void)
  */
 int main(int argc, char *const argv[])
 {
-	char *arg[2];        /* Shell arguments.    */
-	struct utsname name; /* System information. */
-	
-	((void)argc);
-	((void)argv);
+    char *arg[2];        /* Shell arguments.    */
+    struct utsname name; /* System information. */
+    
+    ((void)argc);
+    ((void)argv);
 
-	arg[0] = "-";
-	arg[1] = NULL;
-	
-	(void) setvbuf(stdin, NULL, _IOLBF, 0);
-	(void) setvbuf(stdout, NULL, _IONBF, 0);
-	
-	ioctl(fileno(stdout), TTY_CLEAR);
-	
-	/* Get system information. */
-	if (uname(&name) != 0)
-	{
-		fprintf(stderr, "cannot uname()");
-		return (EXIT_FAILURE);
-	}
-	
-	printf("%s %s on %s\n\n", name.sysname, name.version, name.nodename);
+    arg[0] = "-";
+    arg[1] = NULL;
+    
+    (void) setvbuf(stdin, NULL, _IOLBF, 0);
+    (void) setvbuf(stdout, NULL, _IONBF, 0);
+    
+    ioctl(fileno(stdout), TTY_CLEAR);
+    
+    /* Get system information. */
+    if (uname(&name) != 0)
+    {
+        fprintf(stderr, "cannot uname()");
+        return (EXIT_FAILURE);
+    }
+    
+    printf("%s %s on %s\n\n", name.sysname, name.version, name.nodename);
 
 #if (MULTIUSER == 1)
-	
-	while (!login())
-		/* noop */;
+    
+    while (!login())
+        /* noop */;
 
 #endif
 
-	ioctl(fileno(stdout), TTY_CLEAR);
-	
-	printf("Nanvix - A Free Educational Operating System\n\n");
-	printf("The programs included with Nanvix system are free software\n");
-	printf("under the GNU General Public License Version 3.\n\n");
-	printf("Nanvix comes with ABSOLUTELY NO WARRANTY, to the extent\n");
-	printf("permitted by applicable law.\n\n");
+    ioctl(fileno(stdout), TTY_CLEAR);
+    
+    printf("Nanvix - A Free Educational Operating System\n\n");
+    printf("The programs included with Nanvix system are free software\n");
+    printf("under the GNU General Public License Version 3.\n\n");
+    printf("Nanvix comes with ABSOLUTELY NO WARRANTY, to the extent\n");
+    printf("permitted by applicable law.\n\n");
 
-	execve("/bin/tsh", (char *const*)arg, (char *const*)environ);
-	
-	return (EXIT_SUCCESS);
+    execve("/bin/tsh", (char *const*)arg, (char *const*)environ);
+    
+    return (EXIT_SUCCESS);
 }

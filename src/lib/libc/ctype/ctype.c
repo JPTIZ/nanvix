@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -56,21 +56,21 @@
  * @brief Character type table.
  */
 const unsigned char _ctype[1 + 256] = {
-	0,
-	_C,   _C,    _C,    _C,    _C,    _C,    _C,    _C,
-	_C,   _C|_S, _C|_S, _C|_S, _C|_S, _C|_S, _C,    _C,
-	_C,   _C,    _C,    _C,    _C,    _C,    _C,    _C,
-	_C,   _C,    _C,    _C,    _C,    _C,    _C,    _C|_B,
-	_S,   _P,    _P,    _P,    _P,    _P,    _P,    _P,
-	_P,   _P,    _P,    _P,    _P,    _P,    _P,    _P,
-	_N,   _N,    _N,    _N,    _N,    _N,    _N,    _N,
-	_N,   _N,    _P,    _P,    _P,    _P,    _P,    _P,
-	_P,   _U|_X, _U|_X, _U|_X, _U|_X, _U|_X, _U|_X, _U,
-	_U,   _U,    _U,    _U,    _U,    _U,    _U,    _U,
-	_U,   _U,    _U,    _U,    _U,    _U,    _U,    _U,
-	_U,   _U,    _U,    _P,    _P,    _P,    _P,    _P,
-	_P,   _L|_X, _L|_X, _L|_X, _L|_X, _L|_X, _L|_X, _L,
-	_L,   _L,    _L,    _L,    _L,    _L,    _L,    _L,
-	_L,   _L,    _L,    _L,    _L,    _L,    _L,    _L,
-	_L,   _L,    _L,    _P,    _P,    _P,    _P,    _C
+    0,
+    _C,   _C,    _C,    _C,    _C,    _C,    _C,    _C,
+    _C,   _C|_S, _C|_S, _C|_S, _C|_S, _C|_S, _C,    _C,
+    _C,   _C,    _C,    _C,    _C,    _C,    _C,    _C,
+    _C,   _C,    _C,    _C,    _C,    _C,    _C,    _C|_B,
+    _S,   _P,    _P,    _P,    _P,    _P,    _P,    _P,
+    _P,   _P,    _P,    _P,    _P,    _P,    _P,    _P,
+    _N,   _N,    _N,    _N,    _N,    _N,    _N,    _N,
+    _N,   _N,    _P,    _P,    _P,    _P,    _P,    _P,
+    _P,   _U|_X, _U|_X, _U|_X, _U|_X, _U|_X, _U|_X, _U,
+    _U,   _U,    _U,    _U,    _U,    _U,    _U,    _U,
+    _U,   _U,    _U,    _U,    _U,    _U,    _U,    _U,
+    _U,   _U,    _U,    _P,    _P,    _P,    _P,    _P,
+    _P,   _L|_X, _L|_X, _L|_X, _L|_X, _L|_X, _L|_X, _L,
+    _L,   _L,    _L,    _L,    _L,    _L,    _L,    _L,
+    _L,   _L,    _L,    _L,    _L,    _L,    _L,    _L,
+    _L,   _L,    _L,    _P,    _P,    _P,    _P,    _C
 };

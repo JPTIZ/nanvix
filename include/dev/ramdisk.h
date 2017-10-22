@@ -20,19 +20,19 @@
 #ifndef RAMDISK_H_
 #define RAMDISK_H_
 
-	#include <nanvix/const.h>
-	#include <nanvix/hal.h>
+    #include <nanvix/const.h>
+    #include <nanvix/hal.h>
 
-	/*
-	 * DESCRIPTION:
-	 *   The ramdisk_init() function initializes the RAM disk device driver. 
-	 * 
-	 * RETURN VALUE:
-	 *   The ramdisk_init() has no return value.
-	 * 
-	 * ERROS:
-	 *   No errors are defined.
-	 */
-	EXTERN void ramdisk_init(void);
+    /*
+     * DESCRIPTION:
+     *   The ramdisk_init() function initializes the RAM disk device driver. 
+     * 
+     * RETURN VALUE:
+     *   The ramdisk_init() has no return value.
+     * 
+     * ERROS:
+     *   No errors are defined.
+     */
+    EXTERN void ramdisk_init(void);
 
 #endif /* RAMDISK_H_ */

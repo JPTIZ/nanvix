@@ -22,49 +22,49 @@
 
 void reverse(char* s)
 {
-	int i, j;
-	char c;
+    int i, j;
+    char c;
 
-	for (i = 0, j = kstrlen(s)-1; i<j; i++, j--)
-	{
-		c = s[i];
-		s[i] = s[j];
-		s[j] = c;
-	}
+    for (i = 0, j = kstrlen(s)-1; i<j; i++, j--)
+    {
+        c = s[i];
+        s[i] = s[j];
+        s[j] = c;
+    }
 }
 
 void itoaps(int n, char* s)
 {
-	int i, sign;
+    int i, sign;
 
-	if ((sign = n) < 0) 
-		n = -n;
+    if ((sign = n) < 0) 
+        n = -n;
 
-	i = 0;
-	do
-	{
-		s[i++] = n % 10 + '0';
-	} while ((n /= 10) > 0);
+    i = 0;
+    do
+    {
+        s[i++] = n % 10 + '0';
+    } while ((n /= 10) > 0);
 
-	if (sign < 0)
-		s[i++] = '-';
-	
-	s[i] = '\0';
-	reverse(s);
+    if (sign < 0)
+        s[i++] = '-';
+    
+    s[i] = '\0';
+    reverse(s);
 }
 
 void prepareValue(int value, char* s, int padding)
 {
-	int i,len,size;
+    int i,len,size;
 
-	itoaps(value, s);
-	len = padding - kstrlen(s);
+    itoaps(value, s);
+    len = padding - kstrlen(s);
 
-	size = kstrlen(s);
-	for(i=size; i<len+size; i++)
-		*(s+i) = ' ';
+    size = kstrlen(s);
+    for(i=size; i<len+size; i++)
+        *(s+i) = ' ';
 
-	*(s+i) = '\0';
+    *(s+i) = '\0';
 }
 
 /*
@@ -73,73 +73,73 @@ void prepareValue(int value, char* s, int padding)
 
 PUBLIC int sys_ps()
 {
-	struct process *p;
+    struct process *p;
 
-	kprintf("------------------------------- Process Status"
-			" -------------------------------\n"
-		    "NAME               PID   UID       PRIORITY   NICE"
-		    "   UTIME   KTIME     STATUS");
+    kprintf("------------------------------- Process Status"
+            " -------------------------------\n"
+            "NAME               PID   UID       PRIORITY   NICE"
+            "   UTIME   KTIME     STATUS");
 
 
-	char name    [26];
-	char pid     [26];
-	char uid     [26];
-	char priority[26];
-	char nice    [26];
-	char utime   [26];
-	char ktime   [26];
+    char name    [26];
+    char pid     [26];
+    char uid     [26];
+    char priority[26];
+    char nice    [26];
+    char utime   [26];
+    char ktime   [26];
 
-	const char *states[7];
-	states[0] = "DEAD";
-	states[1] = "ZOMBIE";
-	states[2] = "RUNNING";
-	states[3] = "READY";
-	states[4] = "WAITING";
-	states[5] = "SLEEPING";
-	states[6] = "STOPPED";
+    const char *states[7];
+    states[0] = "DEAD";
+    states[1] = "ZOMBIE";
+    states[2] = "RUNNING";
+    states[3] = "READY";
+    states[4] = "WAITING";
+    states[5] = "SLEEPING";
+    states[6] = "STOPPED";
 
-	unsigned len = 0;
-	unsigned i;
-	int size;
+    unsigned len = 0;
+    unsigned i;
+    int size;
 
-	for (p = IDLE; p <= LAST_PROC; p++)
-	{
-		/* Skip invalid processes. */
-		if (!IS_VALID(p))
-			continue;
+    for (p = IDLE; p <= LAST_PROC; p++)
+    {
+        /* Skip invalid processes. */
+        if (!IS_VALID(p))
+            continue;
 
-		/* Name */
-		size = kstrlen(p->name);
-		kstrcpy(name, p->name);
-		len = 20 - size;
+        /* Name */
+        size = kstrlen(p->name);
+        kstrcpy(name, p->name);
+        len = 20 - size;
 
-		for(i=size; i<len+size-1; i++)
-			*(name+i) = ' ';
+        for(i=size; i<len+size-1; i++)
+            *(name+i) = ' ';
 
-		*(name+i) = '\0';
+        *(name+i) = '\0';
 
-		/* Pid */
-		prepareValue(p->pid, pid, 6);
+        /* Pid */
+        prepareValue(p->pid, pid, 6);
 
-		/* Remaining Quantum */
-		prepareValue(p->uid, uid, 10);
+        /* Remaining Quantum */
+        prepareValue(p->uid, uid, 10);
 
-		/* Priority */
-		prepareValue(p->priority, priority, 11);
+        /* Priority */
+        prepareValue(p->priority, priority, 11);
 
-		/* Nice */
-		prepareValue(p->nice, nice, 7);
+        /* Nice */
+        prepareValue(p->nice, nice, 7);
 
-		/* Utime */
-		prepareValue(p->utime, utime, 8);
+        /* Utime */
+        prepareValue(p->utime, utime, 8);
 
-		/* Ktime */
-		prepareValue(p->ktime, ktime, 10);
-		
-		kprintf("%s%s%s%s%s%s%s%s",name, pid, 
-			uid, priority, nice, utime, ktime, states[(int)p->state] );
-	}
+        /* Ktime */
+        prepareValue(p->ktime, ktime, 10);
+        
+        kprintf("%s%s%s%s%s%s%s%s",name, pid, 
+            uid, priority, nice, utime, ktime, states[(int)p->state] );
+    }
 
-	kprintf("\nLast process: %s, pid: %d\n",last_proc->name, last_proc->pid);
-	return 0;
+    kprintf("\nLast process: %s, pid: %d\n",last_proc->name, last_proc->pid);
+    return 0;
 }
