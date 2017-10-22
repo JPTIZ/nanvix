@@ -282,30 +282,11 @@ PRIVATE struct __frame
     unsigned age;   /**< Age.                 */
     pid_t owner;    /**< Page owner.          */
     addr_t addr;    /**< Address of the page. */
-} frames[NR_FRAMES] = {{0, 0, 0, 0},  };
+} frames[NR_FRAMES] = {{0, 0, 0, 0}, };
 
 typedef struct __frame frame_t;
 
-static const unsigned tau = 0;
-static const frame_t* end = frames + NR_FRAMES;
-
-PRIVATE void advance_clock(frame_t** current) {
-    ++*current;
-    if (*current == end) {
-        *current = frames;
-    }
-}
-
-PRIVATE int select_clock_ptr(frame_t** current) {
-    frame_t* selected = *current;
-
-    selected->age = cpu_time(curr_proc);
-    selected->count = 1;
-    //selected->owner = curr_proc->pid;
-
-    advance_clock(current);
-    return selected - frames;
-}
+static const unsigned tau = 4000;
 
 /**
  * @brief Allocates a page frame.
@@ -315,15 +296,18 @@ PRIVATE int select_clock_ptr(frame_t** current) {
  */
 PRIVATE int allocf(void)
 {
-    /* "Ponteiro" para frame atual */
+    // "Ponteiro" para frame atual
     static unsigned i = 0;
-    /* Já rodou a lista uma vez */
+
+    // Já rodou a lista uma vez
     unsigned cycle = FALSE;
-    /* Escrita foi escalonada */
+
+    // Escrita foi escalonada
     unsigned written = FALSE;
+
+    // Indica se foi encontrado algum frame do qual o processo atual é dono
     unsigned owned = FALSE;
 
-    /* Caso tenha chego no final da lista volta para o início */
     if (i == NR_FRAMES) {
         i = 0;
     }
@@ -331,40 +315,34 @@ PRIVATE int allocf(void)
     unsigned begin = i;
 
     while (TRUE) {
-        /* Frame livre */
-        if (frames[i].count == 0) {
-            goto found;
+    	frame_t* frame = frames + i;
+        if (frame->count == 0) {
+            break;
         }
 
-        if (frames[i].owner == curr_proc->pid) {
-            /* Frame referenciado por mais de um processo*/
-            if (frames[i].count > 1) {
-                ++i;
-                if (i == NR_FRAMES) {
-                    i = 0;
-                }
-                continue;
-            }
+        if (frame->owner == curr_proc->pid && frame->count <= 1) {
             owned = TRUE;
-            pte_t* table = getpte(curr_proc, frames[i].addr);
+            pte_t* table = getpte(curr_proc, frame->addr);
+
             if (table->accessed) {
                 table->accessed = FALSE;
-                frames[i].age = cpu_time(curr_proc);
+                frame->age = cpu_time(curr_proc);
             } else {
-                unsigned age = cpu_time(curr_proc) - frames[i].age;
+                unsigned age = cpu_time(curr_proc) - frame->age;
+
                 if (age > tau) {
                     if (table->dirty) {
-                        int result = swap_out(curr_proc, frames[i].addr);
+                        int result = swap_out(curr_proc, frame->addr);
                         table->accessed = FALSE;
                         if (result == 0) {
                             table->dirty = FALSE;
                             if (cycle && !written) {
-                                goto found;
+                                break;
                             }
                             written = TRUE;
                         }
                     } else {
-                        goto found;
+                        break;
                     }
                 }
             }
@@ -375,6 +353,7 @@ PRIVATE int allocf(void)
         if (i == NR_FRAMES) {
             i = 0;
         }
+
         if (i == begin) {
             if(!owned) {
                 return -1;
@@ -383,61 +362,10 @@ PRIVATE int allocf(void)
         }
     }
 
-found:
     frames[i].age = cpu_time(curr_proc);
     frames[i].count = 1;
 
     return i++;
-    /*
-    static frame_t* current = frames;
-
-    frame_t* begin = current;
-
-    unsigned cycle = FALSE;
-    unsigned written = FALSE;
-
-    while (TRUE)
-    {
-        if (current->count == 0) {
-            return select_clock_ptr(&current);
-        }
-
-        if (current->count > 1) {
-            continue;
-        }
-
-        if (current->owner == curr_proc->pid) {
-            pte_t* table = getpte(curr_proc, current->addr);
-
-            if (table->accessed) {
-                table->accessed = FALSE;
-                current->last_use = cpu_time(curr_proc);
-            } else {
-                unsigned age = cpu_time(curr_proc) - current->last_use;
-                if (age > tau) {
-                    if (table->dirty) {
-                        int result = swap_out(curr_proc, current->addr);
-                        if (result == 0) {
-                            table->dirty = FALSE;
-                            if (cycle && !written) {
-                                return select_clock_ptr(&current);
-                            }
-                            written = TRUE;
-                        }
-                    } else {
-                        return select_clock_ptr(&current);
-                    }
-                }
-            }
-        }
-
-        advance_clock(&current);
-
-        if (current == begin) {
-            cycle = TRUE;
-        }
-    }
-    */
 }
 
 /**

@@ -125,3 +125,7 @@ PUBLIC void pm_init(void)
 
     enable_interrupts();
 }
+
+unsigned cpu_time(process_t* p) {
+    return p->utime + p->ktime;
+}

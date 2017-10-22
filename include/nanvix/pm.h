@@ -208,6 +208,8 @@
 		/**@}*/
 	};
 
+    typedef struct process process_t;
+
 	/* Forward definitions. */
 	EXTERN void bury(struct process *);
 	EXTERN void die(int);
@@ -218,6 +220,8 @@
 	EXTERN void sndsig(struct process *, int);
 	EXTERN void wakeup(struct process **);
 	EXTERN void yield(void);
+
+    unsigned cpu_time(process_t*);
 
 	/**
 	 * @name Process memory regions
