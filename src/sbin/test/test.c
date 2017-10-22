@@ -51,7 +51,6 @@ static unsigned flags = VERBOSE;
  */
 static int swap_test(void)
 {
-	fflush(stdout);
 	#define N 1280
 	int *a, *b, *c;
 	clock_t t0, t1;
@@ -101,14 +100,8 @@ static int swap_test(void)
 
 	/* House keeping. */
 	free(a);
-	printf("Freed a\n");
-	fflush(stdout);
 	free(b);
-	printf("Freed b\n");
-	fflush(stdout);
 	free(c);
-	printf("Freed c\n");
-	fflush(stdout);
 
 	t1 = times(&timing);
 
@@ -610,7 +603,6 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[i], "swp"))
 		{
 			printf("Swapping Test\n");
-			fflush(stdout);
 			printf("  Result:             [%s]\n",
 				(!swap_test()) ? "PASSED" : "FAILED");
 		}

@@ -287,7 +287,7 @@ PRIVATE struct __frame
 typedef struct __frame frame_t;
 
 static const unsigned tau = 0;
-int i = 0;
+
 //static const frame_t* end = frames + NR_FRAMES;
 /*
 PRIVATE void advance_clock(frame_t** current) {
@@ -322,27 +322,31 @@ PRIVATE int allocf(void)
 	unsigned cycle = FALSE;
 	/* Escrita foi escalonada */
 	unsigned written = FALSE;
+	unsigned owned = FALSE;
 
 	/* Caso tenha chego no final da lista volta para o início */
 	if (i == NR_FRAMES) {
 		i = 0;
 	}
 
+	unsigned begin = i;
+
 	while (TRUE)
 	{
+
 		/* Frame livre */
 		if (frames[i].count == 0) {
 			goto found;
 		}
 
-		/* Frame referenciado por mais de um processo*/
-		if (frames[i].count > 1) {
-			continue;
-		}
 
 		if (frames[i].owner == curr_proc->pid) {
+			/* Frame referenciado por mais de um processo*/
+			if (frames[i].count > 1) {
+				continue;
+			}
+			owned = TRUE;
 			pte_t* table = getpte(curr_proc, frames[i].addr);
-
 			if (table->accessed) {
 				table->accessed = FALSE;
 				frames[i].age = cpu_time(curr_proc);
@@ -351,6 +355,7 @@ PRIVATE int allocf(void)
 				if (age > tau) {
 					if (table->dirty) {
 						int result = swap_out(curr_proc, frames[i].addr);
+						table->accessed = FALSE;
 						if (result == 0) {
 							table->dirty = FALSE;
 							if (cycle && !written) {
@@ -369,6 +374,11 @@ PRIVATE int allocf(void)
 
 		if (i == NR_FRAMES) {
 			i = 0;
+		}
+		if (i == begin) {
+			if(!owned) {
+				return -1;
+			}
 			cycle = TRUE;
 		}
 	}
