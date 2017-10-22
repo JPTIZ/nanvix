@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -76,59 +76,59 @@ static char *_scanpoint = NULL;
  */
 char *strtok(char *s1, const char *s2)
 {
-	char *scan;
-	char *tok;
-	const char *dscan;
+    char *scan;
+    char *tok;
+    const char *dscan;
 
-	if ((s1 == NULL) && (_scanpoint == NULL))
+    if ((s1 == NULL) && (_scanpoint == NULL))
       return (NULL);
       
-	if (s1 != NULL)
-		scan = s1;
-	else
-		scan = _scanpoint;
+    if (s1 != NULL)
+        scan = s1;
+    else
+        scan = _scanpoint;
 
-	/*
-	 * Scan leading delimiters.
-	 */
-	for (/* noop*/ ; *scan != '\0'; scan++)
-	{
-		for (dscan = s2; *dscan != '\0'; dscan++)
-		{
-			if (*scan == *dscan)
-				break;
-		}
+    /*
+     * Scan leading delimiters.
+     */
+    for (/* noop*/ ; *scan != '\0'; scan++)
+    {
+        for (dscan = s2; *dscan != '\0'; dscan++)
+        {
+            if (*scan == *dscan)
+                break;
+        }
 
-		if (*dscan == '\0')
-			break;
-	}
-	if (*scan == '\0')
-	{
-		_scanpoint = NULL;
-		return (NULL);
+        if (*dscan == '\0')
+            break;
+    }
+    if (*scan == '\0')
+    {
+        _scanpoint = NULL;
+        return (NULL);
     }
 
-	tok = scan;
+    tok = scan;
 
-	/*
-	 * Scan token.
-	 */
-	for (/* noop */; *scan != '\0'; scan++)
-	{
-		/* ++ moved down. */
-		for (dscan = s2; *dscan != '\0';)
-		{
-			if (*scan == *dscan++)
-			{
-				_scanpoint = scan + 1;
-				*scan = '\0';
-				return (tok);
-			}
-		}
-	}
+    /*
+     * Scan token.
+     */
+    for (/* noop */; *scan != '\0'; scan++)
+    {
+        /* ++ moved down. */
+        for (dscan = s2; *dscan != '\0';)
+        {
+            if (*scan == *dscan++)
+            {
+                _scanpoint = scan + 1;
+                *scan = '\0';
+                return (tok);
+            }
+        }
+    }
 
-	/* Reached end of string. */
-	_scanpoint = NULL;
-	
-	return (tok);
+    /* Reached end of string. */
+    _scanpoint = NULL;
+    
+    return (tok);
 }

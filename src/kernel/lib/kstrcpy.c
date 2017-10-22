@@ -29,14 +29,14 @@
  */
 PUBLIC char *kstrcpy(char *dest, const char *src)
 {
-	char *p;
-	
-	p = dest;
-	
-	/* Copy strings. */
-	while (*src != '\0')
-		*p++ = *src++;
-	*p = '\0';
-	
-	return (dest);
+    char *p;
+    
+    p = dest;
+    
+    /* Copy strings. */
+    while (*src != '\0')
+        *p++ = *src++;
+    *p = '\0';
+    
+    return (dest);
 }

@@ -40,13 +40,13 @@
  */
 static void version(void)
 {
-	printf("%s (Nanvix Coreutils) %d.%d\n\n", PROG_NAME, VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2015 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("%s (Nanvix Coreutils) %d.%d\n\n", PROG_NAME, VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2015 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /**
@@ -56,13 +56,13 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: %s\n\n", PROG_NAME);
-	printf("Brief: Clears the screen.\n\n");
-	printf("Options:\n");
-	printf("      --help    Display this information and exit\n");
-	printf("      --version Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: %s\n\n", PROG_NAME);
+    printf("Brief: Clears the screen.\n\n");
+    printf("Options:\n");
+    printf("      --help    Display this information and exit\n");
+    printf("      --version Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /**
@@ -75,21 +75,21 @@ static void usage(void)
  */
 static void getargs(int argc, char *const argv[])
 {
-	char *arg;
-	
-	/* Get program arguments. */
-	for (int i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Display help information. */
-		if (!strcmp(arg, "--help"))
-			usage();
-		
-		/* Display program version. */
-		else if (!strcmp(arg, "--version"))
-			version();
-	}
+    char *arg;
+    
+    /* Get program arguments. */
+    for (int i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Display help information. */
+        if (!strcmp(arg, "--help"))
+            usage();
+        
+        /* Display program version. */
+        else if (!strcmp(arg, "--version"))
+            version();
+    }
 }
 
 /**
@@ -101,10 +101,10 @@ static void getargs(int argc, char *const argv[])
  */
 int main(int argc, char **argv)
 {
-	getargs(argc, argv);
-	
-	/* Clears the screen. */
-	ioctl(1, TTY_CLEAR);
+    getargs(argc, argv);
+    
+    /* Clears the screen. */
+    ioctl(1, TTY_CLEAR);
 
-	return (EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 }

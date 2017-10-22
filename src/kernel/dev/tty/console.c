@@ -33,7 +33,7 @@
 /* Video registers. */
 #define VIDEO_CRTL_REG 0x3d4 /* Video control register. */
 #define VIDEO_DATA_REG 0x3d5 /* Video data register.    */
-	
+    
 /* Video control offset registers. */
 #define VIDEO_HTOT 0x00 /* Horizontal total.               */
 #define VIDEO_HDEE 0x01 /* Horizontal display enabled end. */
@@ -66,8 +66,8 @@
  */
 PRIVATE struct 
 {
-	int x; /* Horizontal axis position. */
-	int y; /* Vertical axis position.   */
+    int x; /* Horizontal axis position. */
+    int y; /* Vertical axis position.   */
 } cursor;
 
 /* Video memory.*/
@@ -78,12 +78,12 @@ PRIVATE uint16_t *video = (uint16_t*)VIDEO_ADDR;
  */
 PRIVATE void cursor_move(void)
 {
-	word_t cursor_location = cursor.y*VIDEO_WIDTH + cursor.x;
-	
-	outputb(VIDEO_CRTL_REG, VIDEO_CLH);
-	outputb(VIDEO_DATA_REG, (byte_t) ((cursor_location >> 8) & 0xFF));
-	outputb(VIDEO_CRTL_REG, VIDEO_CLL);
-	outputb(VIDEO_DATA_REG, (byte_t) (cursor_location & 0xFF));
+    word_t cursor_location = cursor.y*VIDEO_WIDTH + cursor.x;
+    
+    outputb(VIDEO_CRTL_REG, VIDEO_CLH);
+    outputb(VIDEO_DATA_REG, (byte_t) ((cursor_location >> 8) & 0xFF));
+    outputb(VIDEO_CRTL_REG, VIDEO_CLL);
+    outputb(VIDEO_DATA_REG, (byte_t) (cursor_location & 0xFF));
 }
 
 /*
@@ -91,26 +91,26 @@ PRIVATE void cursor_move(void)
  */
 PRIVATE void console_scrolldown(void)
 {
-	uint16_t *p;
-	
-	/* Pull lines up. */
-	for (p = video; p < (video + (VIDEO_HIGH-1)*(VIDEO_WIDTH)); p++)
-		*p = *(p + VIDEO_WIDTH);
-	
-	/* Blank last line. */
-	for (; p < video + VIDEO_HIGH*VIDEO_WIDTH; p++)
-		*p = (BLACK << 8) | (' ');
-		
-	/* Set cursor position. */
-	cursor.x = 0; cursor.y = VIDEO_HIGH - 1;
+    uint16_t *p;
+    
+    /* Pull lines up. */
+    for (p = video; p < (video + (VIDEO_HIGH-1)*(VIDEO_WIDTH)); p++)
+        *p = *(p + VIDEO_WIDTH);
+    
+    /* Blank last line. */
+    for (; p < video + VIDEO_HIGH*VIDEO_WIDTH; p++)
+        *p = (BLACK << 8) | (' ');
+        
+    /* Set cursor position. */
+    cursor.x = 0; cursor.y = VIDEO_HIGH - 1;
 }
 
 /*
  * Outputs a colored ASCII character on the console device.
  */
 PUBLIC void console_put(uint8_t ch, uint8_t color)
-{	
-	/* Parse character. */
+{    
+    /* Parse character. */
     switch (ch)
     {
         /* New line. */
@@ -135,7 +135,7 @@ PUBLIC void console_put(uint8_t ch, uint8_t color)
                 cursor.y--;
             }
             video[cursor.y*VIDEO_WIDTH +cursor.x] = (color << 8) | (' ');
-            break;			
+            break;            
         
         /* Any other. */
         default:
@@ -160,15 +160,15 @@ PUBLIC void console_put(uint8_t ch, uint8_t color)
  */
 PUBLIC void console_clear(void)
 {
-	uint16_t *p;
-	
-	/* Blank all lines. */
-	for (p = video; p < (video + VIDEO_HIGH*VIDEO_WIDTH); p++)
-		*p = (BLACK << 8) | (' ');
-	
-	/* Set console cursor position. */
-	cursor.x = cursor.y = 0;
-	cursor_move();
+    uint16_t *p;
+    
+    /* Blank all lines. */
+    for (p = video; p < (video + VIDEO_HIGH*VIDEO_WIDTH); p++)
+        *p = (BLACK << 8) | (' ');
+    
+    /* Set console cursor position. */
+    cursor.x = cursor.y = 0;
+    cursor_move();
 }
 
 /*
@@ -176,15 +176,15 @@ PUBLIC void console_clear(void)
  */
 PUBLIC void console_write(struct kbuffer *buffer)
 {
-	uint8_t ch;
-	
-	/* Outputs all characters. */
-	while (!KBUFFER_EMPTY((*buffer)))
-	{ 
-		KBUFFER_GET((*buffer), ch);
-	
-		console_put(ch, WHITE);
-	}
+    uint8_t ch;
+    
+    /* Outputs all characters. */
+    while (!KBUFFER_EMPTY((*buffer)))
+    { 
+        KBUFFER_GET((*buffer), ch);
+    
+        console_put(ch, WHITE);
+    }
 }
 
 /*
@@ -192,12 +192,12 @@ PUBLIC void console_write(struct kbuffer *buffer)
  */
 PUBLIC void console_init(void)
 {
-	/* Set cursor shape. */
-	outputb(VIDEO_CRTL_REG, VIDEO_CS);
-	outputb(VIDEO_DATA_REG, 0x00);
-	outputb(VIDEO_CRTL_REG, VIDEO_CE);
-	outputb(VIDEO_DATA_REG, 0x1f);
-	
-	/* Clear the console. */
-	console_clear();
+    /* Set cursor shape. */
+    outputb(VIDEO_CRTL_REG, VIDEO_CS);
+    outputb(VIDEO_DATA_REG, 0x00);
+    outputb(VIDEO_CRTL_REG, VIDEO_CE);
+    outputb(VIDEO_DATA_REG, 0x1f);
+    
+    /* Clear the console. */
+    console_clear();
 }

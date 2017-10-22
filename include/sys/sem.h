@@ -20,18 +20,18 @@
 #ifndef SEM_H_
 #define SEM_H_
 
-	/**
-	 * @brief Comand values for semaphores.
-	 */
-	/**@{*/
-	#define GETVAL   0 /**< Returns the value of a semaphore. */
-	#define SETVAL   1 /**< Sets the value of a semaphore.    */
-	#define IPC_RMID 3 /**< Destroys a semaphore.            */
-	/**@}*/
+    /**
+     * @brief Comand values for semaphores.
+     */
+    /**@{*/
+    #define GETVAL   0 /**< Returns the value of a semaphore. */
+    #define SETVAL   1 /**< Sets the value of a semaphore.    */
+    #define IPC_RMID 3 /**< Destroys a semaphore.            */
+    /**@}*/
 
-	/* Forward definitions. */
-	extern int semget(unsigned);
-	extern int semctl(int, int, int);
-	extern int semop(int, int);
+    /* Forward definitions. */
+    extern int semget(unsigned);
+    extern int semctl(int, int, int);
+    extern int semop(int, int);
 
 #endif /* SEM_H_ */

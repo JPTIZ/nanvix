@@ -31,45 +31,45 @@
  */
 PUBLIC int itoa(char *str, unsigned num, int base)
 {
-	char *b = str;
-	char *p, *p1, *p2;
-	unsigned divisor;
+    char *b = str;
+    char *p, *p1, *p2;
+    unsigned divisor;
 
-	if (base == 'd')
-		divisor = 10;
+    if (base == 'd')
+        divisor = 10;
 
-	else
-	{
-		*b++ = '0'; *b++ = 'x';
-		divisor = 16;
-	}
+    else
+    {
+        *b++ = '0'; *b++ = 'x';
+        divisor = 16;
+    }
 
-	p = b;
+    p = b;
 
-	/* Convert number. */
-	do
-	{
-		int remainder = num % divisor;
+    /* Convert number. */
+    do
+    {
+        int remainder = num % divisor;
 
-		*p++ = (remainder < 10) ? remainder + '0' : 
-		                          remainder + 'a' - 10;
-	} while (num /= divisor);
+        *p++ = (remainder < 10) ? remainder + '0' : 
+                                  remainder + 'a' - 10;
+    } while (num /= divisor);
 
-	/* Fill up with zeros. */
-	if (divisor == 16)
-		while ((p - b) < 8)
-			*p++ = '0';
+    /* Fill up with zeros. */
+    if (divisor == 16)
+        while ((p - b) < 8)
+            *p++ = '0';
 
-	/* Reverse BUF. */
-	p1 = b; p2 = p - 1;
-	while (p1 < p2)
-	{
-		char tmp = *p1;
-		*p1++ = *p2;
-		*p2-- = tmp;
-	}
+    /* Reverse BUF. */
+    p1 = b; p2 = p - 1;
+    while (p1 < p2)
+    {
+        char tmp = *p1;
+        *p1++ = *p2;
+        *p2-- = tmp;
+    }
 
-	return(p - str);
+    return(p - str);
 }
 
 /**
@@ -83,9 +83,9 @@ PUBLIC int itoa(char *str, unsigned num, int base)
  */
 PUBLIC int kvsprintf(char *str, const char *fmt, va_list args)
 {
-	char *base = str;
-	char *s;
-	
+    char *base = str;
+    char *s;
+    
     /* Format string. */
     while (*fmt != '\0')
     {
@@ -97,23 +97,23 @@ PUBLIC int kvsprintf(char *str, const char *fmt, va_list args)
         else
             switch (*(++fmt))
             {
-				/* Character. */
+                /* Character. */
                 case 'c':
-					*str++ = va_arg(args, char);
-					break;
-				
-				/* Number. */
-				case 'd':
-				case 'x':
-					str += itoa(str, va_arg(args, unsigned int), *fmt);
-					break;
-				
-				/* String. */
+                    *str++ = va_arg(args, char);
+                    break;
+                
+                /* Number. */
+                case 'd':
+                case 'x':
+                    str += itoa(str, va_arg(args, unsigned int), *fmt);
+                    break;
+                
+                /* String. */
                 case 's':
-					s = va_arg(args, char*);
+                    s = va_arg(args, char*);
                     while (*s != '\0')
-						*str++ = *s++;
-					break;
+                        *str++ = *s++;
+                    break;
                 
                 /* Ignore. */
                 default:

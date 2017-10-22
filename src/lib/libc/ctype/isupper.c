@@ -78,6 +78,6 @@
  */
 int isupper(int c)
 {
-	return ((__ctype_ptr__[c+1] & (_U|_L)) == _U);
+    return ((__ctype_ptr__[c+1] & (_U|_L)) == _U);
 }
 

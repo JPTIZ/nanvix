@@ -29,10 +29,10 @@ PRIVATE void default_hwint(void);
  * @brief Hardware interrupt handlers.
  */
 PUBLIC void (*hwint_handlers[])(void) = {
-	&default_hwint, &default_hwint,	&default_hwint, &default_hwint,
-	&default_hwint, &default_hwint,	&default_hwint, &default_hwint,
-	&default_hwint, &default_hwint,	&default_hwint, &default_hwint,
-	&default_hwint, &default_hwint,	&default_hwint, &default_hwint
+    &default_hwint, &default_hwint,    &default_hwint, &default_hwint,
+    &default_hwint, &default_hwint,    &default_hwint, &default_hwint,
+    &default_hwint, &default_hwint,    &default_hwint, &default_hwint,
+    &default_hwint, &default_hwint,    &default_hwint, &default_hwint
 };
 
 /**
@@ -40,7 +40,7 @@ PUBLIC void (*hwint_handlers[])(void) = {
  */
 PRIVATE void default_hwint(void)
 {
-	noop();
+    noop();
 }
 
 /**
@@ -54,13 +54,13 @@ PRIVATE void default_hwint(void)
  */
 PUBLIC int set_hwint(int num, void (*handler)(void))
 {
-	/* Interrupt handler already set? */
-	if (hwint_handlers[num] != &default_hwint)
-		return (-EBUSY);
-	
-	hwint_handlers[num] = handler;
-	
-	return (0);
+    /* Interrupt handler already set? */
+    if (hwint_handlers[num] != &default_hwint)
+        return (-EBUSY);
+    
+    hwint_handlers[num] = handler;
+    
+    return (0);
 }
 
 /**
@@ -80,13 +80,13 @@ PUBLIC int set_hwint(int num, void (*handler)(void))
  */
 PUBLIC void do_hwint(unsigned irq)
 {
-	unsigned old_irqlvl;
-	
-	old_irqlvl = processor_raise(irq_lvl(irq));
+    unsigned old_irqlvl;
+    
+    old_irqlvl = processor_raise(irq_lvl(irq));
 
-	enable_interrupts();
-	hwint_handlers[irq]();
-	disable_interrupts();
+    enable_interrupts();
+    hwint_handlers[irq]();
+    disable_interrupts();
 
-	processor_drop(old_irqlvl);
+    processor_drop(old_irqlvl);
 }

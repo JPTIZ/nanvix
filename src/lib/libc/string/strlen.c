@@ -36,11 +36,11 @@
  */
 size_t strlen(const char *str)
 {
-	const char *p;
-	
-	/* Count the number of characters. */
-	for (p = str; *p != '\0'; p++)
-		/* No operation.*/;
-	
-	return (p - str);
+    const char *p;
+    
+    /* Count the number of characters. */
+    for (p = str; *p != '\0'; p++)
+        /* No operation.*/;
+    
+    return (p - str);
 }

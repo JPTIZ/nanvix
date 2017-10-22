@@ -65,16 +65,16 @@
  */
 void unsetenv(char *name)
 {
-	register char **P;
-	int offset;
+    register char **P;
+    int offset;
 
-	/* If set multiple times. */
-	while (findenv(name, &offset))	
-	{
-		for (P = &environ[offset];; ++P)
-		{
-		  if ((*P = *(P + 1)) != '\0')
-			break;
-		}
-	}
+    /* If set multiple times. */
+    while (findenv(name, &offset))    
+    {
+        for (P = &environ[offset];; ++P)
+        {
+          if ((*P = *(P + 1)) != '\0')
+            break;
+        }
+    }
 }

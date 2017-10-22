@@ -37,21 +37,21 @@
  */
 PUBLIC int sys_ustat(dev_t dev, struct ustat *ubuf)
 {
-	struct superblock *sb;
+    struct superblock *sb;
 
-	/* Valid buffer. */
-	if (!chkmem(ubuf, sizeof(struct ustat), MAY_WRITE))
-		return (-EINVAL);
-	
-	sb = superblock_get(dev);
-	
-	/* Not a mounted file system. */
-	if (sb == NULL)
-		return (-ENODEV);
-	
-	superblock_stat(sb, ubuf);
-	
-	superblock_put(sb);
+    /* Valid buffer. */
+    if (!chkmem(ubuf, sizeof(struct ustat), MAY_WRITE))
+        return (-EINVAL);
+    
+    sb = superblock_get(dev);
+    
+    /* Not a mounted file system. */
+    if (sb == NULL)
+        return (-ENODEV);
+    
+    superblock_stat(sb, ubuf);
+    
+    superblock_put(sb);
 
-	return (0);
+    return (0);
 }

@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -70,26 +70,26 @@ static int (*_cmp)(const void *, const void *) = NULL;
  */
 static int find_pivot(void *base, int i, int j, size_t size)
 {
-	void *first_key;
-	void *next_key;
+    void *first_key;
+    void *next_key;
 
-	first_key = (void *) (((char *) base) + (i*size));
-	next_key = first_key;
+    first_key = (void *) (((char *) base) + (i*size));
+    next_key = first_key;
 
-	for (int k = i + 1; k <= j; k++)
+    for (int k = i + 1; k <= j; k++)
     {
-		int res;
-		
-		next_key = (void *) (((char *) next_key) + size);
-		res = (*_cmp) (next_key, first_key);
+        int res;
+        
+        next_key = (void *) (((char *) next_key) + size);
+        res = (*_cmp) (next_key, first_key);
 
-		if (res > 0)
-			return (k);
-		else if (res < 0)
-			return (i);
-	}
+        if (res > 0)
+            return (k);
+        else if (res < 0)
+            return (i);
+    }
 
-	return (-1);
+    return (-1);
 }
 
 /**
@@ -97,22 +97,22 @@ static int find_pivot(void *base, int i, int j, size_t size)
  */
 static void swap(void *base, int i, int j, size_t size)
 {
-	static void *temp = NULL;
-	static size_t max_size = 0;
-	void *elem1, *elem2;
+    static void *temp = NULL;
+    static size_t max_size = 0;
+    void *elem1, *elem2;
 
-	if (size > max_size)
-	{
-		temp = realloc(temp, size);
-		max_size = size;
-	}
+    if (size > max_size)
+    {
+        temp = realloc(temp, size);
+        max_size = size;
+    }
 
-	elem1 = ((char *) base) + (i * size);
-	elem2 = ((char *) base) + (j * size);
+    elem1 = ((char *) base) + (i * size);
+    elem2 = ((char *) base) + (j * size);
 
-	memcpy (temp, elem1, size);
-	memcpy (elem1, elem2, size);
-	memcpy (elem2, temp, size);
+    memcpy (temp, elem1, size);
+    memcpy (elem1, elem2, size);
+    memcpy (elem2, temp, size);
 }
 
 /**
@@ -120,30 +120,30 @@ static void swap(void *base, int i, int j, size_t size)
  */
 static int partition(void *base, int i, int j, int pivot_index, size_t size)
 {
-	int left, right;
+    int left, right;
 
-	left = i;
-	right = j;
+    left = i;
+    right = j;
 
-	do
-	{
-		swap (base, left, right, size);
+    do
+    {
+        swap (base, left, right, size);
 
-		if (pivot_index == left)
-			pivot_index = right;
-		else if (pivot_index == right)
-			pivot_index = left;
+        if (pivot_index == left)
+            pivot_index = right;
+        else if (pivot_index == right)
+            pivot_index = left;
 
-		while (_cmp ((void *) (((char *) base) + (left * size)),
-			(void *) (((char *) base) + (pivot_index * size))) < 0)
-			left++;
+        while (_cmp ((void *) (((char *) base) + (left * size)),
+            (void *) (((char *) base) + (pivot_index * size))) < 0)
+            left++;
 
-		while (_cmp ((void *) (((char *) base) + (right * size)),
-			(void *) (((char *) base) + (pivot_index * size))) >= 0)
-			right--;
-	} while (left <= right);
+        while (_cmp ((void *) (((char *) base) + (right * size)),
+            (void *) (((char *) base) + (pivot_index * size))) >= 0)
+            right--;
+    } while (left <= right);
 
-	return (left);
+    return (left);
 }
 
 /**
@@ -151,17 +151,17 @@ static int partition(void *base, int i, int j, int pivot_index, size_t size)
  */
 static void _qsort(void *base, int i, int j, size_t size)
 {
-	int pivot_index, mid;
+    int pivot_index, mid;
 
-	pivot_index = find_pivot(base, i, j, size);
+    pivot_index = find_pivot(base, i, j, size);
 
-	if (pivot_index == -1)
-		return;
+    if (pivot_index == -1)
+        return;
 
-	/* Sort. */
-	mid = partition (base, i, j, pivot_index, size);
-	_qsort (base, i, mid - 1, size);
-	_qsort (base, mid, j, size);
+    /* Sort. */
+    mid = partition (base, i, j, pivot_index, size);
+    _qsort (base, i, mid - 1, size);
+    _qsort (base, mid, j, size);
 }
 
 /**
@@ -175,6 +175,6 @@ static void _qsort(void *base, int i, int j, size_t size)
 void qsort
 (void *base, size_t nmemb, size_t size, int (*cmp)(const void *, const void *))
 {
-	_cmp = cmp;
-	_qsort(base, 0, nmemb - 1, size);
+    _cmp = cmp;
+    _qsort(base, 0, nmemb - 1, size);
 }

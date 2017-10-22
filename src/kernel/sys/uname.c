@@ -28,12 +28,12 @@
  */
 PRIVATE void do_uname(struct utsname *name)
 {
-	/* Fill up utsname structure. */
-	kstrncpy(name->sysname, SYSNAME, _UTSNAME_LENGTH);
-	kstrncpy(name->nodename, NODENAME, _UTSNAME_LENGTH);
-	kstrncpy(name->release, RELEASE, _UTSNAME_LENGTH);
-	kstrncpy(name->version, VERSION, _UTSNAME_LENGTH);
-	kstrncpy(name->machine, MACHINE, _UTSNAME_LENGTH);
+    /* Fill up utsname structure. */
+    kstrncpy(name->sysname, SYSNAME, _UTSNAME_LENGTH);
+    kstrncpy(name->nodename, NODENAME, _UTSNAME_LENGTH);
+    kstrncpy(name->release, RELEASE, _UTSNAME_LENGTH);
+    kstrncpy(name->version, VERSION, _UTSNAME_LENGTH);
+    kstrncpy(name->machine, MACHINE, _UTSNAME_LENGTH);
 }
 
 /*
@@ -41,11 +41,11 @@ PRIVATE void do_uname(struct utsname *name)
  */
 PUBLIC int sys_uname(struct utsname *name)
 {
-	/* Invalid buffer. */
-	if (!chkmem(name, sizeof(struct utsname), MAY_WRITE))
-		return (-EINVAL);
-	
-	do_uname(name);
-	
-	return (0);
+    /* Invalid buffer. */
+    if (!chkmem(name, sizeof(struct utsname), MAY_WRITE))
+        return (-EINVAL);
+    
+    do_uname(name);
+    
+    return (0);
 }

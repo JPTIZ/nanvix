@@ -34,5 +34,5 @@
  */
 int atoi(const char *str)
 {
-	return ((int)strtol(str, (char **) NULL, 10));
+    return ((int)strtol(str, (char **) NULL, 10));
 }

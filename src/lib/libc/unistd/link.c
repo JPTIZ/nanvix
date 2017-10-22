@@ -25,22 +25,22 @@
  */
 int link(const char *path1, const char *path2)
 {
-	int ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_link),
-		  "b" (path1),
-		  "c" (path2)
-	);
-	
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
-	
-	return (ret);
+    int ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_link),
+          "b" (path1),
+          "c" (path2)
+    );
+    
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
+    
+    return (ret);
 }

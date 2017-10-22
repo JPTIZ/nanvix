@@ -46,7 +46,7 @@ void *memcpy(void *restrict s1, const void *restrict s2, size_t n)
     p2 = s2;
     
     while (n-- > 0)
-    	*p1++ = *p2++;
+        *p1++ = *p2++;
  
     return (p1);
 }

@@ -35,16 +35,16 @@ PUBLIC dev_t kout = DEVID(NULL_MAJOR, 0, CHRDEV);
  * @param dev New output device.
  */
 PUBLIC void chkout(dev_t dev)
-{	
-	ssize_t n;                 /* Number of bytes to be flushed. */
-	char buffer[KBUFFER_SIZE]; /* Temporary buffer.              */
-	
-	kout = dev;
-	
-	/* Flush the content of kernel log. */
-	n = klog_read(0, buffer, KLOG_SIZE);
-	
-	cdev_write(kout, buffer, n);
+{    
+    ssize_t n;                 /* Number of bytes to be flushed. */
+    char buffer[KBUFFER_SIZE]; /* Temporary buffer.              */
+    
+    kout = dev;
+    
+    /* Flush the content of kernel log. */
+    n = klog_read(0, buffer, KLOG_SIZE);
+    
+    cdev_write(kout, buffer, n);
 }
 
 /**
@@ -54,12 +54,12 @@ PUBLIC void chkout(dev_t dev)
  */
 PUBLIC const char *skip_code(const char *buffer, int *i)
 {
-	if (get_code(buffer))
-	{
-		*i = *i-2;
-		return buffer+2;
-	}
-	return buffer;
+    if (get_code(buffer))
+    {
+        *i = *i-2;
+        return buffer+2;
+    }
+    return buffer;
 }
 
 /**
@@ -69,18 +69,18 @@ PUBLIC const char *skip_code(const char *buffer, int *i)
  */
 PUBLIC char get_code(const char *buffer)
 {
-	if ((buffer[0] == KERN_SOH_ASCII) && !(&buffer[1] == NULL))
-	{
-		if ((buffer[1] >= '0' && buffer[1] <= '7'))
-			return buffer[1];	
+    if ((buffer[0] == KERN_SOH_ASCII) && !(&buffer[1] == NULL))
+    {
+        if ((buffer[1] >= '0' && buffer[1] <= '7'))
+            return buffer[1];    
 
-		else
-		{
-			kpanic("log level error: invalid log level");
-			return -1;
-		}
-	}
-	return 0;
+        else
+        {
+            kpanic("log level error: invalid log level");
+            return -1;
+        }
+    }
+    return 0;
 }
 
 /**
@@ -90,19 +90,19 @@ PUBLIC char get_code(const char *buffer)
  */
 PUBLIC void kprintf(const char *fmt, ...)
 {
-	int i;                         /* Loop index.                              */
-	va_list args;                  /* Variable arguments list.                 */
-	char buffer[KBUFFER_SIZE + 1]; /* Temporary buffer.                        */
-	const char *buffer_no_code;    /* Temporary buffer for log level printing. */
-	
-	/* Convert to raw string. */
-	va_start(args, fmt);
-	i = kvsprintf(buffer, fmt, args);
-	buffer[i++] = '\n';
-	va_end(args);
+    int i;                         /* Loop index.                              */
+    va_list args;                  /* Variable arguments list.                 */
+    char buffer[KBUFFER_SIZE + 1]; /* Temporary buffer.                        */
+    const char *buffer_no_code;    /* Temporary buffer for log level printing. */
+    
+    /* Convert to raw string. */
+    va_start(args, fmt);
+    i = kvsprintf(buffer, fmt, args);
+    buffer[i++] = '\n';
+    va_end(args);
 
-	/* Save on kernel log, skip code in case it's not correctly done and write on kout. */
-	klog_write(0, buffer, i);
-	buffer_no_code = skip_code(buffer, &i);
-	cdev_write(kout, buffer_no_code, i);
+    /* Save on kernel log, skip code in case it's not correctly done and write on kout. */
+    klog_write(0, buffer, i);
+    buffer_no_code = skip_code(buffer, &i);
+    cdev_write(kout, buffer_no_code, i);
 }

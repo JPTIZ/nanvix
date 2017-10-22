@@ -31,8 +31,8 @@
  */
 static struct
 {
-	char *source; /* Source file. */
-	char *target; /* Target file. */
+    char *source; /* Source file. */
+    char *target; /* Target file. */
 } args = { NULL, NULL };
 
 
@@ -41,13 +41,13 @@ static struct
  */
 static void version(void)
 {
-	printf("ln (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("ln (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -55,13 +55,13 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: ln [options] <source file> <taget file>\n\n");
-	printf("Brief: Creates a link between two files.\n\n");
-	printf("Options:\n");
-	printf("  --help    Display this information and exit\n");
-	printf("  --version Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: ln [options] <source file> <taget file>\n\n");
+    printf("Brief: Creates a link between two files.\n\n");
+    printf("Options:\n");
+    printf("  --help    Display this information and exit\n");
+    printf("  --version Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -69,47 +69,47 @@ static void usage(void)
  */
 static void getargs(int argc, char *const argv[])
 {
-	int i;     /* Loop index.       */
-	char *arg; /* Current argument. */
-	int state; /* Processing state. */
-	
-	/* Processing states. */
-	#define SET_NONE   0
-	#define SET_SOURCE 1
-	#define SET_TARGET 2
-	
-	state = SET_SOURCE;
-	
-	/* Read command line arguments. */
-	for (i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Parse command line argument. */
-		if (!strcmp(arg, "--help")) {
-			usage();
-		}
-		else if (!strcmp(arg, "--version")) {
-			version();
-		}
-		else if (state == SET_SOURCE)
-		{
-			args.source = arg;
-			state = SET_TARGET;
-		}
-		else if (state == SET_TARGET)
-		{
-			args.target = arg;
-			state = SET_NONE;
-		}
-	}
-	
-	/* Missing arguments. */
-	if ((args.source == NULL) || (args.target == NULL))
-	{
-		fprintf(stderr, "ln: missing arguments\n");
-		usage();
-	}
+    int i;     /* Loop index.       */
+    char *arg; /* Current argument. */
+    int state; /* Processing state. */
+    
+    /* Processing states. */
+    #define SET_NONE   0
+    #define SET_SOURCE 1
+    #define SET_TARGET 2
+    
+    state = SET_SOURCE;
+    
+    /* Read command line arguments. */
+    for (i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Parse command line argument. */
+        if (!strcmp(arg, "--help")) {
+            usage();
+        }
+        else if (!strcmp(arg, "--version")) {
+            version();
+        }
+        else if (state == SET_SOURCE)
+        {
+            args.source = arg;
+            state = SET_TARGET;
+        }
+        else if (state == SET_TARGET)
+        {
+            args.target = arg;
+            state = SET_NONE;
+        }
+    }
+    
+    /* Missing arguments. */
+    if ((args.source == NULL) || (args.target == NULL))
+    {
+        fprintf(stderr, "ln: missing arguments\n");
+        usage();
+    }
 }
 
 /*
@@ -117,14 +117,14 @@ static void getargs(int argc, char *const argv[])
  */
 int main(int argc, char *const argv[])
 {
-	getargs(argc, argv);
-	
-	/* Failed to link(). */
-	if (link(args.source, args.target) < 0)
-	{
-		fprintf(stderr, "ln: cannot link()\n");
-		return (EXIT_FAILURE);
-	}
-	
-	return (EXIT_SUCCESS);
+    getargs(argc, argv);
+    
+    /* Failed to link(). */
+    if (link(args.source, args.target) < 0)
+    {
+        fprintf(stderr, "ln: cannot link()\n");
+        return (EXIT_FAILURE);
+    }
+    
+    return (EXIT_SUCCESS);
 }

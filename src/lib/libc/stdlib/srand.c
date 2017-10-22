@@ -37,5 +37,5 @@ unsigned _next = 1;
  */
 void srand(unsigned seed)
 {
-	_next = seed;
+    _next = seed;
 }

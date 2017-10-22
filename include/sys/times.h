@@ -21,20 +21,20 @@
 #define SYS_TIMES_H_
 #ifndef _ASM_FILE_
 
-	#include <sys/types.h>
+    #include <sys/types.h>
 
-	/**
-	 * @brief Process times.
-	 */
-	struct tms
-	{
-		clock_t tms_utime;  /**< User CPU time.                          */
-		clock_t tms_stime;  /**< System CPU time.                        */
-		clock_t tms_cutime; /**< User CPU time of terminated children.   */
-		clock_t tms_cstime; /**< System CPU time of terminated children. */
-	};
-	
-	extern clock_t times(struct tms *buffer);
+    /**
+     * @brief Process times.
+     */
+    struct tms
+    {
+        clock_t tms_utime;  /**< User CPU time.                          */
+        clock_t tms_stime;  /**< System CPU time.                        */
+        clock_t tms_cutime; /**< User CPU time of terminated children.   */
+        clock_t tms_cstime; /**< System CPU time of terminated children. */
+    };
+    
+    extern clock_t times(struct tms *buffer);
 
 #endif /* _ASM_FILE_ */
 #endif /* TIMES_H_ */

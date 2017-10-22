@@ -25,5 +25,5 @@
  */
 PUBLIC void sys__exit(int status)
 {
-	die((1 << 8) | (status & 0xff));
+    die((1 << 8) | (status & 0xff));
 }

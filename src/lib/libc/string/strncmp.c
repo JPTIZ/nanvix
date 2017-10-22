@@ -41,21 +41,21 @@
  */
 int strncmp(const char *restrict s1, const char *restrict s2, size_t n)
 {
-	/* Compare strings. */
-	while (n > 0)
-	{
-		/* Strings differ. */
-		if (*s1 != *s2)
-			return ((*(unsigned char *) s1 - *(unsigned char *) s2));
-		
-		/* End of string. */
-		else if (*s1 == '\0')
-			return (0);
-		
-		s1++;
-		s2++;
-		n--;
-	}
-	
-	return (0);
+    /* Compare strings. */
+    while (n > 0)
+    {
+        /* Strings differ. */
+        if (*s1 != *s2)
+            return ((*(unsigned char *) s1 - *(unsigned char *) s2));
+        
+        /* End of string. */
+        else if (*s1 == '\0')
+            return (0);
+        
+        s1++;
+        s2++;
+        n--;
+    }
+    
+    return (0);
 }

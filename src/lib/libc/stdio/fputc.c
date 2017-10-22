@@ -24,5 +24,5 @@
  */
 int fputc(int c, FILE *stream)
 {
-	return (putc(c, stream));
+    return (putc(c, stream));
 }

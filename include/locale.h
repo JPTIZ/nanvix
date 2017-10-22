@@ -26,8 +26,8 @@
 #ifndef _LOCALE_H_
 #define _LOCALE_H_
 
-	/* Declarations. */
-	#define _NEED_LOCALE_T
-	#include <decl.h>
+    /* Declarations. */
+    #define _NEED_LOCALE_T
+    #include <decl.h>
 
 #endif /* _LOCALE_H_ */

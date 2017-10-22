@@ -39,46 +39,46 @@ static int nfiles = 0;         /* Number of files to concatenate. */
  */
 static void cat(char *filename)
 {
-	int fd;           /* File descriptor.        */
-	int off;          /* Buffer offset.          */
-	char buf[BUFSIZ]; /* Buffer.                 */
-	ssize_t n, nread; /* Bytes actually read.    */
-	ssize_t nwritten; /* Bytes actually written. */
-	
-	fd = open(filename, O_RDONLY);
-	
-	/* Failed to open file. */
-	if (fd < 0)
-	{
-		fprintf(stderr, "cat: cannot open %s\n", filename);
-		return;
-	}
-	
-	/* Concatenate file. */
-	do
-	{	
-		/* Error while reading. */
-		if ((nread = read(fd, buf, BUFSIZ)) < 0)
-			fprintf(stderr, "cat: cannot read %s\n", filename);
-		
-		n = nread;
-		
-		off = 0;
-		do
-		{
-			nwritten = write(fileno(stdout), &buf[off], nread);
-			
-			/* Failed to write. */
-			if (nwritten < 0)
-			{
-				fprintf(stderr, "cat: write error\n");
-				exit(errno);
-			}
-			off += nwritten;
-		} while ((nread -= nwritten) > 0);
-	} while (n == BUFSIZ);	
-	
-	close(fd);
+    int fd;           /* File descriptor.        */
+    int off;          /* Buffer offset.          */
+    char buf[BUFSIZ]; /* Buffer.                 */
+    ssize_t n, nread; /* Bytes actually read.    */
+    ssize_t nwritten; /* Bytes actually written. */
+    
+    fd = open(filename, O_RDONLY);
+    
+    /* Failed to open file. */
+    if (fd < 0)
+    {
+        fprintf(stderr, "cat: cannot open %s\n", filename);
+        return;
+    }
+    
+    /* Concatenate file. */
+    do
+    {    
+        /* Error while reading. */
+        if ((nread = read(fd, buf, BUFSIZ)) < 0)
+            fprintf(stderr, "cat: cannot read %s\n", filename);
+        
+        n = nread;
+        
+        off = 0;
+        do
+        {
+            nwritten = write(fileno(stdout), &buf[off], nread);
+            
+            /* Failed to write. */
+            if (nwritten < 0)
+            {
+                fprintf(stderr, "cat: write error\n");
+                exit(errno);
+            }
+            off += nwritten;
+        } while ((nread -= nwritten) > 0);
+    } while (n == BUFSIZ);    
+    
+    close(fd);
 }
 
 /*
@@ -86,13 +86,13 @@ static void cat(char *filename)
  */
 static void version(void)
 {
-	printf("cat (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("cat (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -100,13 +100,13 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: cat [options] [files]\n\n");
-	printf("Brief: Concatenates files.\n\n");
-	printf("Options:\n");
-	printf("  --help    Display this information and exit\n");
-	printf("  --version Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: cat [options] [files]\n\n");
+    printf("Brief: Concatenates files.\n\n");
+    printf("Options:\n");
+    printf("  --help    Display this information and exit\n");
+    printf("  --version Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -114,77 +114,77 @@ static void usage(void)
  */
 static void getargs(int argc, char *const argv[])
 {
-	int i;     /* Loop index.       */
-	char *arg; /* Working argument. */
-	
-	/* Get program arguments. */
-	for (i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Display help information. */
-		if (!strcmp(arg, "--help"))
-			usage();
-		
-		/* Display program version. */
-		else if (!strcmp(arg, "--version"))
-			version();
-		
-		/* Get file names. */
-		else
-		{
-			if (nfiles++ == 0)
-				filenames = &argv[i];
-		}
-	}
+    int i;     /* Loop index.       */
+    char *arg; /* Working argument. */
+    
+    /* Get program arguments. */
+    for (i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Display help information. */
+        if (!strcmp(arg, "--help"))
+            usage();
+        
+        /* Display program version. */
+        else if (!strcmp(arg, "--version"))
+            version();
+        
+        /* Get file names. */
+        else
+        {
+            if (nfiles++ == 0)
+                filenames = &argv[i];
+        }
+    }
 }
 
 /*
  * Concatenates files. 
  */
 int main(int argc, char *const argv[])
-{	
-	int i;          /* Loop index.               */
-	char *filename; /* Name of the working file. */
-	struct stat st; /* Working file's status.    */
-	
-	getargs(argc, argv);
-	
-	/* Concatenate standard input. */
-	if (nfiles == 0)
-		cat("/dev/tty");
-	
-	/* Concatenate files. */
-	else
-	{
-		for (i = 0; i < nfiles; i++)
-		{
-			filename = filenames[i];
-			
-			/* Concatenate standard input. */
-			if (!strcmp(filename, "-"))
-				filename = "/dev/tty";
-			
-			/* Check if file is not a directory. */
-			else
-			{
-				if (stat(filename, &st) == -1)
-				{
-					fprintf(stderr, "cat: cannot stat %s\n", filename);
-					continue;
-				}
-				
-				/* File is directory. */
-				if (S_ISDIR(st.st_mode))
-				{
-					fprintf(stderr, "cat: %s is a directory\n", filename);
-					continue;
-				}
-			}
-				
-			cat(filename);
-		}
-	}
-	
-	return(EXIT_SUCCESS);
+{    
+    int i;          /* Loop index.               */
+    char *filename; /* Name of the working file. */
+    struct stat st; /* Working file's status.    */
+    
+    getargs(argc, argv);
+    
+    /* Concatenate standard input. */
+    if (nfiles == 0)
+        cat("/dev/tty");
+    
+    /* Concatenate files. */
+    else
+    {
+        for (i = 0; i < nfiles; i++)
+        {
+            filename = filenames[i];
+            
+            /* Concatenate standard input. */
+            if (!strcmp(filename, "-"))
+                filename = "/dev/tty";
+            
+            /* Check if file is not a directory. */
+            else
+            {
+                if (stat(filename, &st) == -1)
+                {
+                    fprintf(stderr, "cat: cannot stat %s\n", filename);
+                    continue;
+                }
+                
+                /* File is directory. */
+                if (S_ISDIR(st.st_mode))
+                {
+                    fprintf(stderr, "cat: %s is a directory\n", filename);
+                    continue;
+                }
+            }
+                
+            cat(filename);
+        }
+    }
+    
+    return(EXIT_SUCCESS);
 }

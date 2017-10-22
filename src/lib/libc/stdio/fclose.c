@@ -26,16 +26,16 @@
  */
 int fclose(FILE *stream)
 {
-	fflush(stream);
+    fflush(stream);
 
-	/* Failed to close file. */
-	if (close(fileno(stream)) < 0)
-		return (EOF);
-	
-	/* Release file stream. */
-	if (stream->flags & _IOMYBUF)
-		free(stream->buf);
-	stream->flags = 0;
-	
-	return (0);
+    /* Failed to close file. */
+    if (close(fileno(stream)) < 0)
+        return (EOF);
+    
+    /* Release file stream. */
+    if (stream->flags & _IOMYBUF)
+        free(stream->buf);
+    stream->flags = 0;
+    
+    return (0);
 }

@@ -78,6 +78,6 @@
  */
 int isspace(int c)
 {
-	return(__ctype_ptr__[c+1] & _S);
+    return(__ctype_ptr__[c+1] & _S);
 }
 

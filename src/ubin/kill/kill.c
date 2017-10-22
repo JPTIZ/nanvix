@@ -35,8 +35,8 @@
  */
 static struct
 {
-	int sig;   /* Signal number. */
-	pid_t pid; /* ID of process. */
+    int sig;   /* Signal number. */
+    pid_t pid; /* ID of process. */
 } args = { 0, 0 };
 
 /*
@@ -44,13 +44,13 @@ static struct
  */
 static void version(void)
 {
-	printf("kill (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("kill (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -58,14 +58,14 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: kill [options] <pid>\n\n");
-	printf("Brief: Sends a signal to a process.\n\n");
-	printf("Options:\n");
-	printf("  --help             Display this information and exit\n");
-	printf("  --signal <signame> Signal to be sent\n");
-	printf("  --version          Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: kill [options] <pid>\n\n");
+    printf("Brief: Sends a signal to a process.\n\n");
+    printf("Options:\n");
+    printf("  --help             Display this information and exit\n");
+    printf("  --signal <signame> Signal to be sent\n");
+    printf("  --version          Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /*
@@ -73,30 +73,30 @@ static void usage(void)
  */
 static int getsig(char *signame)
 {
-	if (!strcmp(signame, "SIGKILL"))     return(SIGKILL);
-	else if (!strcmp(signame, "SIGSTOP")) return(SIGSTOP);
-	else if (!strcmp(signame, "SIGURG"))  return(SIGURG);
-	else if (!strcmp(signame, "SIGABRT")) return(SIGABRT);
-	else if (!strcmp(signame, "SIGBUS"))  return(SIGBUS);
-	else if (!strcmp(signame, "SIGCHLD")) return(SIGCHLD);
-	else if (!strcmp(signame, "SIGCONT")) return(SIGCONT);
-	else if (!strcmp(signame, "SIGFPE"))  return(SIGFPE);
-	else if (!strcmp(signame, "SIGHUP"))  return(SIGHUP);
-	else if (!strcmp(signame, "SIGILL"))  return(SIGILL);
-	else if (!strcmp(signame, "SIGINT"))  return(SIGINT);
-	else if (!strcmp(signame, "SIGPIPE")) return(SIGPIPE);
-	else if (!strcmp(signame, "SIGQUIT")) return(SIGQUIT);
-	else if (!strcmp(signame, "SIGSEGV")) return(SIGSEGV);
-	else if (!strcmp(signame, "SIGTERM")) return(SIGTERM);
-	else if (!strcmp(signame, "SIGTSTP")) return(SIGTSTP);
-	else if (!strcmp(signame, "SIGTTIN")) return(SIGTTIN);
-	else if (!strcmp(signame, "SIGTTOU")) return(SIGTTOU);
-	else if (!strcmp(signame, "SIGALRM")) return(SIGALRM);
-	else if (!strcmp(signame, "SIGUSR1")) return(SIGUSR1);
-	else if (!strcmp(signame, "SIGUSR2")) return(SIGUSR2);
-	else if (!strcmp(signame, "SIGTRAP")) return(SIGTRAP);
-	
-	return (-1);
+    if (!strcmp(signame, "SIGKILL"))     return(SIGKILL);
+    else if (!strcmp(signame, "SIGSTOP")) return(SIGSTOP);
+    else if (!strcmp(signame, "SIGURG"))  return(SIGURG);
+    else if (!strcmp(signame, "SIGABRT")) return(SIGABRT);
+    else if (!strcmp(signame, "SIGBUS"))  return(SIGBUS);
+    else if (!strcmp(signame, "SIGCHLD")) return(SIGCHLD);
+    else if (!strcmp(signame, "SIGCONT")) return(SIGCONT);
+    else if (!strcmp(signame, "SIGFPE"))  return(SIGFPE);
+    else if (!strcmp(signame, "SIGHUP"))  return(SIGHUP);
+    else if (!strcmp(signame, "SIGILL"))  return(SIGILL);
+    else if (!strcmp(signame, "SIGINT"))  return(SIGINT);
+    else if (!strcmp(signame, "SIGPIPE")) return(SIGPIPE);
+    else if (!strcmp(signame, "SIGQUIT")) return(SIGQUIT);
+    else if (!strcmp(signame, "SIGSEGV")) return(SIGSEGV);
+    else if (!strcmp(signame, "SIGTERM")) return(SIGTERM);
+    else if (!strcmp(signame, "SIGTSTP")) return(SIGTSTP);
+    else if (!strcmp(signame, "SIGTTIN")) return(SIGTTIN);
+    else if (!strcmp(signame, "SIGTTOU")) return(SIGTTOU);
+    else if (!strcmp(signame, "SIGALRM")) return(SIGALRM);
+    else if (!strcmp(signame, "SIGUSR1")) return(SIGUSR1);
+    else if (!strcmp(signame, "SIGUSR2")) return(SIGUSR2);
+    else if (!strcmp(signame, "SIGTRAP")) return(SIGTRAP);
+    
+    return (-1);
 }
 
 /*
@@ -104,65 +104,65 @@ static int getsig(char *signame)
  */
 static void getargs(int argc, char *const argv[])
 {
-	int i;         /* Loop index.         */
-	char *arg;     /* Current argument.   */
-	int state;     /* Processing state.   */
-	char *signame; /* Name of the signal. */
-	
-	/* State values. */
-	#define READ_ARG 0 /* Read argument.  */
-	#define SET_SIG  1 /* Set signal.     */
-	
-	signame = SIGNAME_DEFAULT;
-	state = READ_ARG;
-	
-	/* Read command line arguments. */
-	for (i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Set value. */
-		if (state != READ_ARG)
-		{
-			switch (state)
-			{
-				/* Set signal number. */
-				case SET_SIG:
-					signame = arg;
-					state = READ_ARG;
-					break;
-				
-				/* Bad usage.*/
-				default:
-					usage();
-			}
-			
-			continue;
-		}
-		
-		/* Parse command line argument. */
-		if (!strcmp(arg, "--help")) {
-			usage();
-		}
-		else if (!strcmp(arg, "--signal")) {
-			state = SET_SIG;
-		}
-		else if (!strcmp(arg, "--version")) {
-			version();
-		}
-		else {
-			args.pid = atoi(arg);
-		}
-	}
-	
-	args.sig = getsig(signame);
-	
-	/* Bad signal number. */
-	if (args.sig < 0)
-	{
-		fprintf(stderr, "kill: unknown signal number\n");
-		exit(EXIT_FAILURE);
-	}
+    int i;         /* Loop index.         */
+    char *arg;     /* Current argument.   */
+    int state;     /* Processing state.   */
+    char *signame; /* Name of the signal. */
+    
+    /* State values. */
+    #define READ_ARG 0 /* Read argument.  */
+    #define SET_SIG  1 /* Set signal.     */
+    
+    signame = SIGNAME_DEFAULT;
+    state = READ_ARG;
+    
+    /* Read command line arguments. */
+    for (i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Set value. */
+        if (state != READ_ARG)
+        {
+            switch (state)
+            {
+                /* Set signal number. */
+                case SET_SIG:
+                    signame = arg;
+                    state = READ_ARG;
+                    break;
+                
+                /* Bad usage.*/
+                default:
+                    usage();
+            }
+            
+            continue;
+        }
+        
+        /* Parse command line argument. */
+        if (!strcmp(arg, "--help")) {
+            usage();
+        }
+        else if (!strcmp(arg, "--signal")) {
+            state = SET_SIG;
+        }
+        else if (!strcmp(arg, "--version")) {
+            version();
+        }
+        else {
+            args.pid = atoi(arg);
+        }
+    }
+    
+    args.sig = getsig(signame);
+    
+    /* Bad signal number. */
+    if (args.sig < 0)
+    {
+        fprintf(stderr, "kill: unknown signal number\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 /*
@@ -170,9 +170,9 @@ static void getargs(int argc, char *const argv[])
  */
 int main(int argc, char *const argv[])
 {
-	getargs(argc, argv);
-	
-	kill(args.pid, args.sig);
-	
-	return (EXIT_SUCCESS);
+    getargs(argc, argv);
+    
+    kill(args.pid, args.sig);
+    
+    return (EXIT_SUCCESS);
 }

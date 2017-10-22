@@ -39,15 +39,15 @@ extern void dirent_cleanup(void); /* <dirent.h> */
  */
 void exit(int status)
 {
-	/*
-	 * Call registered atexit() functions
-	 * in the reverse order in which they were
-	 * registered.
-	 */
-	while (_atexit._ind-- > 0)
-		_atexit._fns[_atexit._ind]();
-	
-	stdio_cleanup();
-	
-	_exit(status);
+    /*
+     * Call registered atexit() functions
+     * in the reverse order in which they were
+     * registered.
+     */
+    while (_atexit._ind-- > 0)
+        _atexit._fns[_atexit._ind]();
+    
+    stdio_cleanup();
+    
+    _exit(status);
 }

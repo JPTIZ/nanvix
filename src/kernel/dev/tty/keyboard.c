@@ -90,28 +90,28 @@
  * @brief Keymap: US International non-shifted key map. 
  */
 PRIVATE uint8_t ascii_non_shift[] = {
-	'\0', ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	'0', '-', '=', BACKSPACE, TAB, 'q', 'w', 'e', 'r', 't',
-	'y', 'u', 'i', 'o', 'p',  '[', ']', ENTER, 0, 'a', 's',
-	'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0, '\\',
-	'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0, 0, 0,
-	' ', 0, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10,
-	0, 0, KHOME, KUP, KPGUP,'-', KLEFT, '5', KRIGHT, '+', KEND,
-	KDOWN, KPGDN, KINS, KDEL, 0, 0, 0, KF11, KF12
+    '\0', ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    '0', '-', '=', BACKSPACE, TAB, 'q', 'w', 'e', 'r', 't',
+    'y', 'u', 'i', 'o', 'p',  '[', ']', ENTER, 0, 'a', 's',
+    'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0, '\\',
+    'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0, 0, 0,
+    ' ', 0, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10,
+    0, 0, KHOME, KUP, KPGUP,'-', KLEFT, '5', KRIGHT, '+', KEND,
+    KDOWN, KPGDN, KINS, KDEL, 0, 0, 0, KF11, KF12
 };
                                     
 /**
  * @brief US International shifted keymap.
  */
 PRIVATE uint8_t ascii_shift[] = {
-	'\0', ESC, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-	'_', '+', BACKSPACE, TAB, 'Q', 'W',   'E', 'R', 'T', 'Y', 'U',
-	'I', 'O', 'P',   '{', '}', ENTER, KCTRL, 'A', 'S', 'D', 'F', 'G',
-	'H', 'J', 'K', 'L', ':', '\"', '~', 0, '|','Z', 'X', 'C', 'V',
-	'B', 'N', 'M', '<', '>', '?', 0, 0, 0, ' ', 0, KF1,   KF2,
-	KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10, 0, 0, KHOME, KUP,
-	KPGUP, '-', KLEFT, '5',   KRIGHT, '+', KEND, KDOWN, KPGDN,
-	KINS, KDEL, 0, 0, 0, KF11, KF12
+    '\0', ESC, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+    '_', '+', BACKSPACE, TAB, 'Q', 'W',   'E', 'R', 'T', 'Y', 'U',
+    'I', 'O', 'P',   '{', '}', ENTER, KCTRL, 'A', 'S', 'D', 'F', 'G',
+    'H', 'J', 'K', 'L', ':', '\"', '~', 0, '|','Z', 'X', 'C', 'V',
+    'B', 'N', 'M', '<', '>', '?', 0, 0, 0, ' ', 0, KF1,   KF2,
+    KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10, 0, 0, KHOME, KUP,
+    KPGUP, '-', KLEFT, '5',   KRIGHT, '+', KEND, KDOWN, KPGDN,
+    KINS, KDEL, 0, 0, 0, KF11, KF12
 };
 
 #else
@@ -120,26 +120,26 @@ PRIVATE uint8_t ascii_shift[] = {
  * @brief French non-shifted keymap. 
  */
 PRIVATE uint8_t ascii_non_shift[] = {
-	0, ESC, '&', 'e', '\"', '\'', '(', '-', 'e', '_', 'c', 'a', ')', '=', BACKSPACE,
-	TAB, 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',  '^', '$', ENTER,
-	0, 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 0, 0,
-	0, '*', 'w', 'x', 'c', 'v', 'b', 'n', ',', ';', ':', 0, 0,
-	0, 0, ' ', 0, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10,
-	0, 0, KHOME, KUP, KPGUP, 0, KLEFT, 0, KRIGHT, 0, KEND,
-	KDOWN, KPGDN, KINS, KDEL, 0, 0, 0, KF11, KF12
+    0, ESC, '&', 'e', '\"', '\'', '(', '-', 'e', '_', 'c', 'a', ')', '=', BACKSPACE,
+    TAB, 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',  '^', '$', ENTER,
+    0, 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 0, 0,
+    0, '*', 'w', 'x', 'c', 'v', 'b', 'n', ',', ';', ':', 0, 0,
+    0, 0, ' ', 0, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10,
+    0, 0, KHOME, KUP, KPGUP, 0, KLEFT, 0, KRIGHT, 0, KEND,
+    KDOWN, KPGDN, KINS, KDEL, 0, 0, 0, KF11, KF12
 };
                                     
 /**
  * @brief French shifted keymap.
  */
 PRIVATE uint8_t ascii_shift[] = {
-	0, ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 0, '+', BACKSPACE,
-	TAB, 'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '\"', 0, ENTER,
-	0, 'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 0, 0,
-	0, 0, 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', '/', 0, 0,
-	0, 0, ' ', 0, KF1,   KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10,
-	0, 0, KHOME, KUP, KPGUP, 0, KLEFT, 0, KRIGHT, 0, KEND,
-	KDOWN, KPGDN, KINS, KDEL, 0, 0, 0, KF11, KF12
+    0, ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 0, '+', BACKSPACE,
+    TAB, 'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '\"', 0, ENTER,
+    0, 'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 0, 0,
+    0, 0, 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', '/', 0, 0,
+    0, 0, ' ', 0, KF1,   KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10,
+    0, 0, KHOME, KUP, KPGUP, 0, KLEFT, 0, KRIGHT, 0, KEND,
+    KDOWN, KPGDN, KINS, KDEL, 0, 0, 0, KF11, KF12
 };
 
 #endif
@@ -149,9 +149,9 @@ PRIVATE uint8_t ascii_shift[] = {
  */
 enum flags
 {
-	ANY   = (1 << 0), /**< Any key pressed.   */
-	SHIFT = (1 << 1), /**< Shift key pressed. */
-	CTRL  = (1 << 2)  /**< CTRL key pressed.  */
+    ANY   = (1 << 0), /**< Any key pressed.   */
+    SHIFT = (1 << 1), /**< Shift key pressed. */
+    CTRL  = (1 << 2)  /**< CTRL key pressed.  */
 };
 
 /**
@@ -164,16 +164,16 @@ PRIVATE enum flags mode = 0;
  */
 PRIVATE uint8_t parse_key_hit(void)
 {
-	uint8_t scancode;
-	uint8_t port_value;
-	
+    uint8_t scancode;
+    uint8_t port_value;
+    
     scancode = inputb(0x60);
 
     port_value = inputb(0x61);
     outputb(0x61, port_value | 0x80); 
     outputb(0x61, port_value & ~0x80); 
-	
-	/* A key was released. */
+    
+    /* A key was released. */
     if(scancode & 0x80)
     {
         scancode &= 0x7F; 
@@ -181,46 +181,46 @@ PRIVATE uint8_t parse_key_hit(void)
         /* Parse scan code. */
         switch (scancode)
         {
-			/* Shift. */
-			case KRLEFT_SHIFT:
-			case KRRIGHT_SHIFT:
-				mode &= ~SHIFT;
-				break;
-			
-			/* CTRL. */
-			case KRLEFT_CTRL:
-				mode &= ~CTRL;
-				break;
-			
-			/* Any other. */
-			default:
-				mode &= ~ANY;
-				break;
-		}
+            /* Shift. */
+            case KRLEFT_SHIFT:
+            case KRRIGHT_SHIFT:
+                mode &= ~SHIFT;
+                break;
+            
+            /* CTRL. */
+            case KRLEFT_CTRL:
+                mode &= ~CTRL;
+                break;
+            
+            /* Any other. */
+            default:
+                mode &= ~ANY;
+                break;
+        }
     }
    
-   	/* A key was pressed. */ 
+       /* A key was pressed. */ 
     else 
     {   
         /* Parse scan code. */
         switch (scancode)
         {
-			/* Shift. */
-			case KRLEFT_SHIFT:
-			case KRRIGHT_SHIFT:
-				mode |= SHIFT;
-				break;
-			
-			/* CTRL. */
-			case KRLEFT_CTRL:
-				mode |= CTRL;
-				break;
-			
-			/* Any other. */
-			default:
-				mode |= ANY;
-				break;
-		}
+            /* Shift. */
+            case KRLEFT_SHIFT:
+            case KRRIGHT_SHIFT:
+                mode |= SHIFT;
+                break;
+            
+            /* CTRL. */
+            case KRLEFT_CTRL:
+                mode |= CTRL;
+                break;
+            
+            /* Any other. */
+            default:
+                mode |= ANY;
+                break;
+        }
     }
     
     return (scancode);
@@ -236,17 +236,17 @@ PRIVATE uint8_t get_ascii(void)
     
     scancode = parse_key_hit();
 
-	/* Printable character. */
+    /* Printable character. */
     if (mode & ANY)
     {
-		code = (mode & SHIFT) ? ascii_shift[scancode]:ascii_non_shift[scancode];
-									
-		/* CTRL pressed. */
-		if (mode & CTRL)
-			return ((code < 96) ? code - 64 : code - 96);
-		
-		return (code);
-	}
+        code = (mode & SHIFT) ? ascii_shift[scancode]:ascii_non_shift[scancode];
+                                    
+        /* CTRL pressed. */
+        if (mode & CTRL)
+            return ((code < 96) ? code - 64 : code - 96);
+        
+        return (code);
+    }
         
     return (0);
 }
@@ -259,39 +259,39 @@ PRIVATE uint8_t get_ascii(void)
  */
 PUBLIC void do_keyboard_hit(void)
 {
-	uint8_t ascii_code;
-	
-	ascii_code = get_ascii();
+    uint8_t ascii_code;
+    
+    ascii_code = get_ascii();
    
-	/* Ignore. */
-	if (ascii_code == 0)
-		return;
+    /* Ignore. */
+    if (ascii_code == 0)
+        return;
    
-	/* Parse ASCII code. */
-	switch(ascii_code)
-	{
-		/* Fall through. */
-		case KINS:
+    /* Parse ASCII code. */
+    switch(ascii_code)
+    {
+        /* Fall through. */
+        case KINS:
         case KDEL:
         case KHOME:
         case KEND:
-		case KPGUP:
+        case KPGUP:
         case KPGDN:
         case KLEFT:
         case KRIGHT:
-        	/*  TODO: implement. */
+            /*  TODO: implement. */
             break;
 
-		/* Fall through. */
+        /* Fall through. */
         case KUP:
         case KDOWN:
-        	tty_int(ascii_code);
-        	break;
+            tty_int(ascii_code);
+            break;
 
-		default:
-		    tty_int(ascii_code);
-        	break;
-	}
+        default:
+            tty_int(ascii_code);
+            break;
+    }
 }
 
 
@@ -300,8 +300,8 @@ PUBLIC void do_keyboard_hit(void)
  */
 PUBLIC void keyboard_init(void)
 {
-	set_hwint(INT_KEYBOARD, &do_keyboard_hit);
-	
+    set_hwint(INT_KEYBOARD, &do_keyboard_hit);
+    
     while (inputb(0x64) & 1)
-		inputb(0x60);
+        inputb(0x60);
 }

@@ -26,5 +26,5 @@
  */
 PUBLIC uid_t sys_geteuid(void)
 {
-	return (curr_proc->euid);
+    return (curr_proc->euid);
 }

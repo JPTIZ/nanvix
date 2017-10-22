@@ -46,20 +46,20 @@ static char *filename = NULL;
  */
 static int touch(const char *filename)
 {
-	int fd;      /* File descriptor. */
-	mode_t mode; /* File mode.       */
-	
-	/* Create file, if it does not exist. */
-	mode = S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR | S_IWGRP | S_IWOTH;
-	fd = open(filename, O_CREAT, mode);
-	if (fd < 0)
-	{
-		fprintf(stderr, "error: failed to create file\n");
-		return (errno);
-	}
-	close(fd);
-	
-	return (utime(filename, NULL));
+    int fd;      /* File descriptor. */
+    mode_t mode; /* File mode.       */
+    
+    /* Create file, if it does not exist. */
+    mode = S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR | S_IWGRP | S_IWOTH;
+    fd = open(filename, O_CREAT, mode);
+    if (fd < 0)
+    {
+        fprintf(stderr, "error: failed to create file\n");
+        return (errno);
+    }
+    close(fd);
+    
+    return (utime(filename, NULL));
 }
 
 /**
@@ -69,13 +69,13 @@ static int touch(const char *filename)
  */
 static void version(void)
 {
-	printf("touch (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
-	printf("This is free software under the "); 
-	printf("GNU General Public License Version 3.\n");
-	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("touch (Nanvix Coreutils) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
+    printf("Copyright(C) 2011-2014 Pedro H. Penna\n");
+    printf("This is free software under the "); 
+    printf("GNU General Public License Version 3.\n");
+    printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /**
@@ -85,13 +85,13 @@ static void version(void)
  */
 static void usage(void)
 {
-	printf("Usage: touch <file>\n\n");
-	printf("Brief: Changes file timestamps.\n\n");
-	printf("Options:\n");
-	printf("      --help    Display this information and exit\n");
-	printf("      --version Display program version and exit\n");
-	
-	exit(EXIT_SUCCESS);
+    printf("Usage: touch <file>\n\n");
+    printf("Brief: Changes file timestamps.\n\n");
+    printf("Options:\n");
+    printf("      --help    Display this information and exit\n");
+    printf("      --version Display program version and exit\n");
+    
+    exit(EXIT_SUCCESS);
 }
 
 /**
@@ -104,32 +104,32 @@ static void usage(void)
  */
 static void getargs(int argc, char *const argv[])
 {
-	char *arg;
-	
-	/* Get program arguments. */
-	for (int i = 1; i < argc; i++)
-	{
-		arg = argv[i];
-		
-		/* Display help information. */
-		if (!strcmp(arg, "--help"))
-			usage();
-		
-		/* Display program version. */
-		else if (!strcmp(arg, "--version"))
-			version();
-		
-		/* Get filename. */
-		else
-			filename = arg;
-	}
-	
-	/* Bad filename. */
-	if (filename == NULL)
-	{
-		fprintf(stderr, "error: bad filename\n");
-		exit(EXIT_FAILURE);
-	}
+    char *arg;
+    
+    /* Get program arguments. */
+    for (int i = 1; i < argc; i++)
+    {
+        arg = argv[i];
+        
+        /* Display help information. */
+        if (!strcmp(arg, "--help"))
+            usage();
+        
+        /* Display program version. */
+        else if (!strcmp(arg, "--version"))
+            version();
+        
+        /* Get filename. */
+        else
+            filename = arg;
+    }
+    
+    /* Bad filename. */
+    if (filename == NULL)
+    {
+        fprintf(stderr, "error: bad filename\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 /**
@@ -146,16 +146,16 @@ static void getargs(int argc, char *const argv[])
  */
 int main(int argc, char *const argv[])
 {
-	int err;
-	
-	getargs(argc, argv);
-	
-	err = touch(filename);
-	if (err < 0)
-	{
-		fprintf(stderr, "error: failed to update file timestamps\n");
-		return (EXIT_FAILURE);
-	}
-	
-	return (EXIT_SUCCESS);
+    int err;
+    
+    getargs(argc, argv);
+    
+    err = touch(filename);
+    if (err < 0)
+    {
+        fprintf(stderr, "error: failed to update file timestamps\n");
+        return (EXIT_FAILURE);
+    }
+    
+    return (EXIT_SUCCESS);
 }

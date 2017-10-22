@@ -27,46 +27,46 @@
  */
 int setvbuf(FILE *stream, char *buf, int type, size_t size)
 {
-	/* Invalid file stream. */
-	if (stream->flags == 0)
-		return (errno = EBADF);
-	
-	/* Buffer already assigned. */
-	if (stream->buf != NULL)
-		return (errno = EBUSY);
-	
-	/* Not buffered. */
-	if (type == _IONBF)
-	{
-		stream->flags &= ~(_IOLBF | _IOFBF);
-		stream->flags |= _IONBF;
-		stream->count = 0;
-	}
-	
-	/* Buffered. */
-	else
-	{
-		/* Invalid buffer size. */
-		if (size == 0)
-			return (errno = EINVAL);
-		
-		/* Assign own buffer. */
-		if (buf == NULL)
-		{
-			/* Failed to allocate buffer. */
-			if ((buf = malloc(size)) == NULL)
-				return (errno);
-			
-			stream->flags |= _IOMYBUF;
-		}
-		
-		stream->flags &= ~(_IOFBF | _IONBF | _IOFBF);
-		stream->flags |= (type == _IOLBF) ? _IOLBF : _IOFBF;
-		stream->buf = buf;
-		stream->ptr = buf;
-		stream->bufsiz = size;
-		stream->count = 0;
-	}
-	
-	return (0);
+    /* Invalid file stream. */
+    if (stream->flags == 0)
+        return (errno = EBADF);
+    
+    /* Buffer already assigned. */
+    if (stream->buf != NULL)
+        return (errno = EBUSY);
+    
+    /* Not buffered. */
+    if (type == _IONBF)
+    {
+        stream->flags &= ~(_IOLBF | _IOFBF);
+        stream->flags |= _IONBF;
+        stream->count = 0;
+    }
+    
+    /* Buffered. */
+    else
+    {
+        /* Invalid buffer size. */
+        if (size == 0)
+            return (errno = EINVAL);
+        
+        /* Assign own buffer. */
+        if (buf == NULL)
+        {
+            /* Failed to allocate buffer. */
+            if ((buf = malloc(size)) == NULL)
+                return (errno);
+            
+            stream->flags |= _IOMYBUF;
+        }
+        
+        stream->flags &= ~(_IOFBF | _IONBF | _IOFBF);
+        stream->flags |= (type == _IOLBF) ? _IOLBF : _IOFBF;
+        stream->buf = buf;
+        stream->ptr = buf;
+        stream->bufsiz = size;
+        stream->count = 0;
+    }
+    
+    return (0);
 }

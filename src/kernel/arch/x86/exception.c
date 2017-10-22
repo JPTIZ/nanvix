@@ -29,16 +29,16 @@
 #define EXCEPTION(name, sig, msg)                                   \
 PUBLIC void do_##name(int err, struct intstack s)                   \
 {                                                                   \
-	/* Die. */                                                      \
-	if (KERNEL_RUNNING(curr_proc))                                  \
-	{                                                               \
-		kprintf("%s: %d", msg, err & 0xffff);                       \
-		dumpregs(&s);                                               \
-		kprintf("process %d caused and exception", curr_proc->pid); \
-		kpanic("kernel running");                                   \
-	}                                                               \
-	                                                                \
-	sndsig(curr_proc, sig);                                         \
+    /* Die. */                                                      \
+    if (KERNEL_RUNNING(curr_proc))                                  \
+    {                                                               \
+        kprintf("%s: %d", msg, err & 0xffff);                       \
+        dumpregs(&s);                                               \
+        kprintf("process %d caused and exception", curr_proc->pid); \
+        kpanic("kernel running");                                   \
+    }                                                               \
+                                                                    \
+    sndsig(curr_proc, sig);                                         \
 }                                                                   \
 
 /*
@@ -46,12 +46,12 @@ PUBLIC void do_##name(int err, struct intstack s)                   \
  */
 PRIVATE void dumpregs(struct intstack *regs)
 {
-	/* Dump registers. */
-	kprintf("  [eax: %x] [ebx:    %x]", regs->eax, regs->ebx);
-	kprintf("  [ecx: %x] [edx:    %x]", regs->ecx, regs->edx);
-	kprintf("  [esi: %x] [edi:    %x]", regs->esi, regs->edi);
-	kprintf("  [ebp: %x] [esp:    %x]", regs->ebp, curr_proc->kesp);
-	kprintf("  [eip: %x] [eflags: %x]", regs->eip, regs->eflags);
+    /* Dump registers. */
+    kprintf("  [eax: %x] [ebx:    %x]", regs->eax, regs->ebx);
+    kprintf("  [ecx: %x] [edx:    %x]", regs->ecx, regs->edx);
+    kprintf("  [esi: %x] [edi:    %x]", regs->esi, regs->edi);
+    kprintf("  [ebp: %x] [esp:    %x]", regs->ebp, curr_proc->kesp);
+    kprintf("  [eip: %x] [eflags: %x]", regs->eip, regs->eflags);
 }
 
 /* Easy-to-handle exceptions. */
@@ -75,7 +75,7 @@ EXCEPTION(coprocessor_error,           SIGSEGV, "coprocessor error")
  */
 PUBLIC void do_nmi(void)
 {
-	kprintf("nmi received but trying to continue");
+    kprintf("nmi received but trying to continue");
 }
 
 /*
@@ -83,37 +83,37 @@ PUBLIC void do_nmi(void)
  */
 PUBLIC void do_debug(void)
 {
-	kprintf("debug exception received but not implemented");
+    kprintf("debug exception received but not implemented");
 }
 
 /*
  * Handles a page fault.
  */
 PUBLIC void do_page_fault(addr_t addr, int err, int dummy0, int dummy1, struct intstack s)
-{	
-	((void)dummy0);
-	((void)dummy1);
-	
-	/* Validty page fault. */
-	if (!(err & 1))
-	{
-		if (!vfault(addr))
-			return;
-	}
-	
-	/* Protection page fault. */
-	if (err & 2)
-	{
-		if (!pfault(addr))
-			return;
-	}
-	
-	if (KERNEL_RUNNING(curr_proc))
-	{
-		dumpregs(&s);
-		kpanic("kernel page fault %d at %x", err, addr);
-	}
-	
-	sndsig(curr_proc, SIGSEGV);
-	die(((SIGSEGV & 0xff) << 16) | (1 << 9));
+{    
+    ((void)dummy0);
+    ((void)dummy1);
+    
+    /* Validty page fault. */
+    if (!(err & 1))
+    {
+        if (!vfault(addr))
+            return;
+    }
+    
+    /* Protection page fault. */
+    if (err & 2)
+    {
+        if (!pfault(addr))
+            return;
+    }
+    
+    if (KERNEL_RUNNING(curr_proc))
+    {
+        dumpregs(&s);
+        kpanic("kernel page fault %d at %x", err, addr);
+    }
+    
+    sndsig(curr_proc, SIGSEGV);
+    die(((SIGSEGV & 0xff) << 16) | (1 << 9));
 }

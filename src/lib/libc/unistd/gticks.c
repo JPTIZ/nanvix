@@ -27,20 +27,20 @@
  */
 int gticks()
 {
-	ssize_t ret = 0;
+    ssize_t ret = 0;
 
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_gticks)
-	);
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_gticks)
+    );
 
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
 
-	return ((ssize_t)ret);
+    return ((ssize_t)ret);
 }

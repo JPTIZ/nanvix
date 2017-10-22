@@ -24,7 +24,7 @@
  */
 int isatty(int fd)
 {
-	struct termios termios;
-	
-	return (tcgetattr(fd, &termios) == 0);
+    struct termios termios;
+    
+    return (tcgetattr(fd, &termios) == 0);
 }

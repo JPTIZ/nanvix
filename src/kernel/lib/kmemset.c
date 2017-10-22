@@ -37,7 +37,7 @@ PUBLIC void *kmemset(void *ptr, int c, size_t n)
     
     /* Set bytes. */
     while (n-- > 0)
-		*p++ = (unsigned char) c;
+        *p++ = (unsigned char) c;
 
-    return (ptr);	
+    return (ptr);    
 }

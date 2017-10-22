@@ -28,62 +28,62 @@
 
 #ifndef _ASM_FILE_
 
-	#include <i386/i386.h>
-	#include <i386/int.h>
-	
-	#include <nanvix/const.h>
-	#include <nanvix/pm.h>
-	#include <stdlib.h>
-	
-	/* Forward definitions. */
-	struct process;
-	
-	/**
-	 * @name Interrupt Priority Levels
-	 */
-	/**@{*/
-	#define INT_LVL_0 0 /**< Level 0: all hardware interrupts disabled. */
-	#define INT_LVL_1 1 /**< Level 1: clock interrupts enabled.         */
-	#define INT_LVL_2 2 /**< Level 2: disk interrupts enabled.          */
-	#define INT_LVL_3 3 /**< Level 3: network interrupts enabled.       */
-	#define INT_LVL_4 4 /**< Level 4: terminal interrupts enabled.      */
-	#define INT_LVL_5 5 /**< Level 5: all hardware interrupts enabled.  */
-	/**@}*/
-	
-	/**
-	 * @name Processor Control Functions
-	 */
-	/**@{*/
-	EXTERN int set_hwint(int, void (*)(void));
-	EXTERN void enable_interrupts(void);
-	EXTERN void disable_interrupts(void);
-	EXTERN void halt(void);
-	EXTERN void processor_drop(unsigned);
-	EXTERN unsigned processor_raise(unsigned);
-	EXTERN void processor_reload(void);
-	EXTERN void setup(void);
-	EXTERN void user_mode(addr_t, addr_t);
-	EXTERN void switch_to(struct process *);
-	EXTERN unsigned irq_lvl(unsigned);
-	/**@}*/	
-	
-	/**
-	 * @name I/O Functions
-	 */
-	/**@{*/
-	EXTERN void iowait(void);
-	EXTERN void outputb(word_t, byte_t);
-	EXTERN void outputw(word_t, word_t);
-	EXTERN byte_t inputb(word_t);
-	EXTERN word_t inputw(word_t);
-	/**@}*/	
+    #include <i386/i386.h>
+    #include <i386/int.h>
+    
+    #include <nanvix/const.h>
+    #include <nanvix/pm.h>
+    #include <stdlib.h>
+    
+    /* Forward definitions. */
+    struct process;
+    
+    /**
+     * @name Interrupt Priority Levels
+     */
+    /**@{*/
+    #define INT_LVL_0 0 /**< Level 0: all hardware interrupts disabled. */
+    #define INT_LVL_1 1 /**< Level 1: clock interrupts enabled.         */
+    #define INT_LVL_2 2 /**< Level 2: disk interrupts enabled.          */
+    #define INT_LVL_3 3 /**< Level 3: network interrupts enabled.       */
+    #define INT_LVL_4 4 /**< Level 4: terminal interrupts enabled.      */
+    #define INT_LVL_5 5 /**< Level 5: all hardware interrupts enabled.  */
+    /**@}*/
+    
+    /**
+     * @name Processor Control Functions
+     */
+    /**@{*/
+    EXTERN int set_hwint(int, void (*)(void));
+    EXTERN void enable_interrupts(void);
+    EXTERN void disable_interrupts(void);
+    EXTERN void halt(void);
+    EXTERN void processor_drop(unsigned);
+    EXTERN unsigned processor_raise(unsigned);
+    EXTERN void processor_reload(void);
+    EXTERN void setup(void);
+    EXTERN void user_mode(addr_t, addr_t);
+    EXTERN void switch_to(struct process *);
+    EXTERN unsigned irq_lvl(unsigned);
+    /**@}*/    
+    
+    /**
+     * @name I/O Functions
+     */
+    /**@{*/
+    EXTERN void iowait(void);
+    EXTERN void outputb(word_t, byte_t);
+    EXTERN void outputw(word_t, word_t);
+    EXTERN byte_t inputb(word_t);
+    EXTERN word_t inputw(word_t);
+    /**@}*/    
 
-	/**
-	 * @name Memory Functions
-	 */
-	/**@{*/
-	EXTERN void physcpy(addr_t, addr_t, size_t);
-	/**@}*/	
+    /**
+     * @name Memory Functions
+     */
+    /**@{*/
+    EXTERN void physcpy(addr_t, addr_t, size_t);
+    /**@}*/    
 
 #endif /* _ASM_FILE_ */
 

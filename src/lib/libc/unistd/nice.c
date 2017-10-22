@@ -25,21 +25,21 @@
  */
 int nice(int incr)
 {
-	int ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_nice),
-		  "b" (incr)
-	);
-	
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
-	
-	return (ret);
+    int ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_nice),
+          "b" (incr)
+    );
+    
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
+    
+    return (ret);
 }

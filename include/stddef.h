@@ -26,9 +26,9 @@
 #ifndef _STDDEF_H_
 #define _STDDEF_H_
 
-	#define _NEED_NULL
-	#define _NEED_WCHAR_T
-	#define _NEED_SIZE_T
-	#include <decl.h>
+    #define _NEED_NULL
+    #define _NEED_WCHAR_T
+    #define _NEED_SIZE_T
+    #include <decl.h>
 
 #endif /* _STDDEF_H_ */

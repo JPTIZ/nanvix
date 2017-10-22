@@ -78,5 +78,5 @@
  */
 int isblank(int c)
 {
-	return ((__ctype_ptr__[c+1] & _B) || (c == '\t'));
+    return ((__ctype_ptr__[c+1] & _B) || (c == '\t'));
 }

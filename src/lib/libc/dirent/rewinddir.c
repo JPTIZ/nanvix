@@ -24,9 +24,9 @@
  */
 void rewinddir(DIR *dirp)
 {
-	/* Invalidate buffer. */
-	dirp->count = 0;
-	dirp->buf = dirp->ptr;
-	dirp->flags &= ~_DIR_EOD;
+    /* Invalidate buffer. */
+    dirp->count = 0;
+    dirp->buf = dirp->ptr;
+    dirp->flags &= ~_DIR_EOD;
 }
 

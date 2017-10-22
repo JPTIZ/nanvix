@@ -27,10 +27,10 @@
 #ifndef _LOCALE_T
 #define _LOCALE_T
 
-	/**
-	 * @brief Used for locale objects.
-	 */
-	typedef unsigned locale_t;
+    /**
+     * @brief Used for locale objects.
+     */
+    typedef unsigned locale_t;
 
 #endif
 #endif
@@ -39,10 +39,10 @@
 #ifndef _NULL
 #define _NULL
 
-	/**
-	 * @brief Null pointer.
-	 */
-	#define NULL ((void *) 0)
+    /**
+     * @brief Null pointer.
+     */
+    #define NULL ((void *) 0)
 
 #endif
 #endif
@@ -52,22 +52,22 @@
 #ifndef SIZE_T
 #define SIZE_T
 
-	/**
-	 * @brief Used for sizes of objects.
-	 */
-	typedef unsigned size_t;
+    /**
+     * @brief Used for sizes of objects.
+     */
+    typedef unsigned size_t;
 
 #endif
 #endif
 
 #ifdef _NEED_WCHAR_T
-#ifndef _WCHAR_T	
+#ifndef _WCHAR_T    
 #define _WCHAR_T
 
-	/**
-	 * @brief Codes for all members of the largest extended character set.
-	 */
-	typedef unsigned wchar_t;
+    /**
+     * @brief Codes for all members of the largest extended character set.
+     */
+    typedef unsigned wchar_t;
 
 #endif
 #endif
@@ -75,21 +75,21 @@
 #ifdef _NEED_WSTATUS
 #ifndef _WSTATUS
 #define _WSTATUS
-	
-	#define WEXITSTATUS(status) \
-		(status & 0xff)         \
+    
+    #define WEXITSTATUS(status) \
+        (status & 0xff)         \
     
     #define WIFEXITED(status) \
-		((status >> 8) & 1)   \
+        ((status >> 8) & 1)   \
     
     #define WIFSIGNALED(status) \
-		((status >> 9) & 1)     \
-		
-	#define WIFSTOPPED(status) \
-		(((status) >> 10) & 1) \
+        ((status >> 9) & 1)     \
+        
+    #define WIFSTOPPED(status) \
+        (((status) >> 10) & 1) \
 
     #define WTERMSIG(status)    \
-		((status >> 16) & 0xff) \
+        ((status >> 16) & 0xff) \
 
 #endif
 #endif

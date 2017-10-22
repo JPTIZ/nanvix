@@ -25,16 +25,16 @@
  */
 int vfprintf(FILE *stream, const char *format, va_list ap)
 {
-	int n;             /* Characters written. */
-	char buffer[1024]; /* Buffer.             */
-	
-	/* Format string. */
-	n = vsprintf(buffer, format, ap);
-	
-	/* Write formated string to file. */
-	if (n > 0)
-		fputs(buffer, stream);
-	
-	return (n);
+    int n;             /* Characters written. */
+    char buffer[1024]; /* Buffer.             */
+    
+    /* Format string. */
+    n = vsprintf(buffer, format, ap);
+    
+    /* Write formated string to file. */
+    if (n > 0)
+        fputs(buffer, stream);
+    
+    return (n);
 }
 

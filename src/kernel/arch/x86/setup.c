@@ -45,7 +45,7 @@ PRIVATE void set_gdte
     /* Set segment base address. */
     gdt[n].base_low = (base & 0xffffff);
     gdt[n].base_high = (base >> 24) & 0xff;
-	
+    
     /* Set segment limit. */ 
     gdt[n].limit_low = (limit & 0xffff);
     gdt[n].limit_high = (limit >> 16) & 0xf;
@@ -60,20 +60,20 @@ PRIVATE void set_gdte
  */
 PRIVATE void tss_setup()
 {
-	/* Size-error checking. */
-	CHKSIZE(sizeof(struct tss), TSS_SIZE);
-	
-	/* Blank TSS. */
-	kmemset(&tss, 0, TSS_SIZE);
-	
-	/* Fill up TSS. */
-	tss.ss0 = KERNEL_DS;
-	tss.iomap = (TSS_SIZE - 1) << 16;
-	
-	/* Flush TSS. */
-	tss_flush();
-	
-	kprintf("kernel: tss at %x", &tss);
+    /* Size-error checking. */
+    CHKSIZE(sizeof(struct tss), TSS_SIZE);
+    
+    /* Blank TSS. */
+    kmemset(&tss, 0, TSS_SIZE);
+    
+    /* Fill up TSS. */
+    tss.ss0 = KERNEL_DS;
+    tss.iomap = (TSS_SIZE - 1) << 16;
+    
+    /* Flush TSS. */
+    tss_flush();
+    
+    kprintf("kernel: tss at %x", &tss);
 }
 
 /*
@@ -81,21 +81,21 @@ PRIVATE void tss_setup()
  */
 PRIVATE void gdt_setup(void)
 {
-	/* Size-error checking. */
-	CHKSIZE(sizeof(struct gdte), GDTE_SIZE);
-	CHKSIZE(sizeof(struct gdtptr), GDTPTR_SIZE);
+    /* Size-error checking. */
+    CHKSIZE(sizeof(struct gdte), GDTE_SIZE);
+    CHKSIZE(sizeof(struct gdtptr), GDTPTR_SIZE);
 
-	/* Blank GDT and GDT pointer. */
-	kmemset(gdt, 0, sizeof(gdt));
-	kmemset(&gdtptr, 0, GDTPTR_SIZE);
-	
+    /* Blank GDT and GDT pointer. */
+    kmemset(gdt, 0, sizeof(gdt));
+    kmemset(&gdtptr, 0, GDTPTR_SIZE);
+    
     /* Set GDT entries. */
     set_gdte(GDT_NULL, 0, 0x00000, 0x0, 0x00);
     set_gdte(GDT_CODE_DPL0, 0, 0xfffff, 0xc, 0x9a);
     set_gdte(GDT_DATA_DPL0, 0, 0xfffff, 0xc, 0x92);
     set_gdte(GDT_CODE_DPL3, 0, 0xfffff, 0xc, 0xfa);
     set_gdte(GDT_DATA_DPL3, 0, 0xfffff, 0xc, 0xf2);
-	set_gdte(GDT_TSS, (unsigned) &tss, (unsigned)&tss + TSS_SIZE, 0x0, 0xe9);
+    set_gdte(GDT_TSS, (unsigned) &tss, (unsigned)&tss + TSS_SIZE, 0x0, 0xe9);
     
     /* Set GDT pointer. */
     gdtptr.size = sizeof(gdt) - 1;
@@ -111,8 +111,8 @@ PRIVATE void gdt_setup(void)
 PRIVATE void set_idte
 (int n, unsigned handler, unsigned selector, unsigned flags, unsigned type)
 {
-	/* Set handler. */
-	idt[n].handler_low = (handler & 0xffff);
+    /* Set handler. */
+    idt[n].handler_low = (handler & 0xffff);
     idt[n].handler_high = (handler >> 16) & 0xffff;
      
     /* Set GDT selector. */
@@ -128,15 +128,15 @@ PRIVATE void set_idte
  */
 PRIVATE void idt_setup(void)
 {
-	int i;
-	
-	/* Size-error checking. */
-	CHKSIZE(sizeof(struct idte), IDTE_SIZE);
-	CHKSIZE(sizeof(struct idtptr), IDTPTR_SIZE);
+    int i;
+    
+    /* Size-error checking. */
+    CHKSIZE(sizeof(struct idte), IDTE_SIZE);
+    CHKSIZE(sizeof(struct idtptr), IDTPTR_SIZE);
  
-	/* Blank IDT and IDT pointer. */
-	kmemset(idt, 0, sizeof(idt));
-	kmemset(&idtptr, 0, IDTPTR_SIZE);
+    /* Blank IDT and IDT pointer. */
+    kmemset(idt, 0, sizeof(idt));
+    kmemset(&idtptr, 0, IDTPTR_SIZE);
      
     /* Re-initialize PIC. */
     pic_setup(0x20, 0x28);
@@ -196,10 +196,10 @@ PRIVATE void idt_setup(void)
  */
 PUBLIC void setup(void)
 {
-	/* Setup descriptor tables. */
-	gdt_setup();
+    /* Setup descriptor tables. */
+    gdt_setup();
     kprintf("boot: loading global descriptor table");
-	tss_setup();
+    tss_setup();
     kprintf("boot: loading interrupt descriptor table");
-	idt_setup();
+    idt_setup();
 }

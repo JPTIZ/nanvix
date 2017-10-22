@@ -26,21 +26,21 @@
  */
 int chdir(const char *path)
 {
-	int ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_chdir),
-		  "b" (path)
-	);
-	
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
-	
-	return (ret);
+    int ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_chdir),
+          "b" (path)
+    );
+    
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
+    
+    return (ret);
 }

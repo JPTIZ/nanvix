@@ -31,18 +31,18 @@
  */
 PUBLIC int sys_shutdown(void)
 {
-	/* Not allowed. */
-	if (!IS_SUPERUSER(curr_proc))
-		return (-EPERM);
-	
-	shutting_down = 1;
-	
-	cdev_ioctl(kout, TTY_CLEAR, 0);
-	kprintf("system is going to shutdown NOW");
-	kprintf("synchronizing data...");
-	sys_sync();
-	kprintf("asking process to terminate...");
-	sys_kill(-1, SIGKILL);
-	
-	return (0);
+    /* Not allowed. */
+    if (!IS_SUPERUSER(curr_proc))
+        return (-EPERM);
+    
+    shutting_down = 1;
+    
+    cdev_ioctl(kout, TTY_CLEAR, 0);
+    kprintf("system is going to shutdown NOW");
+    kprintf("synchronizing data...");
+    sys_sync();
+    kprintf("asking process to terminate...");
+    sys_kill(-1, SIGKILL);
+    
+    return (0);
 }

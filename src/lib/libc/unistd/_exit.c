@@ -26,10 +26,10 @@
  */
 void _exit(int status)
 {
-	__asm__ volatile(
-		"int $0x80"
-		: /* empty. */
-		: "a" (NR__exit),
-		"b" (status)
-	);
+    __asm__ volatile(
+        "int $0x80"
+        : /* empty. */
+        : "a" (NR__exit),
+        "b" (status)
+    );
 }

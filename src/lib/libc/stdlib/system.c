@@ -43,38 +43,38 @@
  */
 int system(const char *command)
 {
-	int status;                   /* Exit status.       */
-	pid_t pid;                    /* Process ID.        */
-	const char *argv[4];          /* Command arguments. */
-	sighandler_t sigint_handler;  /* SIGINT handler.    */
-	sighandler_t sigquit_handler; /* SIGQUIT handler.   */
-	
-	/* Ignore SIGINT and SIGQUIT. */
-	sigint_handler = signal(SIGINT, SIG_IGN);
-	sigquit_handler = signal(SIGQUIT, SIG_IGN);
+    int status;                   /* Exit status.       */
+    pid_t pid;                    /* Process ID.        */
+    const char *argv[4];          /* Command arguments. */
+    sighandler_t sigint_handler;  /* SIGINT handler.    */
+    sighandler_t sigquit_handler; /* SIGQUIT handler.   */
+    
+    /* Ignore SIGINT and SIGQUIT. */
+    sigint_handler = signal(SIGINT, SIG_IGN);
+    sigquit_handler = signal(SIGQUIT, SIG_IGN);
 
-	/* Build command arguments. */
-	argv[0] = "sh";
-	argv[1] = "-c";
-	argv[2] = (command == NULL) ? "exit 0" : command;
-	argv[3] = NULL;
+    /* Build command arguments. */
+    argv[0] = "sh";
+    argv[1] = "-c";
+    argv[2] = (command == NULL) ? "exit 0" : command;
+    argv[3] = NULL;
 
-	if ((pid = fork()) < 0)
-		return ((command == NULL) ? 0 : -1);
-	
-	/* Execute command. */
-	else if (pid == 0)
-	{
-		execvp("sh", (char * const *)argv);
-		exit(-1);
-	}
-	
-	/* Wait for child. */
-	wait(&status);
-		
-	/* Restore signal handlers. */
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
-	
-	return ((command == NULL) ? (status == 0) : WTERMSIG(status));
+    if ((pid = fork()) < 0)
+        return ((command == NULL) ? 0 : -1);
+    
+    /* Execute command. */
+    else if (pid == 0)
+    {
+        execvp("sh", (char * const *)argv);
+        exit(-1);
+    }
+    
+    /* Wait for child. */
+    wait(&status);
+        
+    /* Restore signal handlers. */
+    signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, sigquit_handler);
+    
+    return ((command == NULL) ? (status == 0) : WTERMSIG(status));
 }

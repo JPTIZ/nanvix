@@ -78,6 +78,6 @@
  */
 int isprint(int c)
 {
-	return(__ctype_ptr__[c+1] & (_P|_U|_L|_N|_B));
+    return(__ctype_ptr__[c+1] & (_P|_U|_L|_N|_B));
 }
 

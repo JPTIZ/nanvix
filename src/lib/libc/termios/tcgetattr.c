@@ -26,5 +26,5 @@
  */
 int tcgetattr(int fd, struct termios *termiosp)
 {
-	return (ioctl(fd, TTY_GETS, termiosp));
+    return (ioctl(fd, TTY_GETS, termiosp));
 }

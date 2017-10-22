@@ -40,9 +40,9 @@
  * Character devices table.
  */
 PRIVATE const struct cdev *cdevsw[NR_CHRDEV] = {
-	NULL, /* /dev/null */
-	NULL, /* /dev/tty  */
-	NULL  /* /dev/klog */
+    NULL, /* /dev/null */
+    NULL, /* /dev/tty  */
+    NULL  /* /dev/klog */
 };
 
 /**
@@ -56,18 +56,18 @@ PRIVATE const struct cdev *cdevsw[NR_CHRDEV] = {
  */
 PUBLIC int cdev_register(unsigned major, const struct cdev *dev)
 {
-	/* Invalid major number? */
-	if (major >= NR_CHRDEV)
-		return (-EINVAL);
-	
-	/* Device already registered? */
-	if ((major == NULL_MAJOR) || (cdevsw[major] != NULL))
-		return (-EBUSY);
-	
-	/* Register character device. */
-	cdevsw[major] = dev;
-	
-	return (0);
+    /* Invalid major number? */
+    if (major >= NR_CHRDEV)
+        return (-EINVAL);
+    
+    /* Device already registered? */
+    if ((major == NULL_MAJOR) || (cdevsw[major] != NULL))
+        return (-EBUSY);
+    
+    /* Register character device. */
+    cdevsw[major] = dev;
+    
+    return (0);
 }
 
 /**
@@ -80,20 +80,20 @@ PUBLIC int cdev_register(unsigned major, const struct cdev *dev)
  *          negative error code is returned.
  */
 PUBLIC ssize_t cdev_write(dev_t dev, const void *buf, size_t n)
-{	
-	/* Null device. */
-	if (MAJOR(dev) == NULL_MAJOR)
-		return ((ssize_t)n);
-	
-	/* Invalid device. */
-	if (cdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-	
-	/* Operation not supported. */
-	if (cdevsw[MAJOR(dev)]->write == NULL)
-		return (-ENOTSUP);
-	
-	return (cdevsw[MAJOR(dev)]->write(MINOR(dev), buf, n));
+{    
+    /* Null device. */
+    if (MAJOR(dev) == NULL_MAJOR)
+        return ((ssize_t)n);
+    
+    /* Invalid device. */
+    if (cdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+    
+    /* Operation not supported. */
+    if (cdevsw[MAJOR(dev)]->write == NULL)
+        return (-ENOTSUP);
+    
+    return (cdevsw[MAJOR(dev)]->write(MINOR(dev), buf, n));
 }
 
 /*
@@ -101,19 +101,19 @@ PUBLIC ssize_t cdev_write(dev_t dev, const void *buf, size_t n)
  */
 PUBLIC ssize_t cdev_read(dev_t dev, void *buf, size_t n)
 {
-	/* Null device. */
-	if (MAJOR(dev) == NULL_MAJOR)
-		return (0);
-	
-	/* Invalid device. */
-	if (cdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-	
-	/* Operation not supported. */
-	if (cdevsw[MAJOR(dev)]->read == NULL)
-		return (-ENOTSUP);
-	
-	return (cdevsw[MAJOR(dev)]->read(MINOR(dev), buf, n));
+    /* Null device. */
+    if (MAJOR(dev) == NULL_MAJOR)
+        return (0);
+    
+    /* Invalid device. */
+    if (cdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+    
+    /* Operation not supported. */
+    if (cdevsw[MAJOR(dev)]->read == NULL)
+        return (-ENOTSUP);
+    
+    return (cdevsw[MAJOR(dev)]->read(MINOR(dev), buf, n));
 }
 
 /*
@@ -121,39 +121,39 @@ PUBLIC ssize_t cdev_read(dev_t dev, void *buf, size_t n)
  */
 PUBLIC int cdev_open(dev_t dev)
 {
-	/* Null device. */
-	if (MAJOR(dev) == NULL_MAJOR)
-		return (0);
-	
-	/* Invalid device. */
-	if (cdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-	
-	/* Operation not supported. */
-	if (cdevsw[MAJOR(dev)]->open == NULL)
-		return (-ENOTSUP);
-		
-	return (cdevsw[MAJOR(dev)]->open(MINOR(dev)));
+    /* Null device. */
+    if (MAJOR(dev) == NULL_MAJOR)
+        return (0);
+    
+    /* Invalid device. */
+    if (cdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+    
+    /* Operation not supported. */
+    if (cdevsw[MAJOR(dev)]->open == NULL)
+        return (-ENOTSUP);
+        
+    return (cdevsw[MAJOR(dev)]->open(MINOR(dev)));
 }
 
 /*
  * Performs control operations on a character device.
  */
 PUBLIC int cdev_ioctl(dev_t dev, unsigned cmd, unsigned arg)
-{	
-	/* Null device. */
-	if (MAJOR(dev) == NULL_MAJOR)
-		return (-ENODEV);
-	
-	/* Invalid device. */
-	if (cdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-	
-	/* Operation not supported. */
-	if (cdevsw[MAJOR(dev)]->ioctl == NULL)
-		return (-ENOTSUP);
-		
-	return (cdevsw[MAJOR(dev)]->ioctl(MINOR(dev), cmd, arg));
+{    
+    /* Null device. */
+    if (MAJOR(dev) == NULL_MAJOR)
+        return (-ENODEV);
+    
+    /* Invalid device. */
+    if (cdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+    
+    /* Operation not supported. */
+    if (cdevsw[MAJOR(dev)]->ioctl == NULL)
+        return (-ENOTSUP);
+        
+    return (cdevsw[MAJOR(dev)]->ioctl(MINOR(dev), cmd, arg));
 }
 
 /**
@@ -166,19 +166,19 @@ PUBLIC int cdev_ioctl(dev_t dev, unsigned cmd, unsigned arg)
  */
 PUBLIC int cdev_close(dev_t dev)
 {
-	/* Null device. */
-	if (MAJOR(dev) == NULL_MAJOR)
-		return (0);
-		
-	/* Invalid device. */
-	if (cdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-	
-	/* Operation not supported. */
-	if (cdevsw[MAJOR(dev)]->close == NULL)
-		return (-ENOTSUP);
-		
-	return (cdevsw[MAJOR(dev)]->close(MINOR(dev)));
+    /* Null device. */
+    if (MAJOR(dev) == NULL_MAJOR)
+        return (0);
+        
+    /* Invalid device. */
+    if (cdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+    
+    /* Operation not supported. */
+    if (cdevsw[MAJOR(dev)]->close == NULL)
+        return (-ENOTSUP);
+        
+    return (cdevsw[MAJOR(dev)]->close(MINOR(dev)));
 }
 
 
@@ -193,8 +193,8 @@ PUBLIC int cdev_close(dev_t dev)
  * Block devices table.
  */
 PRIVATE const struct bdev *bdevsw[NR_BLKDEV] = {
-	NULL, /* /dev/ramdisk */
-	NULL  /* /dev/hdd     */
+    NULL, /* /dev/ramdisk */
+    NULL  /* /dev/hdd     */
 };
 
 /*
@@ -202,18 +202,18 @@ PRIVATE const struct bdev *bdevsw[NR_BLKDEV] = {
  */
 PUBLIC int bdev_register(unsigned major, const struct bdev *dev)
 {
-	/* Invalid major number? */
-	if (major >= NR_BLKDEV)
-		return (-EINVAL);
-	
-	/* Device already registered? */
-	if (bdevsw[major] != NULL)
-		return (-EBUSY);
-	
-	/* Register block device. */
-	bdevsw[major] = dev;
-	
-	return (0);
+    /* Invalid major number? */
+    if (major >= NR_BLKDEV)
+        return (-EINVAL);
+    
+    /* Device already registered? */
+    if (bdevsw[major] != NULL)
+        return (-EBUSY);
+    
+    /* Register block device. */
+    bdevsw[major] = dev;
+    
+    return (0);
 }
 
 /*
@@ -221,15 +221,15 @@ PUBLIC int bdev_register(unsigned major, const struct bdev *dev)
  */
 PUBLIC ssize_t bdev_write(dev_t dev, const char *buf, size_t n, off_t off)
 {
-	/* Invalid device. */
-	if (bdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-	
-	/* Operation not supported. */
-	if (bdevsw[MAJOR(dev)]->write == NULL)
-		return (-ENOTSUP);
-	
-	return (bdevsw[MAJOR(dev)]->write(MINOR(dev), buf, n, off));
+    /* Invalid device. */
+    if (bdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+    
+    /* Operation not supported. */
+    if (bdevsw[MAJOR(dev)]->write == NULL)
+        return (-ENOTSUP);
+    
+    return (bdevsw[MAJOR(dev)]->write(MINOR(dev), buf, n, off));
 }
 
 /*
@@ -237,15 +237,15 @@ PUBLIC ssize_t bdev_write(dev_t dev, const char *buf, size_t n, off_t off)
  */
 PUBLIC ssize_t bdev_read(dev_t dev, char *buf, size_t n, off_t off)
 {
-	/* Invalid device. */
-	if (bdevsw[MAJOR(dev)] == NULL)
-		return (-EINVAL);
-		
-	/* Operation not supported. */
-	if (bdevsw[MAJOR(dev)]->read == NULL)
-		return (-ENOTSUP);
-	
-	return (bdevsw[MAJOR(dev)]->read(MINOR(dev), buf, n, off));
+    /* Invalid device. */
+    if (bdevsw[MAJOR(dev)] == NULL)
+        return (-EINVAL);
+        
+    /* Operation not supported. */
+    if (bdevsw[MAJOR(dev)]->read == NULL)
+        return (-ENOTSUP);
+    
+    return (bdevsw[MAJOR(dev)]->read(MINOR(dev), buf, n, off));
 }
 
 /*
@@ -253,23 +253,23 @@ PUBLIC ssize_t bdev_read(dev_t dev, char *buf, size_t n, off_t off)
  */
 PUBLIC void bdev_writeblk(buffer_t buf)
 {
-	int err;   /* Error ?        */
-	dev_t dev; /* Device number. */
-	
-	dev = buffer_dev(buf);
-	
-	/* Invalid device. */
-	if (bdevsw[MAJOR(dev)] == NULL)
-		kpanic("writing block to invalid device");
-		
-	/* Operation not supported. */
-	if (bdevsw[MAJOR(dev)]->writeblk == NULL)
-		kpanic("block device cannot write blocks");
-		
-	/* Write block. */
-	err = bdevsw[MAJOR(dev)]->writeblk(MINOR(dev), buf);
-	if (err)
-		kpanic("failed to write block to device");
+    int err;   /* Error ?        */
+    dev_t dev; /* Device number. */
+    
+    dev = buffer_dev(buf);
+    
+    /* Invalid device. */
+    if (bdevsw[MAJOR(dev)] == NULL)
+        kpanic("writing block to invalid device");
+        
+    /* Operation not supported. */
+    if (bdevsw[MAJOR(dev)]->writeblk == NULL)
+        kpanic("block device cannot write blocks");
+        
+    /* Write block. */
+    err = bdevsw[MAJOR(dev)]->writeblk(MINOR(dev), buf);
+    if (err)
+        kpanic("failed to write block to device");
 }
 
 /*
@@ -277,23 +277,23 @@ PUBLIC void bdev_writeblk(buffer_t buf)
  */
 PUBLIC void bdev_readblk(buffer_t buf)
 {
-	int err;   /* Error ?        */
-	dev_t dev; /* Device number. */
-	
-	dev = buffer_dev(buf);
-	
-	/* Invalid device. */
-	if (bdevsw[MAJOR(dev)] == NULL)
-		kpanic("reading block from invalid device");
-		
-	/* Operation not supported. */
-	if (bdevsw[MAJOR(dev)]->readblk == NULL)
-		kpanic("block device cannot read blocks");
-	
-	/* Read block. */
-	err = bdevsw[MAJOR(dev)]->readblk(MINOR(dev), buf);
-	if (err)
-		kpanic("failed to read block from device");
+    int err;   /* Error ?        */
+    dev_t dev; /* Device number. */
+    
+    dev = buffer_dev(buf);
+    
+    /* Invalid device. */
+    if (bdevsw[MAJOR(dev)] == NULL)
+        kpanic("reading block from invalid device");
+        
+    /* Operation not supported. */
+    if (bdevsw[MAJOR(dev)]->readblk == NULL)
+        kpanic("block device cannot read blocks");
+    
+    /* Read block. */
+    err = bdevsw[MAJOR(dev)]->readblk(MINOR(dev), buf);
+    if (err)
+        kpanic("failed to read block from device");
 }
 
 /*============================================================================*
@@ -305,10 +305,10 @@ PUBLIC void bdev_readblk(buffer_t buf)
  */
 PUBLIC void dev_init(void)
 {
-	klog_init();
-	ata_init();
-	clock_init(CLOCK_FREQ);
-	fpu_init();
-	tty_init();
-	ramdisk_init();
+    klog_init();
+    ata_init();
+    clock_init(CLOCK_FREQ);
+    fpu_init();
+    tty_init();
+    ramdisk_init();
 }

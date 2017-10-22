@@ -26,13 +26,13 @@
  * Closes a file.
  */
 PUBLIC int sys_close(int fd)
-{	
-	/* Invalid file descriptor. */
-	if ((fd < 0) || (fd >= OPEN_MAX) || (curr_proc->ofiles[fd] == NULL))
-		return (-EINVAL);
-	
-	do_close(fd);
-	
-	return (0);
+{    
+    /* Invalid file descriptor. */
+    if ((fd < 0) || (fd >= OPEN_MAX) || (curr_proc->ofiles[fd] == NULL))
+        return (-EINVAL);
+    
+    do_close(fd);
+    
+    return (0);
 }
  

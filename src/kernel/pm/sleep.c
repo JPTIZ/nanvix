@@ -41,40 +41,40 @@ PRIVATE struct process **idle_chain = NULL;
  * @param priority Priority that the process shall assume after waking up.
  */
 PUBLIC void sleep(struct process **chain, int priority)
-{	
-	/*
-	 * Idle process trying to sleep. Although that may
-	 * sound weird, it happens at system startup. So,
-	 * let's enable interrupts and do some busy waiting,
-	 * hoping that the  interrupt handler will wake us up.
-	 */
-	if (curr_proc == IDLE)
-	{
-		idle_chain = chain;
-		enable_interrupts();
-		while (idle_chain == chain)
-			noop();
-		return;
-	}
+{    
+    /*
+     * Idle process trying to sleep. Although that may
+     * sound weird, it happens at system startup. So,
+     * let's enable interrupts and do some busy waiting,
+     * hoping that the  interrupt handler will wake us up.
+     */
+    if (curr_proc == IDLE)
+    {
+        idle_chain = chain;
+        enable_interrupts();
+        while (idle_chain == chain)
+            noop();
+        return;
+    }
 
-	/*
-	 * The sleep request is interruptible and the process
-	 * has already received a signal, so there is no
-	 * need to sleep.
-	 */
-	if ((priority >= 0) && (curr_proc->received))
-		return;
-		
-	/* Insert process in the sleeping chain. */
-	curr_proc->next = *chain;
-	*chain = curr_proc;
-	
-	/* Put process to sleep. */
-	curr_proc->state = (priority >= 0) ? PROC_WAITING : PROC_SLEEPING;
-	curr_proc->priority = priority;
-	curr_proc->chain = chain;
-	
-	yield();
+    /*
+     * The sleep request is interruptible and the process
+     * has already received a signal, so there is no
+     * need to sleep.
+     */
+    if ((priority >= 0) && (curr_proc->received))
+        return;
+        
+    /* Insert process in the sleeping chain. */
+    curr_proc->next = *chain;
+    *chain = curr_proc;
+    
+    /* Put process to sleep. */
+    curr_proc->state = (priority >= 0) ? PROC_WAITING : PROC_SLEEPING;
+    curr_proc->priority = priority;
+    curr_proc->chain = chain;
+    
+    yield();
 }
 
 /**
@@ -83,23 +83,23 @@ PUBLIC void sleep(struct process **chain, int priority)
  * @param chain Chain of sleeping processes to be awaken.
  */
 PUBLIC void wakeup(struct process **chain)
-{	
-	/*
-	 * Wakeup idle process. Note that here we don't
-	 * schedule the idle process for execution, once
-	 * we expect that it is the only process in the
-	 * system and it is doing some busy-waiting. 
-	 */
-	if (idle_chain == chain)
-	{
-		idle_chain = NULL;
-		return;
-	}
-	
-	/* Wakeup sleeping processes. */
-	while (*chain != NULL)
-	{
-		sched(*chain);
-		*chain = (*chain)->next;
-	}
+{    
+    /*
+     * Wakeup idle process. Note that here we don't
+     * schedule the idle process for execution, once
+     * we expect that it is the only process in the
+     * system and it is doing some busy-waiting. 
+     */
+    if (idle_chain == chain)
+    {
+        idle_chain = NULL;
+        return;
+    }
+    
+    /* Wakeup sleeping processes. */
+    while (*chain != NULL)
+    {
+        sched(*chain);
+        *chain = (*chain)->next;
+    }
 }

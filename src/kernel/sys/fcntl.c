@@ -29,27 +29,27 @@
  */
 PRIVATE int do_dup(int oldfd, int newfd)
 {
-	/* Invalid file descriptor. */
-	if ((newfd < 0) || (newfd >= OPEN_MAX))
-		return (-EINVAL);
-	
-	/* Look for first available file descriptor. */
-	while (newfd < OPEN_MAX)
-	{
-		if (curr_proc->ofiles[newfd] == NULL)
-			goto found;
-		
-		newfd++;
-	}
+    /* Invalid file descriptor. */
+    if ((newfd < 0) || (newfd >= OPEN_MAX))
+        return (-EINVAL);
+    
+    /* Look for first available file descriptor. */
+    while (newfd < OPEN_MAX)
+    {
+        if (curr_proc->ofiles[newfd] == NULL)
+            goto found;
+        
+        newfd++;
+    }
 
-	return (-EMFILE);
-	
+    return (-EMFILE);
+    
 found:
 
-	curr_proc->close &= ~(1 << newfd);
-	(curr_proc->ofiles[newfd] = curr_proc->ofiles[oldfd])->count++;
+    curr_proc->close &= ~(1 << newfd);
+    (curr_proc->ofiles[newfd] = curr_proc->ofiles[oldfd])->count++;
 
-	return (newfd);
+    return (newfd);
 }
 
 /*
@@ -57,12 +57,12 @@ found:
  */
 EXTERN int sys_dup2(int oldfd, int newfd)
 {
-	/* Invalid file descriptor. */
-	if ((newfd < 0)||(newfd >= OPEN_MAX)||((curr_proc->ofiles[newfd]) == NULL))
-		return (-EBADF);
-	
-	sys_close(newfd);
-	return (do_dup(oldfd, newfd));
+    /* Invalid file descriptor. */
+    if ((newfd < 0)||(newfd >= OPEN_MAX)||((curr_proc->ofiles[newfd]) == NULL))
+        return (-EBADF);
+    
+    sys_close(newfd);
+    return (do_dup(oldfd, newfd));
 }
 
 /*
@@ -70,37 +70,37 @@ EXTERN int sys_dup2(int oldfd, int newfd)
  */
 PUBLIC int sys_fcntl(int fd, int cmd, int arg)
 {
-	struct file *f;
-	
-	/* Invalid file descriptor. */
-	if ((fd < 0) || (fd >= OPEN_MAX) || ((f = curr_proc->ofiles[fd]) == NULL))
-		return (-EBADF);
-	
-	/* Parse commad. */
-	switch (cmd)
-	{
-		case F_DUPFD :
-			return (do_dup(fd, arg));
-		
-		case F_GETFD :
-			return ((curr_proc->close >> fd) & 1);
-		
-		case F_SETFD :
-			if (arg & FD_CLOEXEC)
-				curr_proc->close |= 1 << fd;
-			else
-				curr_proc->close &= ~(1 << fd);
-			return (0);
-		
-		case F_GETFL :
-			return (f->oflag);
-		
-		case F_SETFL :
-			f->oflag &= ~(O_APPEND | O_NONBLOCK);
-			f->oflag |= arg & (O_APPEND | O_NONBLOCK);
-			return (0);
-		
-		default :
-			return (-EINVAL);
-	};
+    struct file *f;
+    
+    /* Invalid file descriptor. */
+    if ((fd < 0) || (fd >= OPEN_MAX) || ((f = curr_proc->ofiles[fd]) == NULL))
+        return (-EBADF);
+    
+    /* Parse commad. */
+    switch (cmd)
+    {
+        case F_DUPFD :
+            return (do_dup(fd, arg));
+        
+        case F_GETFD :
+            return ((curr_proc->close >> fd) & 1);
+        
+        case F_SETFD :
+            if (arg & FD_CLOEXEC)
+                curr_proc->close |= 1 << fd;
+            else
+                curr_proc->close &= ~(1 << fd);
+            return (0);
+        
+        case F_GETFL :
+            return (f->oflag);
+        
+        case F_SETFL :
+            f->oflag &= ~(O_APPEND | O_NONBLOCK);
+            f->oflag |= arg & (O_APPEND | O_NONBLOCK);
+            return (0);
+        
+        default :
+            return (-EINVAL);
+    };
 }

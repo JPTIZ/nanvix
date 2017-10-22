@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -72,30 +72,30 @@
  */
 char *strstr(const char *s1, const char *s2)
 {
-	if (*s1 == '\0')
-	{
-		if (*s2 != '\0')
-			return ((char *) NULL);
-		return ((char *) s1);
-	}
+    if (*s1 == '\0')
+    {
+        if (*s2 != '\0')
+            return ((char *) NULL);
+        return ((char *) s1);
+    }
 
-	while (*s1 != '\0')
-	{
-		size_t i;
-		
-		i = 0;
+    while (*s1 != '\0')
+    {
+        size_t i;
+        
+        i = 0;
 
-		while (1)
-		{
-			if (s2[i] == '\0')
-				return ((char *) s1);
+        while (1)
+        {
+            if (s2[i] == '\0')
+                return ((char *) s1);
 
-			if (s2[i] != s1[i])
-				break;
-			i++;
-		}
-		s1++;
-	}
+            if (s2[i] != s1[i])
+                break;
+            i++;
+        }
+        s1++;
+    }
 
-	return ((char *) NULL);
+    return ((char *) NULL);
 }

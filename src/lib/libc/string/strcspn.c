@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -71,24 +71,24 @@
  */
 size_t strcspn(const char *s1, const char *s2)
 {
-	char c, sc;
-	const char *p, *spanp;
+    char c, sc;
+    const char *p, *spanp;
 
-	/*
-	 * Stop as soon as we find any character from s2.  Note that there
-	 * must be a NULL in s2; it suffices to stop when we find that, too.
-	 */
-	for (p = s1; /* noop */; /* noop */)
-	{
-		c = *p++;
-		spanp = s2;
-		
-		do {
-			if ((sc = *spanp++) == c)
-				return (p - 1 - s1);
-		} while (sc != '\0');
-	}
-	
-	/* Not reached. */
-	return (0);
+    /*
+     * Stop as soon as we find any character from s2.  Note that there
+     * must be a NULL in s2; it suffices to stop when we find that, too.
+     */
+    for (p = s1; /* noop */; /* noop */)
+    {
+        c = *p++;
+        spanp = s2;
+        
+        do {
+            if ((sc = *spanp++) == c)
+                return (p - 1 - s1);
+        } while (sc != '\0');
+    }
+    
+    /* Not reached. */
+    return (0);
 }

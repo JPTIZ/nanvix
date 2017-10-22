@@ -25,20 +25,20 @@
  */
 pid_t setpgrp(void)
 {
-	pid_t ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_setpgrp)
-	);
-	
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
-	
-	return (ret);
+    pid_t ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_setpgrp)
+    );
+    
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
+    
+    return (ret);
 }

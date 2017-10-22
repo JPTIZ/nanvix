@@ -33,7 +33,7 @@
  * @addtogroup Superblock
  */
 /**@{*/
- 	
+     
 /**
  * @brief Superblock table.
  * 
@@ -53,35 +53,35 @@ PRIVATE struct superblock superblocks[NR_SUPERBLOCKS];
  */
 PRIVATE struct superblock *superblock_empty(void)
 {
-	struct superblock *sb;
+    struct superblock *sb;
 
 again:
 
-	/* Get empty superblock. */
-	for (sb = &superblocks[0]; sb < &superblocks[NR_SUPERBLOCKS]; sb++)
-	{
-		/* Skip valid superblocks. */
-		if (sb->flags & SUPERBLOCK_VALID)
-			continue;
-	
-		/*
-		 * Superblock is locked, so we 
-		 * wait for it to become free.
-		 */
-		if (sb->flags & SUPERBLOCK_LOCKED)
-		{
-			sleep(&sb->chain, PRIO_SUPERBLOCK);
-			goto again;
-		}
-		
-		superblock_lock(sb);
-		return (sb);
-	}
+    /* Get empty superblock. */
+    for (sb = &superblocks[0]; sb < &superblocks[NR_SUPERBLOCKS]; sb++)
+    {
+        /* Skip valid superblocks. */
+        if (sb->flags & SUPERBLOCK_VALID)
+            continue;
+    
+        /*
+         * Superblock is locked, so we 
+         * wait for it to become free.
+         */
+        if (sb->flags & SUPERBLOCK_LOCKED)
+        {
+            sleep(&sb->chain, PRIO_SUPERBLOCK);
+            goto again;
+        }
+        
+        superblock_lock(sb);
+        return (sb);
+    }
 
-	/* Superblock table */
-	kprintf("fs: superblock table overflow");
-	
-	return (NULL);
+    /* Superblock table */
+    kprintf("fs: superblock table overflow");
+    
+    return (NULL);
 }
 
 /**
@@ -97,29 +97,29 @@ again:
  */
 PRIVATE void superblock_write(struct superblock *sb)
 {
-	/* Nothing to be done. */
-	if (!(sb->flags & SUPERBLOCK_DIRTY))
-		return;
-	
-	/* Write inode map buffers. */
-	for (unsigned i = 0; i < sb->imap_blocks; i++)
-	{
-		sb->imap[i]->count++;
-		bwrite(sb->imap[i]);
-	}
-	
-	/* Write zone map buffers. */
-	for (unsigned i = 0; i < sb->zmap_blocks; i++)
-	{
-		sb->zmap[i]->count++;
-		bwrite(sb->zmap[i]);
-	}
-	
-	/* Write superblock buffer. */
-	sb->buf->count++;
-	bwrite(sb->buf);
-	
-	sb->flags &= ~SUPERBLOCK_DIRTY;
+    /* Nothing to be done. */
+    if (!(sb->flags & SUPERBLOCK_DIRTY))
+        return;
+    
+    /* Write inode map buffers. */
+    for (unsigned i = 0; i < sb->imap_blocks; i++)
+    {
+        sb->imap[i]->count++;
+        bwrite(sb->imap[i]);
+    }
+    
+    /* Write zone map buffers. */
+    for (unsigned i = 0; i < sb->zmap_blocks; i++)
+    {
+        sb->zmap[i]->count++;
+        bwrite(sb->zmap[i]);
+    }
+    
+    /* Write superblock buffer. */
+    sb->buf->count++;
+    bwrite(sb->buf);
+    
+    sb->flags &= ~SUPERBLOCK_DIRTY;
 }
 
 /**
@@ -139,37 +139,37 @@ PRIVATE void superblock_write(struct superblock *sb)
  */
 PUBLIC struct superblock *superblock_get(dev_t dev)
 {
-	struct superblock *sb;
+    struct superblock *sb;
 
 again:
-	
-	/* Search for superblock. */
-	for (sb = &superblocks[0]; sb < &superblocks[NR_SUPERBLOCKS]; sb++)
-	{
-		/* Skip invalid superblocks. */
-		if (!(sb->flags & SUPERBLOCK_VALID))
-			continue;
-		
-		/* Found. */
-		if (sb->dev == dev)
-		{
-			/*
-			 * Superblock is locked, so we 
-			 * wait for it to become free.
-			 */
-			if (sb->flags & SUPERBLOCK_LOCKED)
-			{
-				sleep(&sb->chain, PRIO_SUPERBLOCK);
-				goto again;
-			}
-			
-			superblock_lock(sb);
-			sb->count++;	
-			return (sb);
-		}
-	}
-	
-	return (NULL);
+    
+    /* Search for superblock. */
+    for (sb = &superblocks[0]; sb < &superblocks[NR_SUPERBLOCKS]; sb++)
+    {
+        /* Skip invalid superblocks. */
+        if (!(sb->flags & SUPERBLOCK_VALID))
+            continue;
+        
+        /* Found. */
+        if (sb->dev == dev)
+        {
+            /*
+             * Superblock is locked, so we 
+             * wait for it to become free.
+             */
+            if (sb->flags & SUPERBLOCK_LOCKED)
+            {
+                sleep(&sb->chain, PRIO_SUPERBLOCK);
+                goto again;
+            }
+            
+            superblock_lock(sb);
+            sb->count++;    
+            return (sb);
+        }
+    }
+    
+    return (NULL);
 }
 
 /**
@@ -184,11 +184,11 @@ again:
  */
 PUBLIC void superblock_lock(struct superblock *sb)
 {
-	/* Waits for superblock to become unlocked. */
-	while (sb->flags & SUPERBLOCK_LOCKED)
-		sleep(&sb->chain, PRIO_SUPERBLOCK);
-		
-	sb->flags |= SUPERBLOCK_LOCKED;
+    /* Waits for superblock to become unlocked. */
+    while (sb->flags & SUPERBLOCK_LOCKED)
+        sleep(&sb->chain, PRIO_SUPERBLOCK);
+        
+    sb->flags |= SUPERBLOCK_LOCKED;
 }
 
 /**
@@ -204,8 +204,8 @@ PUBLIC void superblock_lock(struct superblock *sb)
  */
 PUBLIC void superblock_unlock(struct superblock *sb)
 {
-	wakeup(&sb->chain);
-	sb->flags &= ~SUPERBLOCK_LOCKED;
+    wakeup(&sb->chain);
+    sb->flags &= ~SUPERBLOCK_LOCKED;
 }
 
 /**
@@ -222,30 +222,30 @@ PUBLIC void superblock_unlock(struct superblock *sb)
  */
 PUBLIC void superblock_put(struct superblock *sb)
 {
-	/* Double free. */
-	if (sb->count == 0)
-		kpanic("freeing superblock twice");
-	
-	/* Release underlying resources. */
-	if (--sb->count == 0)
-	{
-		superblock_write(sb);
-			
-		/* Release inode map buffers. */
-		for (unsigned i = 0; i < sb->imap_blocks; i++)
-			brelse(sb->imap[i]);
-			
-		/* Release zone map buffers. */
-		for (unsigned i = 0; i < sb->zmap_blocks; i++)
-			brelse(sb->zmap[i]);
-			
-		/* Release superblock buffer. */
-		brelse(sb->buf);
-			
-		sb->flags &= ~SUPERBLOCK_VALID;
-	}
-	
-	superblock_unlock(sb);
+    /* Double free. */
+    if (sb->count == 0)
+        kpanic("freeing superblock twice");
+    
+    /* Release underlying resources. */
+    if (--sb->count == 0)
+    {
+        superblock_write(sb);
+            
+        /* Release inode map buffers. */
+        for (unsigned i = 0; i < sb->imap_blocks; i++)
+            brelse(sb->imap[i]);
+            
+        /* Release zone map buffers. */
+        for (unsigned i = 0; i < sb->zmap_blocks; i++)
+            brelse(sb->zmap[i]);
+            
+        /* Release superblock buffer. */
+        brelse(sb->buf);
+            
+        sb->flags &= ~SUPERBLOCK_VALID;
+    }
+    
+    superblock_unlock(sb);
 }
 
 /**
@@ -267,64 +267,64 @@ PUBLIC void superblock_put(struct superblock *sb)
  */
 PUBLIC struct superblock *superblock_read(dev_t dev)
 {
-	struct buffer *buf;        /* Buffer disk superblock. */
-	struct superblock *sb;     /* In-core superblock.     */
-	struct d_superblock *d_sb; /* Disk superblock.        */
-		
-	/* Get empty superblock. */	
-	sb = superblock_empty();
-	if (sb == NULL)
-		goto error0;
-	
-	/* Read superblock from device. */
-	buf = bread(dev, 1);
-	d_sb = (struct d_superblock *)buf->data;
-	
-	/* Bad magic number. */
-	if (d_sb->s_magic != SUPER_MAGIC)
-	{
-		kprintf("fs: bad superblock magic number");
-		goto error1;
-	}
-	
-	/* Too many blocks in the inode/zone map. */
-	if ((d_sb->s_imap_nblocks > IMAP_SIZE)||(d_sb->s_bmap_nblocks > ZMAP_SIZE))
-	{
-		kprintf("fs: too many blocks in the inode/zone map");
-		goto error1;
-	}
-	
-	/* Initialize superblock. */
-	sb->buf = buf;
-	sb->ninodes = d_sb->s_ninodes;
-	sb->imap_blocks = d_sb->s_imap_nblocks;
-	for (unsigned i = 0; i < sb->imap_blocks; i++)
-		blkunlock(sb->imap[i] = bread(dev, 2 + i));
-	sb->zmap_blocks = d_sb->s_bmap_nblocks;
-	for (unsigned i = 0; i < sb->zmap_blocks; i++)
-		blkunlock(sb->zmap[i] = bread(dev, 2 + sb->imap_blocks + i));
-	sb->first_data_block = d_sb->s_first_data_block;
-	sb->max_size = d_sb->s_max_size;
-	sb->zones = d_sb->s_nblocks;
-	sb->root = NULL;
-	sb->mp = NULL;
-	sb->dev = dev;
-	sb->flags &= ~(SUPERBLOCK_DIRTY | SUPERBLOCK_RDONLY);
-	sb->flags |= SUPERBLOCK_VALID;
-	sb->isearch = 0;
-	sb->zsearch = d_sb->s_first_data_block;
-	sb->chain = NULL;
-	sb->count++;
-	
-	blkunlock(buf);
-	
-	return (sb);
-	
+    struct buffer *buf;        /* Buffer disk superblock. */
+    struct superblock *sb;     /* In-core superblock.     */
+    struct d_superblock *d_sb; /* Disk superblock.        */
+        
+    /* Get empty superblock. */    
+    sb = superblock_empty();
+    if (sb == NULL)
+        goto error0;
+    
+    /* Read superblock from device. */
+    buf = bread(dev, 1);
+    d_sb = (struct d_superblock *)buf->data;
+    
+    /* Bad magic number. */
+    if (d_sb->s_magic != SUPER_MAGIC)
+    {
+        kprintf("fs: bad superblock magic number");
+        goto error1;
+    }
+    
+    /* Too many blocks in the inode/zone map. */
+    if ((d_sb->s_imap_nblocks > IMAP_SIZE)||(d_sb->s_bmap_nblocks > ZMAP_SIZE))
+    {
+        kprintf("fs: too many blocks in the inode/zone map");
+        goto error1;
+    }
+    
+    /* Initialize superblock. */
+    sb->buf = buf;
+    sb->ninodes = d_sb->s_ninodes;
+    sb->imap_blocks = d_sb->s_imap_nblocks;
+    for (unsigned i = 0; i < sb->imap_blocks; i++)
+        blkunlock(sb->imap[i] = bread(dev, 2 + i));
+    sb->zmap_blocks = d_sb->s_bmap_nblocks;
+    for (unsigned i = 0; i < sb->zmap_blocks; i++)
+        blkunlock(sb->zmap[i] = bread(dev, 2 + sb->imap_blocks + i));
+    sb->first_data_block = d_sb->s_first_data_block;
+    sb->max_size = d_sb->s_max_size;
+    sb->zones = d_sb->s_nblocks;
+    sb->root = NULL;
+    sb->mp = NULL;
+    sb->dev = dev;
+    sb->flags &= ~(SUPERBLOCK_DIRTY | SUPERBLOCK_RDONLY);
+    sb->flags |= SUPERBLOCK_VALID;
+    sb->isearch = 0;
+    sb->zsearch = d_sb->s_first_data_block;
+    sb->chain = NULL;
+    sb->count++;
+    
+    blkunlock(buf);
+    
+    return (sb);
+    
 error1:
-	brelse(buf);
-	superblock_unlock(sb);
+    brelse(buf);
+    superblock_unlock(sb);
 error0:
-	return (NULL);
+    return (NULL);
 }
 
 /**
@@ -335,19 +335,19 @@ error0:
  */
 PUBLIC void superblock_sync(void)
 {
-	struct superblock *sb;
-	
-	/* Write superblocks to disk. */
-	for (sb = &superblocks[0]; sb < &superblocks[NR_SUPERBLOCKS]; sb++)
-	{		
-		superblock_lock(sb);
-		
-		/* Write only valid superblocks. */
-		if (sb->flags & SUPERBLOCK_VALID)
-			superblock_write(sb);
-		
-		superblock_unlock(sb);
-	}
+    struct superblock *sb;
+    
+    /* Write superblocks to disk. */
+    for (sb = &superblocks[0]; sb < &superblocks[NR_SUPERBLOCKS]; sb++)
+    {        
+        superblock_lock(sb);
+        
+        /* Write only valid superblocks. */
+        if (sb->flags & SUPERBLOCK_VALID)
+            superblock_write(sb);
+        
+        superblock_unlock(sb);
+    }
 }
 
 /**
@@ -366,33 +366,33 @@ PUBLIC void superblock_sync(void)
  */
 PUBLIC void superblock_stat(struct superblock *sb, struct ustat *ubuf)
 {
-	int tfree;     /* Total free blocks. */
-	int tinode;    /* Total free inodes. */
-	int bmap_size; /* Size of block map. */
-	int imap_size; /* Size of inode map. */
-	
-	/* Count number of free blocks. */
-	tfree = 0;
-	bmap_size = sb->zmap_blocks;
-	for (int i = 0; i < bmap_size; i++)
-	{
-		for (int j = 0; j < (BLOCK_SIZE >> 2); j++)
-			tfree += bitmap_nclear(sb->zmap[i]->data, BLOCK_SIZE);
-	}
-	
-	/* Count number of free inodes. */
-	tinode = 0;
-	imap_size = sb->zmap_blocks;
-	for (int i = 0; i < imap_size; i++)
-	{
-		for (int j = 0; j < (BLOCK_SIZE >> 2); j++)
-			tinode += bitmap_nclear(sb->imap[i]->data, BLOCK_SIZE);
-	}
-	
-	ubuf->f_tfree = tfree;
-	ubuf->f_tinode = tinode;
-	ubuf->f_fname[0] = '\0';
-	ubuf->f_fpack[0] = '\0';
+    int tfree;     /* Total free blocks. */
+    int tinode;    /* Total free inodes. */
+    int bmap_size; /* Size of block map. */
+    int imap_size; /* Size of inode map. */
+    
+    /* Count number of free blocks. */
+    tfree = 0;
+    bmap_size = sb->zmap_blocks;
+    for (int i = 0; i < bmap_size; i++)
+    {
+        for (int j = 0; j < (BLOCK_SIZE >> 2); j++)
+            tfree += bitmap_nclear(sb->zmap[i]->data, BLOCK_SIZE);
+    }
+    
+    /* Count number of free inodes. */
+    tinode = 0;
+    imap_size = sb->zmap_blocks;
+    for (int i = 0; i < imap_size; i++)
+    {
+        for (int j = 0; j < (BLOCK_SIZE >> 2); j++)
+            tinode += bitmap_nclear(sb->imap[i]->data, BLOCK_SIZE);
+    }
+    
+    ubuf->f_tfree = tfree;
+    ubuf->f_tinode = tinode;
+    ubuf->f_fname[0] = '\0';
+    ubuf->f_fpack[0] = '\0';
 }
 
 /**
@@ -405,15 +405,15 @@ PUBLIC void superblock_stat(struct superblock *sb, struct ustat *ubuf)
  */
 PUBLIC void superblock_init(void)
 {
-	/* Initialize superblocks. */
-	for (unsigned i = 0; i < NR_SUPERBLOCKS; i++)
-	{
-		superblocks[i].count = 0;
-		superblocks[i].flags = ~(SUPERBLOCK_VALID | SUPERBLOCK_LOCKED | 
-			SUPERBLOCK_DIRTY | SUPERBLOCK_RDONLY);
-	}
-	
-	kprintf("fs: superblock table has %d entries", NR_SUPERBLOCKS);
+    /* Initialize superblocks. */
+    for (unsigned i = 0; i < NR_SUPERBLOCKS; i++)
+    {
+        superblocks[i].count = 0;
+        superblocks[i].flags = ~(SUPERBLOCK_VALID | SUPERBLOCK_LOCKED | 
+            SUPERBLOCK_DIRTY | SUPERBLOCK_RDONLY);
+    }
+    
+    kprintf("fs: superblock table has %d entries", NR_SUPERBLOCKS);
 }
 
 /**@}*/

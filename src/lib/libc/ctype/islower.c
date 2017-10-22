@@ -78,6 +78,6 @@
  */
 int islower(int c)
 {
-	return ((__ctype_ptr__[c+1] & (_U|_L)) == _L);
+    return ((__ctype_ptr__[c+1] & (_U|_L)) == _L);
 }
 

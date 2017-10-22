@@ -35,14 +35,14 @@
  */
 PUBLIC clock_t sys_times(struct tms *buffer)
 {
-	/* Not a valid buffer. */
-	if (!chkmem(buffer, sizeof(struct tms), MAY_WRITE))
-		return (-EINVAL);
-	
-	buffer->tms_utime = curr_proc->utime*CLOCK_FREQ;
-	buffer->tms_stime = curr_proc->ktime*CLOCK_FREQ;
-	buffer->tms_cutime = curr_proc->cutime*CLOCK_FREQ;
-	buffer->tms_cstime = curr_proc->cktime*CLOCK_FREQ;
-	
-	return (CURRENT_TIME*CLOCK_FREQ);
+    /* Not a valid buffer. */
+    if (!chkmem(buffer, sizeof(struct tms), MAY_WRITE))
+        return (-EINVAL);
+    
+    buffer->tms_utime = curr_proc->utime*CLOCK_FREQ;
+    buffer->tms_stime = curr_proc->ktime*CLOCK_FREQ;
+    buffer->tms_cutime = curr_proc->cutime*CLOCK_FREQ;
+    buffer->tms_cstime = curr_proc->cktime*CLOCK_FREQ;
+    
+    return (CURRENT_TIME*CLOCK_FREQ);
 }

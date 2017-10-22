@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -73,29 +73,29 @@
  *          member is returned is unspecified.
  */
 void *bsearch(const void *key, const void *base, size_t nmemb, size_t size,
-		int (*compar)(const void *, const void *))
+        int (*compar)(const void *, const void *))
 {
-	void *current;
-	int result;
+    void *current;
+    int result;
 
-	if (nmemb == 0 || size == 0)
-		return (NULL);
+    if (nmemb == 0 || size == 0)
+        return (NULL);
 
-	while (nmemb != 0)
-	{
-		current = (void *) (((char *) base) + ((nmemb / 2) * size));
+    while (nmemb != 0)
+    {
+        current = (void *) (((char *) base) + ((nmemb / 2) * size));
 
-		result = compar(key, current);
+        result = compar(key, current);
 
-		if (result < 0)
-			nmemb /= 2;
-		else if (result > 0)
-		{
-			base = (void *) (((char *) current) + size);
-			nmemb = (nmemb / 2) - (nmemb % 2 ? 0 : 1);
-		}
-		else
-			return (current);
+        if (result < 0)
+            nmemb /= 2;
+        else if (result > 0)
+        {
+            base = (void *) (((char *) current) + size);
+            nmemb = (nmemb / 2) - (nmemb % 2 ? 0 : 1);
+        }
+        else
+            return (current);
     }
 
   if (compar(key, base) == 0)

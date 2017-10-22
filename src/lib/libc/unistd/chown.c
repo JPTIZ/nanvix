@@ -26,24 +26,24 @@
  */
 int chown(const char *path, uid_t owner, gid_t group)
 {
-	int ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_chown),
-		  "b" (path),
-		  "c" (owner),
-		  "d" (group)
-	);
-	
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
-	
-	return (
-	ret);
+    int ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_chown),
+          "b" (path),
+          "c" (owner),
+          "d" (group)
+    );
+    
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
+    
+    return (
+    ret);
 }

@@ -26,23 +26,23 @@
  */
 ssize_t write(int fd, const void *buf, size_t n)
 {
-	ssize_t ret;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (ret)
-		: "0" (NR_write),
-		  "b" (fd),
-		  "c" (buf),
-		  "d" (n)
-	);
-	
-	/* Error. */
-	if (ret < 0)
-	{
-		errno = -ret;
-		return (-1);
-	}
-	
-	return ((ssize_t)ret);
+    ssize_t ret;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (ret)
+        : "0" (NR_write),
+          "b" (fd),
+          "c" (buf),
+          "d" (n)
+    );
+    
+    /* Error. */
+    if (ret < 0)
+    {
+        errno = -ret;
+        return (-1);
+    }
+    
+    return ((ssize_t)ret);
 }

@@ -31,8 +31,8 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *	This product includes software developed by the University of
- *	California, Berkeley and its contributors.
+ *    This product includes software developed by the University of
+ *    California, Berkeley and its contributors.
  * 4. Neither the name of the University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
@@ -71,29 +71,29 @@
  */
 char *strpbrk(const char *s1, const char *s2)
 {
-	const char *c;
-	
-	c = s2;
-	
-	if (*s1 == '\0')
-		return ((char *) NULL);
+    const char *c;
+    
+    c = s2;
+    
+    if (*s1 == '\0')
+        return ((char *) NULL);
 
-	while (*s1 != '\0')
-	{
-		for (c = s2; *c != '\0'; c++)
-		{
-			if (*s1 == *c)
-				break;
-		}
-		
-		if (*c != '\0')
-			break;
-		
-		s1++;
-	}
+    while (*s1 != '\0')
+    {
+        for (c = s2; *c != '\0'; c++)
+        {
+            if (*s1 == *c)
+                break;
+        }
+        
+        if (*c != '\0')
+            break;
+        
+        s1++;
+    }
 
-	if (*c == '\0')
-		s1 = NULL;
+    if (*c == '\0')
+        s1 = NULL;
 
-	return ((char *) s1);
+    return ((char *) s1);
 }

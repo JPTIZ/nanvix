@@ -32,69 +32,69 @@
  */
 PUBLIC ssize_t sys_read(int fd, void *buf, size_t n)
 {
-	dev_t dev;       /* Device number.       */
-	struct file *f;  /* File.                */
-	struct inode *i; /* Inode.               */
-	ssize_t count;   /* Bytes actually read. */
-	
-	/* Invalid file descriptor. */
-	if ((fd < 0) || (fd >= OPEN_MAX) || ((f = curr_proc->ofiles[fd]) == NULL))
-		return (-EBADF);
-	
-	/* File not opened for reading. */
-	if (ACCMODE(f->oflag) == O_WRONLY)
-		return (-EBADF);
+    dev_t dev;       /* Device number.       */
+    struct file *f;  /* File.                */
+    struct inode *i; /* Inode.               */
+    ssize_t count;   /* Bytes actually read. */
+    
+    /* Invalid file descriptor. */
+    if ((fd < 0) || (fd >= OPEN_MAX) || ((f = curr_proc->ofiles[fd]) == NULL))
+        return (-EBADF);
+    
+    /* File not opened for reading. */
+    if (ACCMODE(f->oflag) == O_WRONLY)
+        return (-EBADF);
 
 #if (EDUCATIONAL_KERNEL == 0)
-	
-	/* Invalid buffer. */	
-	if (!chkmem(buf, n, MAY_WRITE))
-		return (-EINVAL);
+    
+    /* Invalid buffer. */    
+    if (!chkmem(buf, n, MAY_WRITE))
+        return (-EINVAL);
 
 #endif
 
-	/* Nothing to do. */
-	if (n == 0)
-		return (0);
-	
-	 i = f->inode;
-	
-	/* Character special file. */
-	if (S_ISCHR(i->mode))
-	{		
-		dev = i->blocks[0];
-		count = cdev_read(dev, buf, n);
-		return (count);
-	}
-	
-	/* Block special file. */
-	else if (S_ISBLK(i->mode))
-	{
-		dev = i->blocks[0];
-		count = bdev_read(dev, buf, n, f->pos);
-	}
-	
-	/* Pipe file. */
-	else if (S_ISFIFO(i->mode))
-	{
-		kprintf("read from pipe");
-		count = pipe_read(i, buf, n);
-	}
-	
-	/* Regular file/directory. */
-	else if ((S_ISDIR(i->mode)) || (S_ISREG(i->mode)))
-		count = file_read(i, buf, n, f->pos);
-	
-	/* Unknown file type. */
-	else
-		return (-EINVAL);
-	
-	/* Failed to read. */
-	if (count < 0)
-		return (curr_proc->errno);
+    /* Nothing to do. */
+    if (n == 0)
+        return (0);
+    
+     i = f->inode;
+    
+    /* Character special file. */
+    if (S_ISCHR(i->mode))
+    {        
+        dev = i->blocks[0];
+        count = cdev_read(dev, buf, n);
+        return (count);
+    }
+    
+    /* Block special file. */
+    else if (S_ISBLK(i->mode))
+    {
+        dev = i->blocks[0];
+        count = bdev_read(dev, buf, n, f->pos);
+    }
+    
+    /* Pipe file. */
+    else if (S_ISFIFO(i->mode))
+    {
+        kprintf("read from pipe");
+        count = pipe_read(i, buf, n);
+    }
+    
+    /* Regular file/directory. */
+    else if ((S_ISDIR(i->mode)) || (S_ISREG(i->mode)))
+        count = file_read(i, buf, n, f->pos);
+    
+    /* Unknown file type. */
+    else
+        return (-EINVAL);
+    
+    /* Failed to read. */
+    if (count < 0)
+        return (curr_proc->errno);
 
-	inode_touch(i);
-	f->pos += count;
+    inode_touch(i);
+    f->pos += count;
 
-	return (count);
+    return (count);
 }

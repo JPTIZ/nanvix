@@ -28,11 +28,11 @@
  */
 PUBLIC mode_t sys_umask(mode_t cmask)
 {
-	mode_t old_mask;
-	
-	old_mask = curr_proc->umask;
-	
-	curr_proc->umask = cmask & (MAY_READ | MAY_WRITE | MAY_EXEC);
-	
-	return (old_mask);
+    mode_t old_mask;
+    
+    old_mask = curr_proc->umask;
+    
+    curr_proc->umask = cmask & (MAY_READ | MAY_WRITE | MAY_EXEC);
+    
+    return (old_mask);
 }

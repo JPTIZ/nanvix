@@ -25,20 +25,20 @@
  */
 pid_t fork(void)
 {
-	pid_t pid;
-	
-	__asm__ volatile (
-		"int $0x80"
-		: "=a" (pid)
-		: "0" (NR_fork)
-	);
-	
-	/* Error. */
-	if (pid < 0)
-	{
-		errno = -pid;
-		return (-1);
-	}
-	
-	return (pid);
+    pid_t pid;
+    
+    __asm__ volatile (
+        "int $0x80"
+        : "=a" (pid)
+        : "0" (NR_fork)
+    );
+    
+    /* Error. */
+    if (pid < 0)
+    {
+        errno = -pid;
+        return (-1);
+    }
+    
+    return (pid);
 }

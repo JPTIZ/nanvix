@@ -31,16 +31,16 @@
  */
 PUBLIC void kmemdump(const void *s, size_t n)
 {
-	const unsigned *p  = s;
-	
-	/* Dump memory area in chunks. */
-	for (size_t i = 0; i < n; i += 16, p += 4)
-	{
-		/* Do not print zero lines. */
-		if (*(p + 0) || *(p + 1) || *(p + 2) || *(p + 3))
-		{
-			kprintf("[%x]: %x %x %x %x",
-				i, *(p + 0), *(p + 1), *(p + 2), *(p + 3));
-		}
-	}
+    const unsigned *p  = s;
+    
+    /* Dump memory area in chunks. */
+    for (size_t i = 0; i < n; i += 16, p += 4)
+    {
+        /* Do not print zero lines. */
+        if (*(p + 0) || *(p + 1) || *(p + 2) || *(p + 3))
+        {
+            kprintf("[%x]: %x %x %x %x",
+                i, *(p + 0), *(p + 1), *(p + 2), *(p + 3));
+        }
+    }
 }

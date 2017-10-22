@@ -37,79 +37,79 @@ PUBLIC int shutting_down = 0;
  */
 PUBLIC void die(int status)
 {
-	struct process *p;
-	
-	/* Shall not occour. */
-	if (curr_proc == IDLE)
-		kpanic("idle process dying");
-	
-	curr_proc->status = status;
-	
-	/*
-	 * Ignore all signals since, 
-	 * process may sleep below.
-	 */
-	for (unsigned i = 0; i < NR_SIGNALS; i++)
-		curr_proc->handlers[i] = SIG_IGN;
-	
-	/* Close file descriptors. */
-	for (unsigned i = 0; i < OPEN_MAX; i++)
-		do_close(i);
-	
-	/* Hangup terminal. */
-	if (IS_LEADER(curr_proc) && (curr_proc->tty != NULL_DEV))
-		cdev_close(curr_proc->tty);
-		
-	/* init adopts orphan processes. */
-	for (p = FIRST_PROC; p <= LAST_PROC; p++)
-	{
-		/* Skip invalid processes. */
-		if (!IS_VALID(p))
-			continue;
-		
-		if (shutting_down)
-			p->father = IDLE;
-		else if (p->father == curr_proc)
-		{
-			p->father = INIT;
-			sndsig(INIT, SIGCHLD);
-		}
-		
-		p->father->nchildren++;
-	}
-	
-	/* init adotps process in the same group. */
-	if (curr_proc->pgrp == curr_proc)
-	{
-		for (p = FIRST_PROC; p <= LAST_PROC; p++)
-		{
-			/* Skip invalid processes. */
-			if (!IS_VALID(p))
-				continue;
-			
-			if (p->pgrp == curr_proc)
-			{
-				p->pgrp = NULL;
-				sndsig(p, SIGHUP);
-				sndsig(p, SIGCONT);
-			}
-		}
-	}
-	
-	/* Detach process memory regions. */
-	for (unsigned i = 0; i < NR_PREGIONS; i++)
-		detachreg(curr_proc, &curr_proc->pregs[i]);
-	
-	/* Release root and pwd. */
-	inode_put(curr_proc->root);
-	inode_put(curr_proc->pwd);
-	
-	curr_proc->state = PROC_ZOMBIE;
-	curr_proc->alarm = 0;
-	
-	sndsig(curr_proc->father, SIGCHLD);
-	
-	yield();
+    struct process *p;
+    
+    /* Shall not occour. */
+    if (curr_proc == IDLE)
+        kpanic("idle process dying");
+    
+    curr_proc->status = status;
+    
+    /*
+     * Ignore all signals since, 
+     * process may sleep below.
+     */
+    for (unsigned i = 0; i < NR_SIGNALS; i++)
+        curr_proc->handlers[i] = SIG_IGN;
+    
+    /* Close file descriptors. */
+    for (unsigned i = 0; i < OPEN_MAX; i++)
+        do_close(i);
+    
+    /* Hangup terminal. */
+    if (IS_LEADER(curr_proc) && (curr_proc->tty != NULL_DEV))
+        cdev_close(curr_proc->tty);
+        
+    /* init adopts orphan processes. */
+    for (p = FIRST_PROC; p <= LAST_PROC; p++)
+    {
+        /* Skip invalid processes. */
+        if (!IS_VALID(p))
+            continue;
+        
+        if (shutting_down)
+            p->father = IDLE;
+        else if (p->father == curr_proc)
+        {
+            p->father = INIT;
+            sndsig(INIT, SIGCHLD);
+        }
+        
+        p->father->nchildren++;
+    }
+    
+    /* init adotps process in the same group. */
+    if (curr_proc->pgrp == curr_proc)
+    {
+        for (p = FIRST_PROC; p <= LAST_PROC; p++)
+        {
+            /* Skip invalid processes. */
+            if (!IS_VALID(p))
+                continue;
+            
+            if (p->pgrp == curr_proc)
+            {
+                p->pgrp = NULL;
+                sndsig(p, SIGHUP);
+                sndsig(p, SIGCONT);
+            }
+        }
+    }
+    
+    /* Detach process memory regions. */
+    for (unsigned i = 0; i < NR_PREGIONS; i++)
+        detachreg(curr_proc, &curr_proc->pregs[i]);
+    
+    /* Release root and pwd. */
+    inode_put(curr_proc->root);
+    inode_put(curr_proc->pwd);
+    
+    curr_proc->state = PROC_ZOMBIE;
+    curr_proc->alarm = 0;
+    
+    sndsig(curr_proc->father, SIGCHLD);
+    
+    yield();
 }
 
 /**
@@ -119,8 +119,8 @@ PUBLIC void die(int status)
  */
 PUBLIC void bury(struct process *proc)
 {
-	dstrypgdir(proc);
-	proc->state = PROC_DEAD;
-	proc->father->nchildren--;
-	nprocs--;
+    dstrypgdir(proc);
+    proc->state = PROC_DEAD;
+    proc->father->nchildren--;
+    nprocs--;
 }

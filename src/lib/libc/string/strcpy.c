@@ -35,13 +35,13 @@
  */
 char *strcpy(char *restrict s1, const char *restrict s2)
 {
-	char *p1;
-	
-	p1 = s1;
-	
-	/* Copy strings. */
-	while ((*p1++ = *s2++) != '\0')
-		/* noop */;
-	
-	return (s1);
+    char *p1;
+    
+    p1 = s1;
+    
+    /* Copy strings. */
+    while ((*p1++ = *s2++) != '\0')
+        /* noop */;
+    
+    return (s1);
 }

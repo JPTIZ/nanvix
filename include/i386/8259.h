@@ -33,63 +33,63 @@
 #ifndef PIC_H_
 #define PIC_H_
 
-	#include <nanvix/const.h>
-	#include <stdint.h>
+    #include <nanvix/const.h>
+    #include <stdint.h>
 
-	/*
-	 * Constants: Master PIC Registers
-	 * 
-	 * PIC_CTRL_MASTER - Control register.
-	 * PIC_DATA_MASTER - Data register.
-	 */
-	#define PIC_CTRL_MASTER 0x20
-	#define PIC_DATA_MASTER 0x21
-	
-	/*
-	 * Constants: Slave PIC Registers
-	 * 
-	 * PIC_CTRL_SLAVE - Control register.
-	 * PIC_DATA_SLAVE - Data register.
-	 */
-	#define PIC_CTRL_SLAVE 0xa0
-	#define PIC_DATA_SLAVE 0xa1
+    /*
+     * Constants: Master PIC Registers
+     * 
+     * PIC_CTRL_MASTER - Control register.
+     * PIC_DATA_MASTER - Data register.
+     */
+    #define PIC_CTRL_MASTER 0x20
+    #define PIC_DATA_MASTER 0x21
+    
+    /*
+     * Constants: Slave PIC Registers
+     * 
+     * PIC_CTRL_SLAVE - Control register.
+     * PIC_DATA_SLAVE - Data register.
+     */
+    #define PIC_CTRL_SLAVE 0xa0
+    #define PIC_DATA_SLAVE 0xa1
 
 #ifndef _ASM_FILE_
 
-	/*
-	 * Function: pic_mask
-	 * 
-	 * Sets interrupt mask.
-	 * 
-	 * Parameters:
-	 * 
-	 *     mask - Interrupt mask to be set.
-	 * 
-	 * Description:
-	 * 
-	 *     The <pic_mask> function sets the interrupt mask to _mask_, thus
-	 *     preventing related interrupt requested to be fired. 
-	 */
-	EXTERN void pic_mask(uint16_t mask);
-	
-	/*
-	 * Function: pic_setup
-	 * 
-	 * Setups the programmable interrupt controller.
-	 * 
-	 * Parameters:
-	 * 
-	 *     offset1 - Vector offset for master PIC.
-	 *     offset2 - Vector offset for slave PIC.
-	 * 
-	 * Description:
-	 * 
-	 *     The <pic_setup> function setups the PIC by effectively remapping 
-	 *     interrupt vectors. This is mandatory when operating in protected
-	 *     mode, since the default hardware interrupt vectors conflicts with
-	 *     CPU exception vectors.
-	 */
-	EXTERN void pic_setup(uint8_t offset1, uint8_t offset2);
+    /*
+     * Function: pic_mask
+     * 
+     * Sets interrupt mask.
+     * 
+     * Parameters:
+     * 
+     *     mask - Interrupt mask to be set.
+     * 
+     * Description:
+     * 
+     *     The <pic_mask> function sets the interrupt mask to _mask_, thus
+     *     preventing related interrupt requested to be fired. 
+     */
+    EXTERN void pic_mask(uint16_t mask);
+    
+    /*
+     * Function: pic_setup
+     * 
+     * Setups the programmable interrupt controller.
+     * 
+     * Parameters:
+     * 
+     *     offset1 - Vector offset for master PIC.
+     *     offset2 - Vector offset for slave PIC.
+     * 
+     * Description:
+     * 
+     *     The <pic_setup> function setups the PIC by effectively remapping 
+     *     interrupt vectors. This is mandatory when operating in protected
+     *     mode, since the default hardware interrupt vectors conflicts with
+     *     CPU exception vectors.
+     */
+    EXTERN void pic_setup(uint8_t offset1, uint8_t offset2);
 
 #endif /* _ASM_FILE_ */
 

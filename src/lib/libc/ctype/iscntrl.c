@@ -78,7 +78,7 @@
  */
 int iscntrl(int c)
 {
-	return(__ctype_ptr__[c+1] & _C);
+    return(__ctype_ptr__[c+1] & _C);
 }
 
 

@@ -29,18 +29,18 @@ PRIVATE struct process *chain = NULL;
  * Suspends the calling process until a signal is received.
  */
 PUBLIC int sys_pause()
-{	
-	/* Susped process. */
-	while (1)
-	{
-		sleep(&chain, PRIO_USER);
-		
-		/*  Wakeup on signal receipt. */
-		if (issig() != SIGNULL)
-			goto awaken;
-	}
+{    
+    /* Susped process. */
+    while (1)
+    {
+        sleep(&chain, PRIO_USER);
+        
+        /*  Wakeup on signal receipt. */
+        if (issig() != SIGNULL)
+            goto awaken;
+    }
 
 awaken:
 
-	return (-EINTR);
+    return (-EINTR);
 }

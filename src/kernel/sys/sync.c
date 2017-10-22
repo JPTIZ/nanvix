@@ -25,12 +25,12 @@
  */
 PUBLIC void sys_sync(void)
 {
-	inode_sync();
-	superblock_sync();
-	
-	/*
-	 * This will cause all dirty buffers
-	 * to be written synchronously to disk.
-	 */
-	bsync();
+    inode_sync();
+    superblock_sync();
+    
+    /*
+     * This will cause all dirty buffers
+     * to be written synchronously to disk.
+     */
+    bsync();
 }

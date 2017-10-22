@@ -26,40 +26,40 @@
 #ifndef CONST_H_
 #define CONST_H_
 
-	/**
-	 * @name System Information
-	 */
-	/**@{*/
-	#define SYSNAME "Nanvix"      /**< Operating system name. */
-	#define NODENAME "valhalla"   /**< Network node name.     */
-	#define RELEASE "beta"        /**< Kernel release.        */
-	#define VERSION "1.2"         /**< Kernel version.        */
-	#define MACHINE "Intel 80386" /**< Hardware name.         */
-	/**@}*/
+    /**
+     * @name System Information
+     */
+    /**@{*/
+    #define SYSNAME "Nanvix"      /**< Operating system name. */
+    #define NODENAME "valhalla"   /**< Network node name.     */
+    #define RELEASE "beta"        /**< Kernel release.        */
+    #define VERSION "1.2"         /**< Kernel version.        */
+    #define MACHINE "Intel 80386" /**< Hardware name.         */
+    /**@}*/
 
-	/**
-	 * @name Scope Constants
-	 */
-	/**@{*/
-	#define PUBLIC         /**< Global scope       */
-	#define PRIVATE static /**< File scope.        */
-	#define EXTERN extern  /**< Defined elsewhere. */
-	/**@}*/
+    /**
+     * @name Scope Constants
+     */
+    /**@{*/
+    #define PUBLIC         /**< Global scope       */
+    #define PRIVATE static /**< File scope.        */
+    #define EXTERN extern  /**< Defined elsewhere. */
+    /**@}*/
 
-	/**
-	 * @name Logical Constants
-	 */
-	#define FALSE 0 /**< False. */
-	#define TRUE  1 /**< True.  */
-	
-	/**
-	 * @name Other Constants
-	 */
-	/**@{*/
+    /**
+     * @name Logical Constants
+     */
+    #define FALSE 0 /**< False. */
+    #define TRUE  1 /**< True.  */
+    
+    /**
+     * @name Other Constants
+     */
+    /**@{*/
 
-	#define _NEED_NULL
-	#include <decl.h>
-	
-	/**@}*/
+    #define _NEED_NULL
+    #include <decl.h>
+    
+    /**@}*/
 
 #endif /* CONST_H_ */

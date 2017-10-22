@@ -26,32 +26,32 @@
 #ifndef ASSERT_H_
 #define ASSERT_H_
 
-	/**
-	 * @defgroup assert assert.h
-	 * 
-	 * @brief Program diagnostics library.
-	 */
-	/**@{*/
-	
-	/**
-	 * @brief Asserts a condition.
-	 * 
-	 * @param cond Condition to assert.
-	 */
-	#define assert(cond) ((cond) ?                                        \
-			(void) 0 :                                                    \
-			(void) _assertfail("assertion failed: %s, file %s, line %d\n",\
-									#cond, __FILE__, __LINE__ ))
+    /**
+     * @defgroup assert assert.h
+     * 
+     * @brief Program diagnostics library.
+     */
+    /**@{*/
+    
+    /**
+     * @brief Asserts a condition.
+     * 
+     * @param cond Condition to assert.
+     */
+    #define assert(cond) ((cond) ?                                        \
+            (void) 0 :                                                    \
+            (void) _assertfail("assertion failed: %s, file %s, line %d\n",\
+                                    #cond, __FILE__, __LINE__ ))
 
-	/**@}*/
-	
-	/* Ignore assertions. */
-	#ifdef NDEBUG
-	#undef assert
-		#define assert(ignore)((void) 0)
-	#endif
-	
-	/* Forward definitions. */
-	extern void _assertfail(const char *, const char *, const char *, int);
+    /**@}*/
+    
+    /* Ignore assertions. */
+    #ifdef NDEBUG
+    #undef assert
+        #define assert(ignore)((void) 0)
+    #endif
+    
+    /* Forward definitions. */
+    extern void _assertfail(const char *, const char *, const char *, int);
 
 #endif /* ASSERT_H_ */

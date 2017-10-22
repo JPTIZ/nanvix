@@ -34,5 +34,5 @@
  */
 long atol(const char *str)
 {
-	return (strtol(str, (char **) NULL, 10));
+    return (strtol(str, (char **) NULL, 10));
 }

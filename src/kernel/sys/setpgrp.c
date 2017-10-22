@@ -27,14 +27,14 @@
  */
 PUBLIC pid_t sys_setpgrp()
 {
-	/* Create a new session. */
-	if (!IS_LEADER(curr_proc))
-	{
-		curr_proc->pgrp = curr_proc;
-		curr_proc->tty = NULL_DEV;
-	}
-	
-	return (curr_proc->pgrp->pid);
+    /* Create a new session. */
+    if (!IS_LEADER(curr_proc))
+    {
+        curr_proc->pgrp = curr_proc;
+        curr_proc->tty = NULL_DEV;
+    }
+    
+    return (curr_proc->pgrp->pid);
 }
 
 
