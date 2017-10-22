@@ -68,6 +68,8 @@
 		unsigned frame    : 20; /* Frame number.      */
 	};
 
+	typedef struct pte pte_t;
+
 	/*
 	 * DESCRIPTION;
 	 *   The PG() macro returns the page number where a given virtual address.
@@ -76,7 +78,7 @@
 	
 	/*
 	 * DESCRIPTION:
-	 *   The PGTAB() macro returns the page table number of a given virtual
+	 *   The PGTAB() macro returns the page table number of a given virtual ata.
 	 */
 	#define PGTAB(a) ((unsigned)(a) >> PGTAB_SHIFT)
 

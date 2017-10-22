@@ -217,6 +217,8 @@
 	EXTERN void sndsig(struct process *, int);
 	EXTERN void wakeup(struct process **);
 	EXTERN void yield(void);
+
+	#define cpu_time(proc) proc->utime + proc->ktime
 	
 	/**
 	 * @name Process memory regions
