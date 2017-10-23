@@ -1,0 +1,134 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[portuguese]{babel}
+\usepackage{minted}
+
+\title{Trabalho II --- Sistemas Operacionais I}
+\author{João Gabriel Trombeta\\
+        João Paulo Taylor Ienczak Zanette\\
+        Marco Aurélio Ludwig Moraes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Resumo das alterações}
+
+\subsection{\texttt{pm.h} e \texttt{pm.c}}
+
+Primeiramente, para facilitar, aproveita-se o recurso de \texttt{typedef} para
+melhorar a tipagem de \texttt{struct process}, dando o apelido
+\texttt{process\_t}:
+
+\inputminted[firstline=211, lastline=211]{c}{../../include/nanvix/pm.h}
+
+Apenas foi adicionada uma nova função \texttt{cpu\_time(process\_t*)}, que
+retorna o uso de CPU com implementação bem simples:
+
+\inputminted[firstline=129,lastline=131]{c}{../../src/kernel/pm/pm.c}
+
+\subsection{\texttt{paging.c}}
+
+A modificação principal é nas proximidades da função \texttt{allocf(void)}.
+
+Inicialmente, define-se uma constante \texttt{tau} ($\tau$\cite{Carr:1981},
+equivalente ao \textit{T} apresentado nos slides de WSClock). Definimos seu
+valor para $4000$ ciclos de relógio, referentes a uma base de $\theta =
+2ms$\cite{Carr:1981}, rodando em um processador de 2GHz (eq.\ref{kkk}).
+
+\begin{align}
+    \label{kkk}
+    \tau &= \frac{\theta . freq}{1000} \\
+         &= \frac{2.2.10^{6}}{1000} \nonumber \\
+         &= 4.10^{3} \nonumber \\
+         &= 4000 \nonumber
+\end{align}
+
+Também para facilitar, chamamos a \texttt{struct <sem nome>} de \texttt{struct
+\_\_frame}, a fim de poder fazer um apelido (\texttt{typedef}) também:
+
+\inputminted[firstline=287,lastline=289]{c}{../../src/kernel/mm/paging.c}
+
+\subsubsection{Função \texttt{allocf(void)}}
+
+Primeiramente, foi criado um índice \texttt{i} com tempo de vida de programa
+(ou seja, \texttt{static}) dentro da função a fim de simbolizar o ponteiro do
+relógio.
+
+Em seguida, foram declaradas as \textit{flags}:
+
+\begin{description}
+    \item[\texttt{cycle}]: para verificar se ocorreu um ciclo ao percorrer a
+        lista de molduras --- inicialmente partindo de que não ocorreram
+        ciclos;
+    \item[\texttt{written}]: para verificar se ocorreram escritas durante um
+        ciclo;
+    \item[\texttt{owned}]: para verificar se em algum momento foi encontrada
+        uma moldura pertencente ao processo atual.
+\end{description}
+
+Para o controle de ocorrência de ciclos, utiliza-se uma variável
+\texttt{begin}.
+
+Para evitar acessar um índice inválido da lista de \textit{frames} (por
+incremento do ponteiro do relógio), é comparado se \texttt{i} é maior ou igual
+\texttt{NR\_FRAMES}, e em caso positivo, reinicia-se o ponteiro para o primeiro
+\textit{frame} (\texttt{i = 0}). Dessa forma, a lista de frames funciona de
+forma virtualmente circular.
+
+Tenta-se então procurar o \textit{frame} ideal para alocar, seguindo o
+algoritmo do WSClock. Os passos são:
+
+\begin{enumerate}
+    \item Se o \textit{frame} no ponteiro não for referenciado por página
+        alguma, ele é escolhido (alocação global).
+    \item Caso contrário, verifica-se se o \textit{frame} no ponteiro pertence
+        ao processo atual (que requisita a alocação). Em caso positivo, se não
+        for um \textit{frame} compartilhado, então:
+        \begin{enumerate}
+            \item Marca-se \texttt{owned} como verdadeiro, simbolizando que há
+                alguma página pertencente ao processo atual;
+            \item Verifica-se se essa moldura foi referenciada desde a última
+                interrupção. Caso tenha sido, a \textit{flag} de acessada é
+                alterada para falso e atualiza-se o momento de último uso para
+                o tempo atual do processo (\texttt{cpu\_time(curr\_proc)}).
+            \item Caso não tenha sido referenciada, calcula-se a idade seguindo
+                a eq.\ref{age}.
+            \item Se a idade for maior do que a constante $\tau$, verifica-se a
+                necessidade de escrevê-la em disco. Em caso positivo para
+                ambos, escreve-se no disco e, se a escrita for bem sucedida,
+                tiver passado um ciclo (i.e.\ uma vez por todos os
+                \textit{frames}) e não houve escrita no ciclo anterior, então
+                escolhe-se arbitrariamente tal moldura para alocação. Ao final
+                da escrita, marca-se \texttt{written} como verdadeiro.
+            \item Se a idade for maior e não há necessidade de escrita, a
+                moldura é escolhida para alocação.
+        \end{enumerate}
+    \item Caso nenhuma moldura seja escolhida, o laço \texttt{while (TRUE)}
+        ainda estará em execução. Assim, incrementa-se o ponteiro \texttt{i},
+        verifica-se a necessidade de voltar ao início da lista e, caso tenha
+        completado um ciclo (ou seja, se \texttt{i} voltou a ter o mesmo valor
+        de \texttt{begin}), retorna-se \texttt{-1} caso não hajam
+        \textit{frames} disponíveis (ou seja, nenhuma pertence ao processo
+        atual e não há molduras livres), ou, caso haja alguma, marca-se que
+        pelo menos um ciclo foi completado (\texttt{cycle} torna-se
+        verdadeiro).
+    \item Por fim, uma vez fora do ciclo, significa que uma moldura foi
+        escolhida. Atualiza-se a idade da moldura para o tempo de CPU do
+        processo atual e indica-se que há uma página referenciando a moldura.
+        Por fim, a moldura é retornada e o ponteiro \texttt{i} é incrementado
+        (e garantido de que não irá passar do limite de \textit{frames} na
+        próxima execução da função, pela primeira comparação feita nela).
+\end{enumerate}
+
+\begin{align}
+    \label{age}
+    age_{ellapsed} &= cpu_{time}(process) - age_{frame}
+\end{align}
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}

@@ -308,7 +308,7 @@ PRIVATE int allocf(void)
     // Indica se foi encontrado algum frame do qual o processo atual é dono
     unsigned owned = FALSE;
 
-    if (i == NR_FRAMES) {
+    if (i >= NR_FRAMES) {
         i = 0;
     }
 
@@ -333,7 +333,6 @@ PRIVATE int allocf(void)
                 if (age > tau) {
                     if (table->dirty) {
                         int result = swap_out(curr_proc, frame->addr);
-                        table->accessed = FALSE;
                         if (result == 0) {
                             table->dirty = FALSE;
                             if (cycle && !written) {
@@ -350,7 +349,7 @@ PRIVATE int allocf(void)
 
         i++;
 
-        if (i == NR_FRAMES) {
+        if (i >= NR_FRAMES) {
             i = 0;
         }
 
