@@ -21,6 +21,7 @@
 #include <nanvix/const.h>
 #include <nanvix/fs.h>
 #include <nanvix/klib.h>
+#include <nanvix/utils.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
@@ -301,7 +302,7 @@ PUBLIC ssize_t file_read(struct inode *i, void *buf, size_t n, off_t off)
         if (blk == BLOCK_NULL)
             goto out;
 
-        bbuf = bread(i->dev, blk);
+        bbuf = n_bread(i->dev, blk, MIN(3, n / BLOCK_SIZE));
 
         blkoff = off % BLOCK_SIZE;
 

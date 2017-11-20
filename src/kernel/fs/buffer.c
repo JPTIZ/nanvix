@@ -99,10 +99,10 @@ PRIVATE struct buffer hashtab[BUFFERS_HASHTAB_SIZE];
  *          ensured to be locked, and may be, or may be not, valid.
  *          Upon failure, a null pointer NULL is returned instead.
  */
-PRIVATE struct buffer *getblk(dev_t dev, block_t num)
+PRIVATE buffer_t getblk(dev_t dev, block_t num)
 {
     unsigned i;         /* Hash table index. */
-    struct buffer *buf; /* Buffer.           */
+    buffer_t buf; /* Buffer.           */
 
     /* Should not happen. */
     if ((dev == 0) && (num == 0))
@@ -203,7 +203,7 @@ repeat:
  *
  * @param buf Block buffer to be locked.
  */
-PUBLIC void blklock(struct buffer *buf)
+PUBLIC void blklock(buffer_t buf)
 {
     disable_interrupts();
 
@@ -226,7 +226,7 @@ PUBLIC void blklock(struct buffer *buf)
  *
  * @note The block buffer must be locked.
  */
-PUBLIC void blkunlock(struct buffer *buf)
+PUBLIC void blkunlock(buffer_t buf)
 {
     disable_interrupts();
 
@@ -246,7 +246,7 @@ PUBLIC void blkunlock(struct buffer *buf)
  *
  * @note The block buffer must be locked.
  */
-PUBLIC void brelse(struct buffer *buf)
+PUBLIC void brelse(buffer_t buf)
 {
     disable_interrupts();
 
@@ -297,7 +297,7 @@ PUBLIC void brelse(struct buffer *buf)
  *
  * @note The block buffer must be locked.
  */
-PUBLIC void bwrite(struct buffer *buf)
+PUBLIC void bwrite(buffer_t buf)
 {
     /*
      * We don't have to write back the buffer
@@ -324,7 +324,7 @@ PUBLIC void bwrite(struct buffer *buf)
 PUBLIC void bsync(void)
 {
     /* Synchronize buffers. */
-    for (struct buffer *buf = &buffers[0]; buf < &buffers[NR_BUFFERS]; buf++)
+    for (buffer_t buf = &buffers[0]; buf < &buffers[NR_BUFFERS]; buf++)
     {
         blklock(buf);
 
@@ -366,7 +366,7 @@ PUBLIC void bsync(void)
  *
  * @note The buffer must be locked.
  */
-PUBLIC inline void buffer_dirty(struct buffer *buf, int set)
+PUBLIC inline void buffer_dirty(buffer_t buf, int set)
 {
     buf->flags = (set) ? buf->flags | BUFFER_DIRTY : buf->flags & ~BUFFER_DIRTY;
 }
@@ -382,7 +382,7 @@ PUBLIC inline void buffer_dirty(struct buffer *buf, int set)
  *
  * @note The buffer must be locked.
  */
-PUBLIC inline void *buffer_data(const struct buffer *buf)
+PUBLIC inline void *buffer_data(const struct buffer* buf)
 {
     return (buf->data);
 }
@@ -398,7 +398,7 @@ PUBLIC inline void *buffer_data(const struct buffer *buf)
  *
  * @note The buffer must be locked.
  */
-PUBLIC inline dev_t buffer_dev(const struct buffer *buf)
+PUBLIC inline dev_t buffer_dev(const struct buffer* buf)
 {
     return (buf->dev);
 }
@@ -414,7 +414,7 @@ PUBLIC inline dev_t buffer_dev(const struct buffer *buf)
  *
  * @note The buffer must be locked.
  */
-PUBLIC inline block_t buffer_num(const struct buffer *buf)
+PUBLIC inline block_t buffer_num(const struct buffer* buf)
 {
     return (buf->num);
 }
@@ -432,7 +432,7 @@ PUBLIC inline block_t buffer_num(const struct buffer *buf)
  *
  * @note The buffer must be locked.
  */
-PUBLIC inline int buffer_is_sync(const struct buffer *buf)
+PUBLIC inline int buffer_is_sync(const struct buffer* buf)
 {
     return (buf->flags & BUFFER_SYNC);
 }
@@ -484,13 +484,25 @@ PUBLIC void binit(void)
     kprintf("fs: %d slots in the block buffer cache", NR_BUFFERS);
 }
 
-
-
 /**
- * Who let the dogs out?
+ * @brief Forces asynchronous read for given block.
+ *
+ * @details Reads the blocks numbered num asynchronously from the device
+ *          numbered dev.
+ *
+ * @param dev Device number.
+ * @param num Block number.
+ *
+ * @returns Upon successful completion, a pointer to a buffer holding the
+ *          requested block is returned. In this case, the block buffer is
+ *          ensured to be locked. Upon failure or if zero blocks are read, a
+ *          NULL pointer is returned instead.
+ *
+ * @note The device number must be valid.
+ * @note The block number must be valid.
  */
-PUBLIC struct buffer *breasy(dev_t dev, block_t num) {
-    struct buffer *buf;
+PUBLIC buffer_t breasy(dev_t dev, block_t num) {
+    buffer_t buf;
 
     buf = getblk(dev, num);
 
@@ -521,23 +533,47 @@ PUBLIC struct buffer *breasy(dev_t dev, block_t num) {
  *          ensured to be locked. Upon failure, a NULL pointer is returned
  *          instead.
  *
- * @note The device number should be valid.
- * @note The block number should be valid.
+ * @note The device number must be valid.
+ * @note The block number must be valid.
  */
-PUBLIC struct buffer *bread(dev_t dev, block_t num)
+PUBLIC buffer_t bread(dev_t dev, block_t num)
 {
-    struct buffer *buf;
+    return n_bread(dev, num, 1);
+}
 
-    buf = getblk(dev, num);
+/**
+ * @brief Reads some blocks from a device.
+ *
+ * @details Reads the blocks numbered num synchronously from the device
+ *          numbered dev, and enqueues (asynchronously) the next num_blocks - 1
+ *          next blocks.
+ *
+ * @param dev Device number.
+ * @param num Block number.
+ * @param num_blocks Number of blocks to read.
+ *
+ * @returns Upon successful completion, a pointer to a buffer holding the
+ *          requested block is returned. In this case, the block buffer is
+ *          ensured to be locked. Upon failure or if zero blocks are read, a
+ *          NULL pointer is returned instead.
+ *
+ * @note The device number must be valid.
+ * @note The block number must be valid.
+ */
+PUBLIC buffer_t n_bread(dev_t dev, block_t num, int num_blocks) {
+    if (num_blocks == 0) {
+        return NULL;
+    }
+
+    buffer_t buf = getblk(dev, num);
 
     /* Valid buffer? */
     if (buf->flags & BUFFER_VALID)
-        return (buf);
+        return buf;
 
-    brelse(breasy(dev, num + 1));
-    brelse(breasy(dev, num + 2));
-    brelse(breasy(dev, num + 3));
-    brelse(breasy(dev, num + 4));
+    for (int i = 1; i < num_blocks; ++i) {
+        brelse(breasy(dev, num + i));
+    }
     bdev_readblk(buf);
 
     /* Update buffer flags. */
