@@ -302,7 +302,7 @@ PUBLIC ssize_t file_read(struct inode *i, void *buf, size_t n, off_t off)
         if (blk == BLOCK_NULL)
             goto out;
 
-        bbuf = n_bread(i->dev, blk, MIN(3, n / BLOCK_SIZE));
+        bbuf = n_bread(i->dev, blk, 1 + MIN(2u, n / BLOCK_SIZE));
 
         blkoff = off % BLOCK_SIZE;
 

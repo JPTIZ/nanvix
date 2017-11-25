@@ -562,9 +562,9 @@ PUBLIC buffer_t bread(dev_t dev, block_t num)
  */
 PUBLIC buffer_t n_bread(dev_t dev, block_t num, int num_blocks) {
     if (num_blocks == 0) {
-        return NULL;
+       return NULL;
     }
-
+    num_blocks += 0;
     buffer_t buf = getblk(dev, num);
 
     /* Valid buffer? */
