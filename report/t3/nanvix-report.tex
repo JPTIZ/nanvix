@@ -1,0 +1,96 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[portuguese]{babel}
+\usepackage{color}
+\usepackage{minted}
+
+\definecolor{gray}{gray}{0.6}
+
+\title{Trabalho III --- Sistemas Operacionais I}
+\author{João Gabriel Trombeta\\
+        João Paulo Taylor Ienczak Zanette}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Resumo das alterações}
+
+\subsection{\texttt{include/nanvix/dev.h} e \texttt{src/kernel/dev/ata/ata.c}}
+
+Como o uso de sincronia/assincronia para o acesso ao dispositivo ATA é através
+de uma flag (\texttt{REQ\_SYNC}) passada como parâmetro para a função
+\texttt{ata\_sched} (indiretamente pela \texttt{ata\_sched\_buffered}, que por
+suas flags vez vem de \texttt{ata\_readblk}, que está registrada pelo ponteiro
+de função da estrutura de dados de dispositivo). Sendo assim, foi modificada a
+assinatura da função \texttt{ata\_readblk}, adicionando um parâmetro
+\texttt{sync} (\texttt{unsigned}, já que em C não há, pela linguagem, um tipo
+booleano), simbolizando se a escrita será ($1$) ou não ($0$) síncrona:
+
+\inputminted[firstline=647, lastline=647]{c}{../../src/kernel/dev/ata/ata.c}
+
+A alteração também se reflete no ponteiro de função da estrutura \texttt{bdev}:
+
+\inputminted[firstline=132, lastline=132]{c}{../../include/nanvix/dev.h}
+
+Por consequência, as funções apontadas pelas instâncias de \texttt{struct bdev}
+já existentes também tiveram que ser atualizadas para corroborar com a
+assinatura nova. Para evitr mudanças em quem já usa a função
+\texttt{bdev\_readblk}, seu código foi passado para uma nova função,
+\texttt{bdev\_readblk\_syncable} (que possui um parâmetro a mais,
+\texttt{sync}, que apenas é redirecionado à função associada à instância de
+\texttt{struct bdev}), passando a apenas chamar essa nova função com o
+parâmetro \texttt{sync} como verdadeiro ($1$), simulando o comportamento
+anterior às mudanças.
+
+\subsection{\texttt{src/kernel/dev/ramdisk/ramdisk.c}}
+
+Para evitar que o compilador acuse que o parâmetro novo não foi utilizados nas
+funções já existentes de leitura do bloco, apenas foi adicionado um
+\texttt{(void) (parâmetro)}:
+
+\inputminted[firstline=133, lastline=135]{c}{../../src/kernel/dev/ramdisk/ramdisk.c}
+
+\subsection{\texttt{include/nanvix/fs.h}}
+
+O \textit{prefetching} foi feito apenas forçando a leitura de um bloco, mas sem
+efetivamente fazer uso dele. Primeiramente, em vez de a função de leitura
+requisitar a leitura de um único bloco, ela carrega $N_b$ blocos (conforme a
+equação~\ref{nb-eq}), sendo $N_b - 1$ via \textit{prefetching}, através da
+função \texttt{n\_bread}.
+
+{\Large
+\begin{align}
+    N_b = N_{blocks\_to\_read} = 1 + \min(2, \frac{n_{bytes\_to\_read}}{BlockSize})
+    \label{nb-eq}
+\end{align}
+}
+
+Assim, limitam-se para no máximo 2 blocos sofrerem \textit{prefetch}. Isso é
+feito no trecho:
+
+\inputminted[firstline=305, lastline=305]{c}{../../src/kernel/fs/file.c}
+
+Sendo que \texttt{MIN} é uma macro definida em \texttt{include/nanvix/utils.h}
+que apenas retorna o menor entre dois valores:
+
+\inputminted{c}{../../include/nanvix/utils.h}
+
+Foi criada também uma função \texttt{breasy} (\textbf{B}lock \textbf{RE}ad
+\textbf{ASY}nc), que apenas força a leitura do bloco, mas nada faz com ele. Ela
+é utilizada em \texttt{n\_bread}, que lê \texttt{$num\_blocks - 1$} blocos de
+maneira assíncrona e um de maneira síncrona:
+
+\inputminted[firstline=574, lastline=577]{c}{../../src/kernel/fs/buffer.c}
+
+Por razões de compatibilidade de código, a antiga \texttt{bread}, então, passa
+a apenas chamar \texttt{n\_bread} com número de blocos = 1.
+
+\vspace*{\fill}
+\textcolor{gray}{
+    \textit{\tiny (Em memória de Marco Aurélio Ludwig Moraes, ex-membro do
+    grupo.)}}
+
+\end{document}
