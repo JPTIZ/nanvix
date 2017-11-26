@@ -53,7 +53,7 @@ funções já existentes de leitura do bloco, apenas foi adicionado um
 
 \inputminted[firstline=133, lastline=135]{c}{../../src/kernel/dev/ramdisk/ramdisk.c}
 
-\subsection{\texttt{include/nanvix/fs.h}}
+\subsection{\texttt{src/nanvix/fs/file.c} e \texttt{src/kernel/fs/buffer.c}}
 
 O \textit{prefetching} foi feito apenas forçando a leitura de um bloco, mas sem
 efetivamente fazer uso dele. Primeiramente, em vez de a função de leitura
@@ -69,7 +69,7 @@ função \texttt{n\_bread}.
 }
 
 Assim, limitam-se para no máximo 2 blocos sofrerem \textit{prefetch}. Isso é
-feito no trecho:
+feito no trecho (em \texttt{src/kernel/fs/file.c}):
 
 \inputminted[firstline=305, lastline=305]{c}{../../src/kernel/fs/file.c}
 
@@ -79,9 +79,10 @@ que apenas retorna o menor entre dois valores:
 \inputminted{c}{../../include/nanvix/utils.h}
 
 Foi criada também uma função \texttt{breasy} (\textbf{B}lock \textbf{RE}ad
-\textbf{ASY}nc), que apenas força a leitura do bloco, mas nada faz com ele. Ela
-é utilizada em \texttt{n\_bread}, que lê \texttt{$num\_blocks - 1$} blocos de
-maneira assíncrona e um de maneira síncrona:
+\textbf{ASY}nc), que apenas força a leitura do bloco (o que é feito chamando
+\texttt{bdev\_readblk\_syncable} com \texttt{sync = FALSE} (0)), mas nada faz
+com ele. Ela é utilizada em \texttt{n\_bread}, que lê \texttt{$num\_blocks -
+1$} blocos de maneira assíncrona e um de maneira síncrona:
 
 \inputminted[firstline=574, lastline=577]{c}{../../src/kernel/fs/buffer.c}
 
@@ -89,8 +90,8 @@ Por razões de compatibilidade de código, a antiga \texttt{bread}, então, pass
 a apenas chamar \texttt{n\_bread} com número de blocos = 1.
 
 \vspace*{\fill}
-\textcolor{gray}{
-    \textit{\tiny (Em memória de Marco Aurélio Ludwig Moraes, ex-membro do
+\textcolor{gray}{%
+    \textit{\tiny (Em memória de Marco Aurélio Ludwig Moraes, que saiu do
     grupo.)}}
 
 \end{document}
