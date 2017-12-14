@@ -35,7 +35,7 @@
 #define VERBOSE  (1 << 2)
 
 /* Test flags. */
-static unsigned flags = VERBOSE | EXTENDED;
+static unsigned flags = VERBOSE;
 
 /*============================================================================*
  *                               swap_test                                    *

@@ -333,6 +333,7 @@ PRIVATE int allocf(void)
                 if (age > tau) {
                     if (table->dirty) {
                         int result = swap_out(curr_proc, frame->addr);
+                        table->accessed = FALSE;
                         if (result == 0) {
                             table->dirty = FALSE;
                             if (cycle && !written) {
